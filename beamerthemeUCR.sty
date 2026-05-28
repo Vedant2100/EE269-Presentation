@@ -1,0 +1,203 @@
+%% beamerthemeUCR.sty
+%% Clean academic Beamer theme for UC Riverside
+%% Used in: LLM Safety & Mechanistic Interpretability lecture
+%%
+%% Requires: tcolorbox, tikz, booktabs, multicol, fontenc
+
+\ProvidesPackage{beamerthemeUCR}[2025/05/28 UCR Beamer Theme]
+
+% ─── DEPENDENCIES ──────────────────────────────────────────────────────────────
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\RequirePackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,fit,calc}
+\RequirePackage{booktabs}
+\RequirePackage{multicol}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{colortbl}
+\RequirePackage{xcolor}
+
+% ─── COLOUR PALETTE ────────────────────────────────────────────────────────────
+\definecolor{UCRnavy}{HTML}{003DA5}
+\definecolor{UCRgold}{HTML}{F1AB00}
+\definecolor{UCRwhite}{HTML}{FFFFFF}
+\definecolor{UCRdark}{HTML}{1A1A2E}
+\definecolor{UCRlgray}{HTML}{F4F6FB}
+\definecolor{UCRmgray}{HTML}{CDD3E0}
+\definecolor{UCRred}{HTML}{C0392B}
+\definecolor{UCRgreen}{HTML}{1A7A4A}
+\definecolor{UCRteal}{HTML}{0A7B8C}
+\definecolor{UCRpurple}{HTML}{6C3483}
+\definecolor{UCRorange}{HTML}{B8610A}
+\definecolor{UCRforest}{HTML}{145A32}
+\definecolor{UCRlightblue}{HTML}{7CB9E8}
+\definecolor{UCRpaleblue}{HTML}{E8F4FD}
+\definecolor{UCRpaleyellow}{HTML}{FEF9E7}
+\definecolor{UCRpalered}{HTML}{FDE8E8}
+
+% ─── BASE THEME ────────────────────────────────────────────────────────────────
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\textbullet}
+\setbeamertemplate{itemize subitem}{--}
+
+% ─── GLOBAL COLOURS ────────────────────────────────────────────────────────────
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=UCRdark}
+\setbeamercolor{frametitle}{fg=UCRnavy, bg=white}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=UCRgold}
+\setbeamercolor{author}{fg=UCRmgray}
+\setbeamercolor{date}{fg=UCRmgray}
+\setbeamercolor{itemize item}{fg=UCRnavy}
+\setbeamercolor{itemize subitem}{fg=UCRmgray}
+\setbeamercolor{block title}{bg=UCRnavy, fg=white}
+\setbeamercolor{block body}{bg=UCRlgray, fg=UCRdark}
+
+% ─── FONTS ─────────────────────────────────────────────────────────────────────
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamerfont{title}{size=\Huge, series=\bfseries}
+\setbeamerfont{subtitle}{size=\large, shape=\itshape}
+\setbeamerfont{author}{size=\small}
+\setbeamerfont{date}{size=\small}
+\setbeamerfont{block title}{size=\normalsize, series=\bfseries}
+
+% ─── FRAME TITLE WITH GOLD BAR ─────────────────────────────────────────────────
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.35cm}%
+  {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle}%
+  \par\vspace*{0.08cm}%
+  {\color{UCRgold}\rule{\textwidth}{1.8pt}}%
+  \vspace*{0.05cm}%
+}
+
+% ─── FOOTER ────────────────────────────────────────────────────────────────────
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=0.7\paperwidth,ht=2.25ex,dp=1ex,left,leftskip=4pt]{author in head/foot}%
+      \color{UCRmgray}\tiny LLM Safety \& Mechanistic Interpretability\quad·\quad UC Riverside
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.3\paperwidth,ht=2.25ex,dp=1ex,right,rightskip=4pt]{date in head/foot}%
+      \color{UCRmgray}\tiny \insertframenumber{} / \inserttotalframenumber
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+% ─── TCOLORBOX CARD STYLES ─────────────────────────────────────────────────────
+
+% Generic card: \begin{ucrcard}[accent color]{Title} ... \end{ucrcard}
+\newenvironment{ucrcard}[2][UCRnavy]{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=UCRlgray,
+    colframe=UCRmgray,
+    leftrule=2pt, rightrule=0.3pt, toprule=0.3pt, bottomrule=0.3pt,
+    borderline west={3pt}{0pt}{#1},
+    fonttitle=\bfseries\small,
+    coltitle=#1,
+    title=#2,
+    attach boxed title to top left={yshift=-1mm, xshift=4pt},
+    boxed title style={colback=white, colframe=white, sharp corners},
+    sharp corners,
+    boxsep=4pt, left=6pt, right=6pt, top=6pt, bottom=6pt,
+  ]
+}{%
+  \end{tcolorbox}%
+}
+
+% Highlighted callout box
+\newenvironment{ucrinfo}[1][UCRteal]{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=UCRpaleblue,
+    colframe=#1,
+    fonttitle=\bfseries\small,
+    sharp corners,
+    boxsep=3pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  ]
+}{%
+  \end{tcolorbox}%
+}
+
+% Warning/threat box
+\newenvironment{ucrwarn}{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=UCRpalered,
+    colframe=UCRred,
+    fonttitle=\bfseries\small,
+    sharp corners,
+    boxsep=3pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  ]
+}{%
+  \end{tcolorbox}%
+}
+
+% Dark section block (navy background, white text)
+\newenvironment{ucrdark}[1][UCRnavy]{%
+  \begin{tcolorbox}[
+    enhanced,
+    colback=#1,
+    colframe=#1,
+    coltext=white,
+    sharp corners,
+    boxsep=4pt, left=6pt, right=6pt, top=4pt, bottom=4pt,
+  ]
+}{%
+  \end{tcolorbox}%
+}
+
+% Two-column card helper
+\newcommand{\ucrtwocol}[4]{%
+  % #1 = left width fraction, #2 = left content, #3 = right content
+  \begin{columns}[T]
+    \column{#1\textwidth}
+    #2
+    \column{\dimexpr\textwidth - #1\textwidth - 0.4em}
+    #3
+  \end{columns}%
+}
+
+% ─── SECTION DIVIDER FRAME ─────────────────────────────────────────────────────
+% Usage: \sectionframe{Part N}{Title}{Subtitle}{Papers}
+\newcommand{\sectionframe}[4]{%
+  {%
+  \setbeamercolor{background canvas}{bg=UCRnavy}%
+  \begin{frame}[plain]
+    \begin{tikzpicture}[remember picture, overlay]
+      % Gold left bar
+      \fill[UCRgold] (current page.north west) rectangle
+        ([xshift=0.18cm]current page.south west);
+      % Big watermark number
+      \node[anchor=south east, opacity=0.12, text=white,
+            font=\fontsize{180}{180}\selectfont\bfseries]
+        at ([xshift=-0.5cm, yshift=0.3cm]current page.south east) {#1};
+    \end{tikzpicture}
+    \vfill
+    \hspace*{0.6cm}%
+    \begin{minipage}{0.85\textwidth}
+      {\color{white}\fontsize{36}{42}\selectfont\bfseries #2}\\[0.35em]
+      {\color{UCRgold}\itshape\large #3}\\[0.3em]
+      {\color{UCRlightblue}\small #4}
+    \end{minipage}
+    \vfill
+  \end{frame}
+  }%
+}
+
+% ─── PAPER TAG COMMAND ────────────────────────────────────────────────────────
+\newcommand{\papertag}[2][UCRnavy]{%
+  \tikz[baseline=(t.base)]\node[fill=#1, text=white,
+    font=\tiny\bfseries, inner sep=2pt, rounded corners=1pt] (t) {#2};%
+}
+
+% ─── COLOUR SHORTCUT COMMANDS ─────────────────────────────────────────────────
+\newcommand{\navy}[1]{{\color{UCRnavy}#1}}
+\newcommand{\gold}[1]{{\color{UCRgold}#1}}
+\newcommand{\tealc}[1]{{\color{UCRteal}#1}}
+\newcommand{\redc}[1]{{\color{UCRred}#1}}
+\newcommand{\greenc}[1]{{\color{UCRgreen}#1}}
+\newcommand{\muted}[1]{{\color{UCRmgray}#1}}
