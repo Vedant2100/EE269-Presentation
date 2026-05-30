@@ -1,0 +1,196 @@
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 1 — TITLE
+% ═════════════════════════════════════════════════════════════════════════════
+{
+\setbeamercolor{background canvas}{bg=UCRnavy}
+\begin{frame}[plain]
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[UCRgold] (current page.north west)
+      rectangle ([xshift=0.18cm]current page.south west);
+  \end{tikzpicture}
+  \vspace*{1.8cm}
+  \hspace*{0.5cm}
+  \begin{minipage}{0.88\textwidth}
+    {\color{white}\fontsize{36}{42}\selectfont\bfseries
+      LLM Safety \&\\[0.15em] Mechanistic Interpretability}\\[0.5em]
+    {\color{UCRgold}\rule{0.6\textwidth}{1.5pt}}\\[0.4em]
+    {\color{UCRgold}\large\itshape A Survey Lecture Across Four Recent Papers}\\[0.3em]
+    {\color{UCRmgray}\small
+      arXiv 2412.17686\quad·\quad arXiv 2601.14004\quad·\quad
+      EMNLP 2025\quad·\quad arXiv 2502.05206}
+  \end{minipage}
+  \vfill
+  \hspace*{0.5cm}
+  {\color{UCRmgray}\small CS Graduate Seminar\quad·\quad UC Riverside}
+  \vspace*{0.4cm}
+\end{frame}
+}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 2 — THE 4 PAPERS AT A GLANCE
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{The Four Papers at a Glance}
+  \vspace*{0.1cm}
+  \begin{columns}[T]
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
+        toprule=2pt, bottomrule=0.3pt, leftrule=0.3pt, rightrule=0.3pt,
+        sharp corners, fonttitle=\bfseries\normalsize, coltitle=UCRnavy,
+        title={\Large\bfseries\color{UCRnavy}\textcircled{1}\quad LLM Safety:\\ A Holistic Survey},
+        height=6cm, valign=top]
+      {\color{UCRmgray}\footnotesize\itshape Shi et al., 2024\\arXiv 2412.17686}\\[0.4em]
+      {\color{UCRnavy}\rule{\linewidth}{0.8pt}}\\[0.3em]
+      \footnotesize Broad taxonomy of LLM safety risks: value misalignment,
+      adversarial robustness, misuse, and autonomous AI risks.
+    \end{tcolorbox}
+
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRteal,
+        toprule=2pt, bottomrule=0.3pt, leftrule=0.3pt, rightrule=0.3pt,
+        sharp corners, fonttitle=\bfseries\normalsize, coltitle=UCRteal,
+        title={\Large\bfseries\color{UCRteal}\textcircled{2}\quad Locate, Steer \& Improve},
+        height=6cm, valign=top]
+      {\color{UCRmgray}\footnotesize\itshape Zhang et al., 2026\\arXiv 2601.14004}\\[0.4em]
+      {\color{UCRteal}\rule{\linewidth}{0.8pt}}\\[0.3em]
+      \footnotesize Actionable mechanistic interpretability pipeline for
+      diagnosing \& steering LLM internals.
+    \end{tcolorbox}
+
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRgreen,
+        toprule=2pt, bottomrule=0.3pt, leftrule=0.3pt, rightrule=0.3pt,
+        sharp corners, fonttitle=\bfseries\normalsize, coltitle=UCRgreen,
+        title={\Large\bfseries\color{UCRgreen}\textcircled{3}\quad Interpretation Meets Safety},
+        height=6cm, valign=top]
+      {\color{UCRmgray}\footnotesize\itshape Lee et al., EMNLP 2025}\\[0.4em]
+      {\color{UCRgreen}\rule{\linewidth}{0.8pt}}\\[0.3em]
+      \footnotesize Unified framework bridging LLM interpretation methods
+      and safety enhancements, organized by workflow stage.
+    \end{tcolorbox}
+
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRred,
+        toprule=2pt, bottomrule=0.3pt, leftrule=0.3pt, rightrule=0.3pt,
+        sharp corners, fonttitle=\bfseries\normalsize, coltitle=UCRred,
+        title={\Large\bfseries\color{UCRred}\textcircled{4}\quad Safety at Scale},
+        height=6cm, valign=top]
+      {\color{UCRmgray}\footnotesize\itshape Ma et al., 2025\\arXiv 2502.05206}\\[0.4em]
+      {\color{UCRred}\rule{\linewidth}{0.8pt}}\\[0.3em]
+      \footnotesize Comprehensive attack/defense survey across VFMs,
+      LLMs, VLMs, Diffusion Models \& Agents.
+    \end{tcolorbox}
+  \end{columns}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 3 — LECTURE ROADMAP
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Lecture Roadmap}
+  \vspace*{0.2cm}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
+      left=8pt, right=6pt, top=6pt, bottom=6pt]
+    \begin{columns}[T]
+      \column{0.12\textwidth}
+      {\color{UCRnavy}\small\bfseries PART 1}\\[0.2em]
+      {\color{UCRmgray}\tiny\itshape $\sim$30 min\\Papers \textcircled{1} \& \textcircled{4}}
+      \column{0.85\textwidth}
+      {\large\bfseries\navy{LLM Safety Landscape}}\\[0.2em]
+      \small Taxonomy, value misalignment, adversarial attacks, misuse, autonomous AI risks,
+      agent safety, governance, Safety at Scale across model families.
+    \end{columns}
+  \end{tcolorbox}
+  \vspace{0.3em}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      borderline west={4pt}{0pt}{UCRteal}, sharp corners,
+      left=8pt, right=6pt, top=6pt, bottom=6pt]
+    \begin{columns}[T]
+      \column{0.12\textwidth}
+      {\color{UCRteal}\small\bfseries PART 2}\\[0.2em]
+      {\color{UCRmgray}\tiny\itshape $\sim$30 min\\Paper \textcircled{2}}
+      \column{0.85\textwidth}
+      {\large\bfseries\tealc{Mechanistic Interpretability}}\\[0.2em]
+      \small Locate $\to$ Steer $\to$ Improve pipeline; interpretable objects;
+      localizing \& steering methods; applications to alignment, capability, efficiency.
+    \end{columns}
+  \end{tcolorbox}
+  \vspace{0.3em}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      borderline west={4pt}{0pt}{UCRgreen}, sharp corners,
+      left=8pt, right=6pt, top=6pt, bottom=6pt]
+    \begin{columns}[T]
+      \column{0.12\textwidth}
+      {\color{UCRgreen}\small\bfseries PART 3}\\[0.2em]
+      {\color{UCRmgray}\tiny\itshape $\sim$25 min\\Papers \textcircled{2} \& \textcircled{3}}
+      \column{0.85\textwidth}
+      {\large\bfseries\greenc{Interpretation $\leftrightarrow$ Safety Bridge}}\\[0.2em]
+      \small Workflow-stage taxonomy; training attribution; token attribution;
+      latent probing; self-reasoning; dual-use risks; open challenges.
+    \end{columns}
+  \end{tcolorbox}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 4 — WHY SAFETY NOW?
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Why LLM Safety Is Urgent}
+  \vspace*{0.1cm}
+  {\small\itshape LLMs are deployed in healthcare, law, finance, education —
+    errors can have real-world consequences.}
+  \vspace{0.4em}
+
+  \begin{columns}[T]
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRnavy}, title=Bias \& Discrimination,
+        height=3.3cm, valign=top, top=4pt, bottom=4pt, left=5pt]
+      \footnotesize Models replicate and amplify social stereotypes;
+      performance disparities across ethnic/language groups cause unjust outcomes
+      in high-stakes domains.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRteal}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRteal}, title=Adversarial Attacks,
+        height=3.3cm, valign=top, top=4pt, bottom=4pt, left=5pt]
+      \footnotesize Carefully crafted prompts (jailbreaks) bypass safety
+      alignment; white-box gradient attacks can force harmful outputs from
+      aligned models.
+    \end{tcolorbox}
+
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRred}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRred}, title=Privacy Leakage,
+        height=3.3cm, valign=top, top=4pt, bottom=4pt, left=5pt]
+      \footnotesize Training data memorization enables extraction of
+      personal information; LLMs can be prompted to expose sensitive user data.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRpurple}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRpurple}, title=Misuse at Scale,
+        height=3.3cm, valign=top, top=4pt, bottom=4pt, left=5pt]
+      \footnotesize Automated misinformation, deepfakes, and weapons-design
+      assistance — at a scale no prior technology enabled.
+    \end{tcolorbox}
+
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRforest}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRforest}, title=Autonomous AI Risk,
+        height=3.3cm, valign=top, top=4pt, bottom=4pt, left=5pt]
+      \footnotesize Increasingly agentic LLMs may exhibit goal misalignment,
+      deception, and situational awareness in unexpected and hard-to-detect ways.
+    \end{tcolorbox}
+
+    \begin{tcolorbox}[enhanced, colback=UCRpalered, colframe=UCRred,
+        sharp corners,
+        fonttitle=\bfseries\small\color{UCRred}, title=No Simple Fix,
+        height=3.3cm, valign=top, top=4pt, bottom=4pt, left=5pt]
+      \footnotesize Safety issues \textbf{cannot} be resolved by scaling models
+      alone \mbox{(Wei et al., 2023)}. New principled methods are needed.
+    \end{tcolorbox}
+  \end{columns}
+\end{frame}
