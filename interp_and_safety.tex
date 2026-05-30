@@ -1,0 +1,545 @@
+% ─────────────────────────────────────────────────────────────────────────────
+%  PART 3 SECTION DIVIDER
+% ─────────────────────────────────────────────────────────────────────────────
+\sectionframe{3}{Interpretation Meets Safety}%
+  {Paper \textcircled{3} — Bridging the Gap (EMNLP 2025)}%
+  {Lee et al.\,(2025) · Georgia Tech}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 30 — EMNLP OVERVIEW
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Bridging Interpretation \& Safety \papertag[UCRgreen]{Paper \textcircled{3}}}
+  \begin{ucrinfo}[UCRgreen]
+    \small\itshape
+    ``The first survey that bridges LLM interpretation methods and safety
+    enhancements — showing exactly which interpretation technique informs
+    which safety improvement.''
+  \end{ucrinfo}
+  \vspace{0.4em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Why This Bridge Matters}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Interpretation methods developed independently from safety — safety implications overlooked
+      \item Safety engineers unaware of available MI diagnostic tools
+      \item Provides an explicit connection map: \textit{method $\to$ insight $\to$ safety action}
+      \item Taxonomy by LLM workflow stage ensures systematic coverage
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Four Workflow Stages}}
+    \vspace{0.2em}
+
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, top=2pt, bottom=2pt]
+      \footnotesize\textbf{1.} Training \textit{(data attribution)}
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, top=2pt, bottom=2pt]
+      \footnotesize\textbf{2.} Input Tokens \textit{(attribution, perturbation)}
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, top=2pt, bottom=2pt]
+      \footnotesize\textbf{3.} Inference \textit{(latent probing, circuit analysis)}
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, top=2pt, bottom=2pt]
+      \footnotesize\textbf{4.} Generation \textit{(self-reasoning, output verification)}
+    \end{tcolorbox}
+  \end{columns}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 31 — WORKFLOW FRAMEWORK TABLE
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Unified Framework: Workflow Stage × Safety Type \papertag[UCRgreen]{Paper \textcircled{3}}}
+  {\footnotesize Maps (interpretation method, workflow stage) $\to$ (safety type)
+    $\to$ (safety action):}
+  \vspace{0.3em}
+
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabularx}{\textwidth}{>{\bfseries\small}p{1.5cm}
+                               >{\footnotesize}p{2.5cm}
+                               >{\footnotesize}p{2.3cm}
+                               >{\footnotesize}X}
+    \rowcolor{UCRnavy}
+    \color{white}Stage &
+    \color{white}Interpretation Method &
+    \color{white}Safety Types &
+    \color{white}Safety Action \\
+    \rowcolor{UCRlgray}
+    Training &
+    Training Data Attribution (TDA) &
+    Hallucination, Bias &
+    Remove/reweight harmful training samples \\
+    Input Tokens &
+    Token Attribution \& Perturbation &
+    Jailbreak, Bias, Privacy &
+    Detect adversarial inputs; explain token influence \\
+    \rowcolor{UCRlgray}
+    Inference (Latent) &
+    Probing, Component Perturbation, Latent Deciphering &
+    Hallucination, Jailbreak, Bias &
+    Steer latent vectors; modulate neurons; edit model \\
+    Self-Reasoning &
+    Chain-of-Thought Self-Explanation &
+    Hallucination, Jailbreak &
+    Generate rationales; verify reasoning steps \\
+    \rowcolor{UCRlgray}
+    Generation &
+    Output Verification \& Post-hoc Correction &
+    Hallucination, Jailbreak &
+    Detect unsafe sequences; resample; produce refusal \\
+  \end{tabularx}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 32 — TRAINING ATTRIBUTION
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Interpretation at Training Stage — Data Attribution}
+  {\footnotesize TDA estimates each training sample's contribution to a model
+    behavior — enabling root-cause analysis of unsafe outputs.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{How TDA Works}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Approximate effect of removing/reweighting a training point
+      \item Influence functions: Hessian-vector products measure training
+        point influence
+      \item Data Shapley: game-theoretic attribution (expensive)
+      \item TracIn: sum of gradient dot-products at each checkpoint
+      \item Challenge: scales poorly to billion-parameter models
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Safety Applications}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Trace a hallucinated output back to an erroneous training document
+      \item Identify training samples that introduced a social bias
+      \item Explain why a jailbreak succeeded via similar training examples
+      \item Data cleaning: remove/downweight attributed harmful samples
+    \end{itemize}
+  \end{columns}
+  \vspace{0.3em}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      sharp corners, top=3pt, bottom=3pt]
+    \footnotesize\textbf{Practical bottleneck:}
+    TDA requires access to training data — difficult for proprietary LLMs.
+    Scalable TDA for LLMs (Chang et al., 2025) is an active open problem.
+  \end{tcolorbox}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 33 — INPUT TOKEN INTERPRETATION
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Interpretation at Input Stage — Token Attribution}
+  {\footnotesize Identifies which tokens in the input drive safety-relevant
+    model behaviors.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Methods}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item \textbf{Gradient-based}: integrate gradients w.r.t.\ input token embeddings
+      \item \textbf{Attention-based}: attention weights as approximate attributions
+      \item \textbf{Optimization-based}: search for tokens maximizing an interpretability metric
+      \item \textbf{Prompt-based}: ask LLM to identify influential tokens in natural language
+        (Wang et al., 2025)
+      \item \textbf{Perturbation-based}: mask tokens; observe output change
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Safety Applications}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Jailbreak detection: flag prompts with high attribution to adversarial tokens
+      \item Bias auditing: check if model attends to protected attributes in sensitive decisions
+      \item Privacy: identify tokens triggering PII memorization
+      \item Input defense: mask/perturb high-attribution adversarial tokens before processing
+    \end{itemize}
+  \end{columns}
+  \vspace{0.3em}
+  \begin{ucrinfo}
+    \footnotesize\textbf{Key distinction:}
+    Token attribution explains the prompt's effect; latent analysis reveals the model's
+    internal response — both needed for complete safety diagnosis.
+  \end{ucrinfo}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 34 — INFERENCE-TIME INTERNALS
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Interpretation at Inference — Latent Internals}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      borderline west={4pt}{0pt}{UCRteal}, sharp corners,
+      fonttitle=\bfseries\small\color{UCRteal},
+      title=Probe Latent Space (§3.3.1), top=3pt, bottom=3pt]
+    \begin{columns}[T]
+      \column{0.55\textwidth}
+      \footnotesize Train linear probes on internal activations to detect whether
+      unsafe concepts are encoded. Zou et al.\ (2023): unsafe behaviors associated
+      with specific latent regions.
+      \column{0.42\textwidth}
+      \footnotesize\itshape\tealc{Safety use:} detect jailbreak intent or hallucination
+      risk in latent space before generation.
+    \end{columns}
+  \end{tcolorbox}
+  \vspace{3pt}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
+      fonttitle=\bfseries\small\color{UCRnavy},
+      title=Perturb Components (§3.3.2), top=3pt, bottom=3pt]
+    \begin{columns}[T]
+      \column{0.55\textwidth}
+      \footnotesize Ablate or patch specific components (heads, MLPs) to measure
+      causal impact on safety-relevant outputs.
+      \column{0.42\textwidth}
+      \footnotesize\itshape\navy{Safety use:} suppress identified components at
+      inference time to prevent harmful outputs.
+    \end{columns}
+  \end{tcolorbox}
+  \vspace{3pt}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      borderline west={4pt}{0pt}{UCRgreen}, sharp corners,
+      fonttitle=\bfseries\small\color{UCRgreen},
+      title=Decipher Latent Representations (§3.3.3), top=3pt, bottom=3pt]
+    \begin{columns}[T]
+      \column{0.55\textwidth}
+      \footnotesize Logit Lens, SAE decoding, concept activation vectors translate
+      latent states into human-readable concepts.
+      \column{0.42\textwidth}
+      \footnotesize\itshape\greenc{Safety use:} reveal hidden toxic concepts
+      even before they appear in output.
+    \end{columns}
+  \end{tcolorbox}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 35 — SELF-REASONING & OUTPUT SAFETY
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Self-Reasoning \& Output-Level Safety \papertag[UCRgreen]{Paper \textcircled{3}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Self-Reasoning for Safety}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item LLMs express reasoning in natural language — making internal
+        processes observable
+      \item CoT: intermediate reasoning steps surface hidden flaws
+      \item Fine-tune models to produce safety rationales alongside responses
+      \item \textbf{Refusal cliff} (Yin et al., 2025): model maintains refusal
+        intent in CoT but suppresses it at final output — detectable via
+        reasoning analysis
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Output Verification \& Correction}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Inference-time attention reweighting for reliable information
+      \item Steer latent vectors during generation $\to$ real-time factual correction
+      \item \textbf{Resample on detection}: interrupt generation when unsafe
+        sequence detected (Li et al., 2024)
+      \item External fact-checkers validate output before delivery
+      \item Model learns to produce refusal messages at generation time
+    \end{itemize}
+  \end{columns}
+  \vspace{0.3em}
+  \begin{ucrcard}[UCRnavy]{CoT as a Safety Tool}
+    \footnotesize CoT provides an interpretable `audit trail' of reasoning.
+    Fine-tuning for explicit safety reasoning steps makes violations visible
+    and correctable — but also creates new attack surfaces (adversaries can
+    manipulate the reasoning chain).
+  \end{ucrcard}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 36 — PRACTICAL TOOLS
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Practical Interpretation \& Safety Tools \papertag[UCRgreen]{Paper \textcircled{3}}}
+  \begin{columns}[T]
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRteal,
+        toprule=2pt, sharp corners, height=5.5cm, valign=top,
+        fonttitle=\bfseries\small\color{UCRteal}, title=TDA Visualization]
+      \scriptsize Visualize training data attribution — which documents are
+      most responsible for a given output. Helps audit model behavior
+      pre-deployment.
+    \end{tcolorbox}
+
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
+        toprule=2pt, sharp corners, height=5.5cm, valign=top,
+        fonttitle=\bfseries\small\color{UCRnavy}, title=Token Attribution Viz]
+      \scriptsize Interactive token highlighting (BertViz, ALTI). Enables prompt
+      engineers and safety auditors to understand input $\to$ output links.
+    \end{tcolorbox}
+
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRgreen,
+        toprule=2pt, sharp corners, height=5.5cm, valign=top,
+        fonttitle=\bfseries\small\color{UCRgreen}, title=Latent Vector Viz]
+      \scriptsize Dimensionality-reduced visualizations of residual stream
+      trajectories; latent space geometry for safety-relevant concepts
+      (safe/unsafe clusters).
+    \end{tcolorbox}
+
+    \column{0.245\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRred,
+        toprule=2pt, sharp corners, height=5.5cm, valign=top,
+        fonttitle=\bfseries\small\color{UCRred}, title=Neuron Visualization]
+      \scriptsize Per-neuron activation dashboards (Neuroscope, TransformerLens).
+      Reveals which inputs maximally activate safety/toxicity-related neurons.
+    \end{tcolorbox}
+  \end{columns}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 37 — DUAL-USE RISK
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{The Dual-Use Risk of Interpretability \papertag{Papers \textcircled{1} \& \textcircled{3}}}
+  \begin{ucrwarn}
+    \small\bfseries Warning:\normalfont\ Interpretability tools can be
+    weaponized by adversaries, not just used by defenders.
+  \end{ucrwarn}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Attacker Uses}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Identify attention heads responsible for safety refusals $\to$
+        ablate them to disable safety
+      \item Locate refusal direction in residual stream $\to$ apply negating
+        vector to suppress refusals (Arditi et al., 2024)
+      \item Circuit analysis $\to$ find minimal components for harmful
+        capabilities $\to$ targeted jailbreak
+      \item Probe latent space to detect when being safety-tested $\to$
+        behavioral mimicry
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Defense Implications}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Design interpretation methods with misuse in mind
+      \item Proactively remove risky features before publication
+        (Wu et al., 2025)
+      \item Access controls on fine-grained interpretability APIs
+      \item Adversarial robustness testing of safety-enforcing circuits
+      \item Do not publish exact component localization for known
+        safety-critical behaviors
+    \end{itemize}
+  \end{columns}
+  \vspace{0.3em}
+  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+      sharp corners, top=3pt, bottom=3pt]
+    \footnotesize The MI community is developing norms around responsible
+    disclosure of vulnerability-enabling interpretability findings — analogous to
+    security research disclosure practices.
+  \end{tcolorbox}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 38 — OPEN CHALLENGES
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Open Challenges Across All Four Papers}
+  \begin{columns}[T]
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRred}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRred},
+        title=Evaluation Gap, height=2.3cm, valign=top, top=3pt, bottom=3pt]
+      \scriptsize No consensus on MI quality metrics. Safety benchmarks are
+      gameable — high scores $\neq$ real-world safety.
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
+        title=Governance \& Open Weights, height=2.3cm, valign=top,
+        top=3pt, bottom=3pt]
+      \scriptsize Open weights enable adversarial fine-tuning to remove safety.
+      MI-enabled attacks on open models are trivial. Responsible norms needed.
+    \end{tcolorbox}
+
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRorange}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRorange},
+        title=Scalability of MI, height=2.3cm, valign=top, top=3pt, bottom=3pt]
+      \scriptsize TDA and circuit discovery don't scale to 100B+ parameter models.
+      Activation patching cost is quadratic. Approximate methods needed.
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRgreen}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRgreen},
+        title=Interpretability $\neq$ Safety, height=2.3cm, valign=top,
+        top=3pt, bottom=3pt]
+      \scriptsize A fully interpretable model is not necessarily safe.
+      Understanding a flaw doesn't automatically fix it. MI is necessary
+      but not sufficient.
+    \end{tcolorbox}
+
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRteal}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRteal},
+        title=Polysemanticity, height=2.3cm, valign=top, top=3pt, bottom=3pt]
+      \scriptsize SAEs help but don't fully solve polysemanticity. Dead latents
+      waste capacity. Feature splitting: each feature is still a mixture of
+      concepts at fine grain.
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRpurple}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRpurple},
+        title=Distribution Shift, height=2.3cm, valign=top, top=3pt, bottom=3pt]
+      \scriptsize Safety behaviors learned on training distribution may not
+      generalize. MI insights from Llama-3 may not transfer to proprietary models.
+    \end{tcolorbox}
+  \end{columns}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 39 — FUTURE DIRECTIONS
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Future Research Directions}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
+        title=1. Scalable MI Methods, top=3pt, bottom=3pt]
+      \scriptsize Approximate influence functions, sparse causal attribution,
+      hardware-aware circuit discovery for 100B+ models.
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRred}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRred},
+        title=2. Native Safety Architectures, top=3pt, bottom=3pt]
+      \scriptsize Design architectures with interpretability and safety as
+      first-class objectives — not retrofitted.
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRteal}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRteal},
+        title=3. Automated Red Teaming + MI, top=3pt, bottom=3pt]
+      \scriptsize Use MI to explain why red-team prompts succeed $\to$
+      principled defense generation, closing the attack-defense loop.
+    \end{tcolorbox}
+
+    \column{0.48\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRgreen}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRgreen},
+        title=4. Unified Safety Evaluations, top=3pt, bottom=3pt]
+      \scriptsize Standardized benchmarks testing interpretability quality,
+      safety generalization, and robustness simultaneously across all model types.
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRpurple}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRpurple},
+        title=5. Reliable Interpretation Evaluation, top=3pt, bottom=3pt]
+      \scriptsize Gold-standard tests for interpretation faithfulness — do
+      attributed components actually cause the behavior?
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        borderline west={3pt}{0pt}{UCRorange}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRorange},
+        title=6. International AI Governance, top=3pt, bottom=3pt]
+      \scriptsize Binding frameworks for pre-deployment safety evaluations;
+      international cooperation on catastrophic risk thresholds.
+    \end{tcolorbox}
+  \end{columns}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 40 — CONNECTING THE 4 PAPERS
+% ═════════════════════════════════════════════════════════════════════════════
+\begin{frame}{How the Four Papers Connect}
+  \vspace*{0.3cm}
+  \begin{tikzpicture}[
+    pbox/.style={rectangle, draw=#1, fill=UCRlgray, text width=2.8cm,
+                 minimum height=2.2cm, align=center, rounded corners=2pt,
+                 very thick},
+    sub/.style={font=\scriptsize, text width=2.8cm, align=center},
+    arr/.style={-{Stealth[length=6pt]}, UCRmgray, thick},
+    lbl/.style={font=\tiny\itshape, UCRmgray},
+  ]
+    \node[pbox=UCRnavy] (p1) at (0,0) {
+      \textbf{\color{UCRnavy}\large \textcircled{1}}\\[0.2em]
+      \footnotesize\bfseries\color{UCRnavy} LLM Safety\\Holistic Survey\\[0.3em]
+      \scriptsize Defines the threat landscape: what needs to be fixed.};
+
+    \node[pbox=UCRred] (p4) at (0,-3) {
+      \textbf{\color{UCRred}\large \textcircled{4}}\\[0.2em]
+      \footnotesize\bfseries\color{UCRred} Safety at Scale\\[0.3em]
+      \scriptsize Broadens threats to all model families \& agents.};
+
+    \node[pbox=UCRteal] (p2) at (5.2,-1.5) {
+      \textbf{\color{UCRteal}\large \textcircled{2}}\\[0.2em]
+      \footnotesize\bfseries\color{UCRteal} Locate, Steer\\{\&} Improve\\[0.3em]
+      \scriptsize Technical toolkit to diagnose and fix the problems.};
+
+    \node[pbox=UCRgreen] (p3) at (10.3,-1.5) {
+      \textbf{\color{UCRgreen}\large \textcircled{3}}\\[0.2em]
+      \footnotesize\bfseries\color{UCRgreen} Interpretation\\Meets Safety\\[0.3em]
+      \scriptsize Maps which tool addresses which threat at which stage.};
+
+    \draw[arr] (p1.east) .. controls +(1.5,0) and +(-1.5,0.8) .. (p2.west)
+      node[midway, above, lbl] {informs};
+    \draw[arr] (p4.east) .. controls +(1.5,0) and +(-1.5,-0.8) .. (p2.west)
+      node[midway, below, lbl] {informs};
+    \draw[arr] (p2.east) -- (p3.west)
+      node[midway, above, lbl] {operationalizes};
+  \end{tikzpicture}
+
+  \vspace{0.3em}
+  \begin{ucrdark}
+    \centering\small\bfseries
+    Threat Landscape (\textcircled{1}+\textcircled{4})
+    $\to$ MI Toolkit (\textcircled{2})
+    $\to$ Systematic Safety Bridge (\textcircled{3})
+    $\to$ Safer, More Interpretable LLMs
+  \end{ucrdark}
+\end{frame}
+
+% ═════════════════════════════════════════════════════════════════════════════
+%  SLIDE 41 — SUMMARY
+% ═════════════════════════════════════════════════════════════════════════════
+{
+\setbeamercolor{background canvas}{bg=UCRnavy}
+\begin{frame}{Summary \& Key Takeaways}
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[UCRgold] (current page.north west)
+      rectangle ([xshift=0.18cm]current page.south west);
+  \end{tikzpicture}
+
+  \setbeamercolor{normal text}{fg=white}
+  \color{white}
+
+  \vspace{0.2em}
+  \small
+  \begin{tabularx}{\textwidth}{>{\bfseries\color{UCRgold}}p{4.2cm} X}
+    1. LLM Safety is Multi-Dimensional &
+      \color{white}\scriptsize No single method handles all risks. Value misalignment,
+      adversarial robustness, misuse, and autonomous AI risks each require tailored strategies.\\[4pt]
+    \color{UCRlightblue}2. Threat Landscape is Broadening &
+      \color{white}\scriptsize Safety at Scale (Paper~\textcircled{4}) shows threats propagate
+      across all model families — VFMs, VLMs, Diffusion Models, Agents — not just LLMs.\\[4pt]
+    3. MI Enables Principled Fixes &
+      \color{white}\scriptsize The Locate$\to$Steer$\to$Improve pipeline (Paper~\textcircled{2})
+      transforms MI from observation into action: find the bug, fix the circuit, validate.\\[4pt]
+    \color{UCRlightblue}4. Interpretation $\leftrightarrow$ Safety Bridge &
+      \color{white}\scriptsize Paper~\textcircled{3} provides the first systematic map from
+      interpretation method to safety improvement — essential for practitioners.\\[4pt]
+    5. Dual-Use Is Real &
+      \color{white}\scriptsize Every MI tool that helps defenders also helps attackers.
+      Responsible disclosure and adversarial robustness of safety circuits are essential.\\[4pt]
+    \color{UCRlightblue}6. Open Problems Remain &
+      \color{white}\scriptsize Scalability of MI, evaluation standardization, governance
+      frameworks, and the understanding-to-fixing gap are all active research frontiers.\\
+  \end{tabularx}
+\end{frame}
+}
