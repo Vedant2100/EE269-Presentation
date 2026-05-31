@@ -267,13 +267,13 @@
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\redc{Attack Categories}}
-    \begin{itemize}\footnotesize\setlength\itemsep{2pt}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
       \item \textbf{Adversarial attacks}: subtle perturbations causing incorrect outputs
       \item \textbf{Jailbreaks}: bypassing safety alignment to elicit harmful content
       \item \textbf{Prompt injection}: overriding system instructions
       \item \textbf{Data / model extraction}: recovering training data or stealing weights
-      \item \textbf{Energy-latency attacks}: crafted inputs that maximize inference cost $\to$ denial of service
-      \item \textbf{OOD robustness}: performance degrades on inputs outside training distribution — safety guarantees may not hold under domain shift
+      \item \textbf{Energy-latency attacks}: crafted inputs maximizing inference cost $\to$ DoS
+      \item \textbf{OOD robustness}: performance drops on inputs outside training distribution
     \end{itemize}
 
     \column{0.48\textwidth}
