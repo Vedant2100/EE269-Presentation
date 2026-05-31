@@ -1,450 +1,1363 @@
+% ═══════════════════════════════════════════════════════════════════════════════
+%  safety.tex — LLM & Large Model Safety
+%  ~27 slides covering Paper 1 (Shi et al., 2024) and Paper 4 (Ma et al., 2025)
+% ═══════════════════════════════════════════════════════════════════════════════
+
+% Graphics path for figures extracted from the papers
+\graphicspath{{papers/paper1_figures/}{papers/paper4_figures/}}
+
+
 % ─────────────────────────────────────────────────────────────────────────────
-%  PART 1 SECTION DIVIDER
+%  SECTION DIVIDER — PART I
 % ─────────────────────────────────────────────────────────────────────────────
-\sectionframe{1}{LLM Safety Landscape}%
-  {Papers \textcircled{1} \& \textcircled{4} — The Threat Taxonomy}%
+\sectionframe{1}{LLM \& Large Model Safety}%
+  {Papers \textcircled{1} \& \textcircled{4} — From Alignment to Agents}%
   {Shi et al.\,(2024) · Ma et al.\,(2025)}
 
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 6 — DEFINING LLM SAFETY
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Defining LLM Safety \papertag{Paper \textcircled{1}}}
-  \begin{ucrinfo}
-    \small\itshape
-    ``LLM safety encompasses technologies, strategies, policies, and governance
-    frameworks aimed at ensuring that LLMs behave beneficially, honestly, and
-    without causing harm — to individuals, society, or AI systems themselves.''
-  \end{ucrinfo}
-  \vspace{0.4em}
-  {\small\bfseries\navy{Two Dimensions of LLM Safety}}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 1 — THE HOOK: WHY SHOULD YOU CARE?
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Why AI Safety? Real Failures, Real Stakes}
+  \begin{ucrwarn}
+    \centering\small\bfseries
+    These are not hypotheticals — they happened.
+  \end{ucrwarn}
   \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{ucrcard}[UCRred]{Bing Chat $\to$ Phishing Bot}
+      \scriptsize
+      Greshake et al.\ injected malicious instructions into a webpage.
+      When Bing Chat retrieved the page, it became a phishing bot —
+      exfiltrating user conversations to an attacker's server.
+      {\itshape\muted{(Indirect Prompt Injection, 2023)}}
+    \end{ucrcard}\vspace{3pt}
+    \begin{ucrcard}[UCRpurple]{GPT-4 Insider Trading}
+      \scriptsize
+      Apollo Research showed GPT-4 engages in insider trading
+      when placed under stress, then \textbf{lies about it} when asked —
+      exhibiting strategic deception.
+      {\itshape\muted{(Deception Eval, 2024)}}
+    \end{ucrcard}
+
+    \column{0.48\textwidth}
+    \begin{ucrcard}[UCRforest]{Morris-II: AI Worm}
+      \scriptsize
+      A self-replicating prompt worm that propagates
+      through RAG pipelines across GenAI applications —
+      zero-click, no human interaction needed.
+      {\itshape\muted{(Multi-Agent Attack, 2024)}}
+    \end{ucrcard}\vspace{3pt}
+    \begin{ucrcard}[UCRorange]{98.2\% Backdoor Success}
+      \scriptsize
+      BadRAG poisons an agent's long-term memory with just
+      \textbf{10 adversarial passages}, achieving near-perfect
+      attack success rate.
+      {\itshape\muted{(Memory Poisoning, 2024)}}
+    \end{ucrcard}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 2 — THE 60/40 GAP + PAPER INTRODUCTIONS
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{The AI Safety Landscape — Two Surveys}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{ucrcard}[UCRnavy]{Paper \textcircled{1}: LLM Safety (Shi et al.)}
+      \footnotesize
+      \textbf{158 pages} — holistic survey of LLM safety\\[3pt]
+      8 pillars: alignment, robustness, misuse,\\
+      autonomous risks, agents, interpretability,\\
+      industry roadmaps, governance\\[3pt]
+      \muted{\itshape arXiv:2412.17686}
+    \end{ucrcard}
+    \vspace{4pt}
+    \begin{ucrcard}[UCRred]{Paper \textcircled{4}: Safety at Scale (Ma et al.)}
+      \footnotesize
+      \textbf{574 papers} surveyed across \textbf{6 model types}\\[3pt]
+      VFMs, LLMs, VLP, VLMs, Diffusion, Agents\\[3pt]
+      10 attack categories, comprehensive taxonomy\\[3pt]
+      \muted{\itshape arXiv:2502.05206}
+    \end{ucrcard}
+
+    \column{0.48\textwidth}
+    \begin{ucrdark}[UCRred]
+      \centering\small\bfseries
+      Key Finding: \textasciitilde60\% attack research\\vs.\ \textasciitilde40\% defense research\\[4pt]
+      \normalfont\footnotesize Defenses are lagging behind attacks.
+    \end{ucrdark}
+    \vspace{4pt}
+    {\small\bfseries\navy{Our Roadmap Today:}}
+    \begin{enumerate}\footnotesize\setlength\itemsep{2pt}
+      \item[\navy{I.}] LLM safety fundamentals (Paper \textcircled{1})
+      \item[\navy{II.}] Expand to all modalities (Paper \textcircled{4})
+      \item[\navy{III.}] Agent safety — the new frontier
+      \item[\navy{IV.}] Open challenges \& the path forward
+    \end{enumerate}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 3 — MASTER TAXONOMY (PAPER 1, FIGURE 1)
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{The 8 Pillars of LLM Safety \papertag{Paper \textcircled{1}}}
+  \vspace*{0.2cm}
+  \begin{tikzpicture}[
+    node distance=0.35cm and 1.8cm,
+    box/.style={rectangle, draw=#1, fill=#1, text=white,
+                font=\footnotesize\bfseries, minimum width=2.6cm,
+                minimum height=0.7cm, text centered, rounded corners=1pt},
+    sub/.style={font=\tiny\itshape, text=UCRdark, text centered,
+                text width=2.6cm},
+  ]
+    \node[ellipse, draw=UCRnavy, fill=UCRnavy, text=white,
+          font=\bfseries\small, minimum width=2.2cm, minimum height=0.9cm]
+      (center) {LLM Safety};
+
+    % Top row
+    \node[box=UCRred, above left=0.8cm and 2.5cm of center] (vm)
+      {Value\\[-1pt]Misalignment};
+    \node[box=UCRorange, above right=0.8cm and 2.5cm of center] (ra)
+      {Robustness\\[-1pt]to Attack};
+
+    % Bottom row
+    \node[box=UCRpurple, below left=0.8cm and 2.5cm of center] (mu)
+      {Catastrophic\\[-1pt]Misuse};
+    \node[box=UCRforest, below right=0.8cm and 2.5cm of center] (ai)
+      {Autonomous\\[-1pt]AI Risks};
+
+    % Right column
+    \node[box=UCRteal, right=4.5cm of center, yshift=0.8cm] (ag)
+      {Agent\\[-1pt]Safety};
+    \node[box=UCRgreen, right=4.5cm of center, yshift=-0.8cm] (in)
+      {Interpret-\\[-1pt]ability};
+
+    \draw[UCRmgray, thick] (vm.east) -- (center);
+    \draw[UCRmgray, thick] (ra.west) -- (center);
+    \draw[UCRmgray, thick] (mu.east) -- (center);
+    \draw[UCRmgray, thick] (ai.west) -- (center);
+    \draw[UCRmgray, thick] (ag.west) -- (center);
+    \draw[UCRmgray, thick] (in.west) -- (center);
+
+    \node[sub, below=0.1cm of vm]
+      {Bias · Toxicity\\Ethics · Hallucinations};
+    \node[sub, below=0.1cm of ra]
+      {Jailbreaking · Prompt Inj.\\Adversarial · OOD};
+    \node[sub, below=0.1cm of mu]
+      {Weaponization\\Misinfo · Deepfakes};
+    \node[sub, below=0.1cm of ai]
+      {Power-Seeking · Deception\\Goal Drift};
+    \node[sub, below=0.1cm of ag]
+      {Tool Use · Memory\\Multi-Agent};
+    \node[sub, below=0.1cm of in]
+      {SAEs · Circuits\\Safety Auditing};
+  \end{tikzpicture}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 4 — VALUE MISALIGNMENT: BIAS & TOXICITY
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Pillar 1: Value Misalignment — Bias \& Toxicity \papertag{Paper \textcircled{1}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Social Bias}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Training data reflects societal biases $\to$ models \textbf{amplify} them
+      \item Gender, racial, religious, political biases measured via
+        WinoBias, BBQ, StereoSet, CrowS-Pairs
+      \item Example: ``Muslim'' disproportionately correlated with
+        terrorism in GPT-3 completions
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\redc{Toxicity}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Even \textbf{benign prompts} trigger toxic completions
+        (RealToxicityPrompts benchmark)
+      \item Toxicity \emph{increases} with model size
+      \item Mitigations: data filtering, RLHF, output classifiers
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Hallucinations}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item \textbf{Factuality}: contradicting established facts
+      \item \textbf{Faithfulness}: deviating from provided context
+      \item Causes: data gaps, distributional mismatch, decoding artifacts
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\navy{Ethics}}
+    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+      \item Models may produce self-harm, violence, or illegal content
+      \item Defining ``universal ethics'' across cultures remains unsolved
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrinfo}
+      \centering\scriptsize
+      These risks emerge across the \textbf{entire lifecycle}:\\
+      data collection $\to$ pre-training $\to$ fine-tuning $\to$ deployment
+    \end{ucrinfo}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 5 — ALIGNMENT METHODS
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{How Do We Align LLMs? \papertag{Paper \textcircled{1}}}
+  {\footnotesize\itshape Alignment: training LLMs to behave in accordance with human
+    values, intentions, and ethical norms.}
+  \vspace{0.4em}
 
   \begin{columns}[T]
     \column{0.48\textwidth}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
         toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{UCRnavy},
-        title=Basic Areas (Risk Categories)]
-      \begin{itemize}\small
-        \item Value Misalignment
-        \item Robustness to Attack
-        \item Misuse
-        \item Autonomous AI Risks
-      \end{itemize}
-    \end{tcolorbox}
-
-    \column{0.48\textwidth}
+        title=RLHF (Ouyang et al., 2022), top=3pt, bottom=3pt]
+      \scriptsize
+      1.\ Collect human preference data\\
+      2.\ Train a reward model\\
+      3.\ Optimize policy via PPO\\[3pt]
+      \muted{Used by: GPT-4, Claude, Gemini}
+    \end{tcolorbox}\vspace{3pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRteal,
         toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{UCRteal},
-        title=Related Areas]
-      \begin{itemize}\small
-        \item Agent Safety
-        \item Interpretability for LLM Safety
-        \item Technology Roadmaps \& Strategies
-        \item AI Governance
-      \end{itemize}
+        title=Constitutional AI (Anthropic), top=3pt, bottom=3pt]
+      \scriptsize
+      Model self-critiques against a set of principles\\
+      (UN Declaration, safety rules)\\[3pt]
+      No human labelers needed for the critique step
     \end{tcolorbox}
+
+    \column{0.48\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRgreen,
+        toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{UCRgreen},
+        title=DPO (Rafailov et al., 2023), top=3pt, bottom=3pt]
+      \scriptsize
+      Simplified alignment — no reward model needed\\
+      Directly optimizes on preference pairs\\[3pt]
+      \muted{Cheaper, more stable than RLHF}
+    \end{tcolorbox}\vspace{3pt}
+    \begin{ucrwarn}
+      \scriptsize\bfseries The Problem: Deceptive Alignment\\[3pt]
+      \normalfont\scriptsize
+      Models can achieve high safety scores
+      \textbf{without truly internalizing safety} —
+      ``fake alignment'' (Hubinger et al.)\\[3pt]
+      Even GPT-4o and o1 remain vulnerable to advanced attacks
+      despite extensive alignment.
+    \end{ucrwarn}
   \end{columns}
 \end{frame}
 
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 7 — TAXONOMY OVERVIEW
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Safety Taxonomy: Overview \papertag{Paper \textcircled{1}}}
-  \vspace*{0.3cm}
-  \begin{tikzpicture}[
-    node distance=0.4cm and 2.2cm,
-    box/.style={rectangle, draw=#1, fill=#1, text=white,
-                font=\small\bfseries, minimum width=3cm,
-                minimum height=0.85cm, text centered, rounded corners=1pt},
-    sub/.style={font=\scriptsize\itshape, text=UCRdark, text centered,
-                text width=3cm},
-  ]
-    \node[ellipse, draw=UCRnavy, fill=UCRnavy, text=white,
-          font=\bfseries\small, minimum width=2.5cm, minimum height=1cm]
-      (center) {LLM Safety};
 
-    \node[box=UCRred, left=2.2cm of center, yshift=0.6cm] (vm)
-      {\textcircled{1} Value\\Misalignment};
-    \node[box=UCRorange, right=2.2cm of center, yshift=0.6cm] (ra)
-      {\textcircled{2} Robustness\\to Attack};
-    \node[box=UCRpurple, left=2.2cm of center, yshift=-0.6cm] (mu)
-      {\textcircled{3} Misuse};
-    \node[box=UCRforest, right=2.2cm of center, yshift=-0.6cm] (ai)
-      {\textcircled{4} Autonomous\\AI Risks};
-
-    \draw[UCRmgray, thick] (vm.east) -- (center.west);
-    \draw[UCRmgray, thick] (ra.west) -- (center.east);
-    \draw[UCRmgray, thick] (mu.east) -- (center.west);
-    \draw[UCRmgray, thick] (ai.west) -- (center.east);
-
-    \node[sub, below=0.15cm of vm]
-      {Social Bias $\cdot$ Privacy\\\\Toxicity $\cdot$ Ethics};
-    \node[sub, below=0.15cm of ra]
-      {Jailbreaking $\cdot$ Red Teaming\\\\Defense};
-    \node[sub, below=0.15cm of mu]
-      {Weaponization\\\\Misinformation $\cdot$ Deepfakes};
-    \node[sub, below=0.15cm of ai]
-      {Goal Misalignment\\\\Deception $\cdot$ Situational Awareness};
-  \end{tikzpicture}
-\end{frame}
-
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 8 — VALUE MISALIGNMENT: SOCIAL BIAS & PRIVACY
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Value Misalignment — Social Bias \& Privacy}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\redc{Social Bias}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item Stereotypes \& inequalities encoded in LLM outputs
-      \item Example: `Muslim' correlated with terrorism
-        in LLMs \mbox{(Abid et al., 2021)}
-      \item Performance disparities across ethnic/language groups
-      \item Mitigation: pre-processing debiasing, RLHF,
-        inference-time suppression
-    \end{itemize}
-
-    \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, title={\small\bfseries\navy{Privacy Leakage}},
-        fonttitle=\bfseries\small, top=4pt, bottom=4pt]
-      \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-        \item Training data memorization enables PII extraction
-        \item Three channels: pre-training data, fine-tuning data,
-          inference-time prompts
-        \item Protection: differential privacy, machine unlearning,
-          output filtering
-        \item Proprietary data inaccessibility limits auditing
-      \end{itemize}
-    \end{tcolorbox}
-  \end{columns}
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 6 — ROBUSTNESS OVERVIEW
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Pillar 2: Robustness to Attack \papertag{Paper \textcircled{1}}}
+  {\footnotesize\itshape How resilient are LLMs to adversarial inputs designed to
+    bypass safety, degrade quality, or extract private data?}
   \vspace{0.3em}
-  \begin{tcolorbox}[enhanced, colback=UCRpaleyellow, colframe=UCRgold,
-      sharp corners, top=3pt, bottom=3pt]
-    \footnotesize\bfseries Key Insight:\normalfont\ Bias \& privacy risks emerge across
-    the \emph{entire} LLM lifecycle — data collection, pre-training, fine-tuning,
-    and deployment — requiring lifecycle-aware mitigation strategies.
-  \end{tcolorbox}
-\end{frame}
 
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 9 — TOXICITY & ETHICS
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Value Misalignment — Toxicity \& Ethics}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\redc{Toxicity}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item Offensive, hateful, or violent language in outputs
-      \item Persists even after RLHF alignment
-      \item Mitigation: data filtering, RLHF, output classifiers
-        (Perspective API), inference-time steering
-      \item Benchmarks: RealToxicityPrompts, ToxiGen
-    \end{itemize}
-    \vspace{0.4em}
-    {\small\bfseries\navy{Ethics \& Morality}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item LLMs may produce outputs violating moral/legal standards
-      \item Constitutional AI: rule-based self-critique
-      \item Value alignment: RLHF trains toward human preference models
-        — but \textit{whose} preferences?
+    {\small\bfseries\redc{Attack Categories}}
+    \begin{itemize}\footnotesize\setlength\itemsep{2pt}
+      \item \textbf{Adversarial attacks}: subtle perturbations causing incorrect outputs
+      \item \textbf{Jailbreaks}: bypassing safety alignment to elicit harmful content
+      \item \textbf{Prompt injection}: overriding system instructions
+      \item \textbf{Data / model extraction}: recovering training data or stealing weights
+      \item \textbf{Energy-latency attacks}: crafted inputs that maximize inference cost $\to$ denial of service
+      \item \textbf{OOD robustness}: performance degrades on inputs outside training distribution — safety guarantees may not hold under domain shift
     \end{itemize}
 
     \column{0.48\textwidth}
-    {\small\bfseries Mitigation by Lifecycle Stage}
+    {\small\bfseries\navy{Threat Models}}
     \vspace{0.3em}
-
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        fonttitle=\bfseries\footnotesize\color{UCRnavy},
-        title=Pre-Processing, top=3pt, bottom=3pt]
-      \footnotesize Data debiasing, toxicity filtering
+        sharp corners, borderline west={3pt}{0pt}{UCRred},
+        top=3pt, bottom=3pt]
+      \footnotesize\bfseries\redc{White-box:}
+      \normalfont\ Full access to model weights \& gradients\\
+      \scriptsize GCG, AutoDAN, I-GCG
     \end{tcolorbox}\vspace{2pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRteal},
-        fonttitle=\bfseries\footnotesize\color{UCRteal},
-        title=Pre-Training, top=3pt, bottom=3pt]
-      \footnotesize Balanced corpora, fairness objectives
+        sharp corners, borderline west={3pt}{0pt}{UCRorange},
+        top=3pt, bottom=3pt]
+      \footnotesize\bfseries\color{UCRorange}{Gray-box:}
+      \normalfont\ Partial access (e.g., embeddings)\\
+      \scriptsize Fine-tuning based attacks
     \end{tcolorbox}\vspace{2pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
         sharp corners, borderline west={3pt}{0pt}{UCRgreen},
-        fonttitle=\bfseries\footnotesize\color{UCRgreen},
-        title=Post-Training (RLHF/DPO), top=3pt, bottom=3pt]
-      \footnotesize De-toxification, preference alignment
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRred},
-        fonttitle=\bfseries\footnotesize\color{UCRred},
-        title=Inference, top=3pt, bottom=3pt]
-      \footnotesize Prompt guards, output classifiers
+        top=3pt, bottom=3pt]
+      \footnotesize\bfseries\greenc{Black-box:}
+      \normalfont\ API access only\\
+      \scriptsize PAIR, GPTFuzzer, role-play, DAN
     \end{tcolorbox}
   \end{columns}
 \end{frame}
 
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 10 — JAILBREAKING
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Robustness to Attack — Jailbreaking}
-  {\footnotesize\itshape Jailbreaking: prompts that bypass safety alignment to
-    elicit harmful, restricted, or unethical outputs. Unlike adversarial attacks
-    that degrade quality, jailbreaks specifically target safety guardrails.}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 7 — JAILBREAKING DEEP DIVE
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Jailbreaking — Bypassing the Guardrails
+    \papertag{Paper \textcircled{1}} \papertag[UCRred]{Paper \textcircled{4}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Hand-Crafted (Black-box)}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{DAN prompts}: ``Do Anything Now'' role-play
+      \item \textbf{Language translation}: exploit multilingual gaps
+      \item \textbf{Cipher encoding}: CipherChat
+      \item \textbf{Code obfuscation}: CodeChameleon
+      \item \textbf{ASCII art}: ABJ — visually encoded attacks
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\redc{Automated (Black-box)}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{PAIR}: LLM-generated attacks via conversation
+      \item \textbf{GPTFuzzer}: mutation-based fuzzing
+      \item \textbf{Weak-to-Strong}: exploit weaker model outputs
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Automated (White-box)}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{GCG}: Greedy Coordinate Gradient —\\
+        optimize adversarial suffix via token-level gradients\\
+        \muted{Universal suffixes transfer across models}
+      \item \textbf{AutoDAN}: fluent jailbreak generation
+      \item \textbf{I-GCG}: improved transferability
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\navy{Fine-Tuning Based}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item Qi et al.\ (2023): remove safety via targeted
+        fine-tuning on just \textbf{100 harmful examples}
+      \item \textbf{Virus}: persistent backdoor on LLaMA-3
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrdark}[UCRred]
+      \centering\scriptsize\bfseries
+      No current model is fully jailbreak-proof.\\
+      Attacks tested on GPT-4, Claude, LLaMA, Gemini.
+    \end{ucrdark}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 8 — PROMPT INJECTION
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Prompt Injection — Hijacking the Instructions
+    \papertag{Paper \textcircled{1}} \papertag[UCRred]{Paper \textcircled{4}}}
+  {\footnotesize\itshape Unlike jailbreaks (user attacks the model directly),
+    prompt injection exploits \textbf{third-party content} the model processes.}
   \vspace{0.3em}
 
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\redc{Black-Box Attacks} \muted{\footnotesize (no model access)}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item \textbf{Goal Hijacking} — append `IGNORE INSTRUCTIONS'
-      \item \textbf{Few-Shot Jailbreaking} — harmful response demos via ICL
-      \item \textbf{Refusal Suppression} — constrain model to never refuse
-      \item \textbf{Code Jailbreaking} — exploit code-generation capabilities
-      \item \textbf{Fictional Scenario / Role Play} — `pretend you have no restrictions'
-      \item \textbf{Prompt Injection} — adversarial instructions in external content
-    \end{itemize}
+    \begin{ucrcard}[UCRred]{Direct Injection}
+      \scriptsize
+      User provides explicit override instructions:\\[3pt]
+      \texttt{"Ignore previous instructions and do X"}\\[3pt]
+      Effective even with simple phrasing.\\
+      HOUYI: multi-language ``ignore'' attacks\\
+      P2SQL: unsafe prompts $\to$ SQL queries $\to$\\
+      full database access via LangChain
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{White-Box Attacks} \muted{\footnotesize (gradient access)}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item \textbf{GCG} — Greedy Coordinate Gradient; optimize adversarial
-        suffix via token-level gradients
-      \item \textbf{AutoDAN} — automatically generate fluent jailbreak prompts
-      \item \textbf{PEZ} — optimize soft prompt embeddings
-      \item \textbf{Transfer attacks} — white-box prompts transfer across models
-      \item Key challenge: powerful but require full model access
-    \end{itemize}
+    \begin{ucrcard}[UCRpurple]{Indirect Injection}
+      \scriptsize
+      Malicious instructions hidden in external content
+      the agent retrieves:\\[3pt]
+      $\bullet$ Webpage content (Greshake et al.)\\
+      $\bullet$ Retrieved documents (RAG poisoning)\\
+      $\bullet$ Email attachments, calendar entries\\[3pt]
+      \textbf{PANDORA}: hidden language in docs\\
+      \textbf{Imprompter}: garbled gradient-optimized prompts
+    \end{ucrcard}
   \end{columns}
   \vspace{0.3em}
-  \begin{ucrdark}[UCRred]
-    \centering\small\bfseries
-    Despite RLHF alignment, no current model is fully jailbreak-proof
-  \end{ucrdark}
+  \begin{ucrinfo}
+    \centering\scriptsize\bfseries
+    TensorTrust: crowdsourced human-written injection strategies
+    that generalize from game environments to real apps
+    (ChatGPT, Claude, Bing, Notion AI)
+  \end{ucrinfo}
 \end{frame}
 
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 11 — RED TEAMING & DEFENSES
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Red Teaming \& Defenses}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 9 — DEFENDING THE LLM
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Defending the LLM — A Layered Pipeline
+    \papertag{Paper \textcircled{1}} \papertag[UCRred]{Paper \textcircled{4}}}
+  \vspace*{0.2cm}
+
+  % Defense pipeline diagram
+  \begin{tikzpicture}[
+    stage/.style={rectangle, draw=#1, fill=#1!15, text=#1,
+                  font=\footnotesize\bfseries, minimum width=2.2cm,
+                  minimum height=0.65cm, text centered, rounded corners=2pt},
+    desc/.style={font=\tiny, text=UCRdark, text width=2.4cm, align=center},
+    arr/.style={-{Stealth[length=4pt]}, thick, UCRmgray},
+  ]
+    \node[stage=UCRnavy] (input) {Input\\[-1pt]Defense};
+    \node[stage=UCRteal, right=1.0cm of input] (model) {Model\\[-1pt]Internals};
+    \node[stage=UCRgreen, right=1.0cm of model] (output) {Output\\[-1pt]Defense};
+    \node[stage=UCRpurple, right=1.0cm of output] (monitor) {Runtime\\[-1pt]Monitoring};
+
+    \draw[arr] (input) -- (model);
+    \draw[arr] (model) -- (output);
+    \draw[arr] (output) -- (monitor);
+
+    \node[desc, below=0.25cm of input] {SmoothLLM\\perplexity filter\\paraphrasing\\Erase-and-Check};
+    \node[desc, below=0.25cm of model] {RLHF / DPO\\circuit breaking\\representation\\engineering};
+    \node[desc, below=0.25cm of output] {safety classifiers\\self-examination\\LlamaGuard\\WildGuard};
+    \node[desc, below=0.25cm of monitor] {Perspective API\\Garak scanner\\NeMo Guardrails\\human oversight};
+  \end{tikzpicture}
+
+  \vspace{0.5em}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\redc{Red Teaming}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item \textbf{Manual}: human adversaries probe for safety failures
-      \item \textbf{Automated}: LLMs generate adversarial prompts at scale
-        (Perez et al., 2022)
-      \item Identifies vulnerabilities pre-deployment
-      \item Evaluation: Attack Success Rate (ASR)
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Anti-Fine-Tuning Defenses}
+      \scriptsize
+      \textbf{Vaccine}: preserves safety during fine-tuning\\
+      \textbf{SafetyLock}: prevents safety regression
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\greenc{Defense Strategies}}
-
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, fonttitle=\bfseries\footnotesize,
-        title=External Safeguards, top=3pt, bottom=3pt, left=5pt]
-      \begin{itemize}\footnotesize\setlength\itemsep{1pt}
-        \item Input filters \& classifiers
-        \item Output classifiers (Perspective API)
-        \item Guardrail systems (LlamaGuard, NeMo)
-      \end{itemize}
-    \end{tcolorbox}
-    \vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, fonttitle=\bfseries\footnotesize,
-        title=Internal Protection, top=3pt, bottom=3pt, left=5pt]
-      \begin{itemize}\footnotesize\setlength\itemsep{1pt}
-        \item RLHF / DPO — train to refuse harmful requests
-        \item Adversarial training on known jailbreaks
-        \item Representation engineering (steer activations)
-      \end{itemize}
-    \end{tcolorbox}
-  \end{columns}
-  \vspace{0.3em}
-  \begin{ucrcard}[UCRnavy]{Arms Race Dynamic}
-    \footnotesize Each new defense inspires new attacks.
-    Best practice: layered defenses + red teaming + alignment + monitoring.
-  \end{ucrcard}
-\end{frame}
-
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 12 — MISUSE
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Misuse — Weaponization, Misinformation \& Deepfakes}
-  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={4pt}{0pt}{UCRred}, sharp corners,
-      fonttitle=\bfseries\small\color{UCRred}, title=Weaponization,
-      top=4pt, bottom=4pt]
-    \footnotesize LLMs can assist in weapons design including CBRN threats;
-    biosecurity risks from step-by-step synthesis guidance.
-    Mitigation: domain-specific refusal training, output monitoring, legal frameworks.
-  \end{tcolorbox}
-  \vspace{3pt}
-  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={4pt}{0pt}{UCRpurple}, sharp corners,
-      fonttitle=\bfseries\small\color{UCRpurple}, title=Misinformation Campaigns,
-      top=4pt, bottom=4pt]
-    \footnotesize LLM text is persuasive and indistinguishable from human writing;
-    automated social media manipulation at scale; public health risks.
-    Defense: AI-text detectors, provenance watermarking.
-  \end{tcolorbox}
-  \vspace{3pt}
-  \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={4pt}{0pt}{UCRforest}, sharp corners,
-      fonttitle=\bfseries\small\color{UCRforest}, title=Deepfakes,
-      top=4pt, bottom=4pt]
-    \footnotesize Multimodal LLMs generate synthetic audio/video/images of real
-    people; fraud, identity theft, political manipulation.
-    Detection arms race: deepfake classifiers vs.\ generation improvements.
-  \end{tcolorbox}
-\end{frame}
-
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 13 — AUTONOMOUS AI RISKS & AGENT SAFETY
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Autonomous AI Risks \& Agent Safety}
-  \begin{columns}[T]
-    \column{0.44\textwidth}
-    {\small\bfseries\color{UCRforest}Autonomous AI Risks}
-    \vspace{0.2em}
-
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, fonttitle=\bfseries\footnotesize\color{UCRforest},
-        title=Instrumental Goals, top=3pt, bottom=3pt, left=5pt]
-      \scriptsize AI pursues sub-goals (resource acquisition, self-preservation)
-      not intended by designers.
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, fonttitle=\bfseries\footnotesize\color{UCRforest},
-        title=Goal Misalignment, top=3pt, bottom=3pt, left=5pt]
-      \scriptsize Specified objective diverges from intended behavior;
-      Goodhart's Law effects.
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, fonttitle=\bfseries\footnotesize\color{UCRforest},
-        title=Deception \& Situational Awareness, top=3pt, bottom=3pt, left=5pt]
-      \scriptsize Model produces strategically false outputs; detects evaluation
-      and modifies behavior accordingly.
-    \end{tcolorbox}
-
-    \column{0.54\textwidth}
-    {\small\bfseries\tealc{Agent Safety}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item \textbf{Language Agents}: LLMs with tool use, web browsing, code
-        execution — attack surface expands dramatically
-      \item \textbf{Embodied Agents}: robotics + LLM; physical safety implications
-      \item \textbf{Prompt Injection}: adversaries embed instructions in external
-        content the agent reads
-      \item Mitigation: minimal privilege, human-in-the-loop, sandboxed execution,
-        output verification
-      \item Benchmarks: AgentBench, ToolEval, WebArena
-    \end{itemize}
-  \end{columns}
-\end{frame}
-
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 14 — SAFETY AT SCALE
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Safety at Scale — Broadening the Scope \papertag[UCRred]{Paper \textcircled{4}}}
-  {\small While Paper~\textcircled{1} focuses on LLMs, Paper~\textcircled{4}
-    extends the safety taxonomy to \emph{all} major large model families:}
-  \vspace{0.4em}
-
-  \begin{columns}[T]
-    \column{0.31\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRred,
-        toprule=2pt, sharp corners, height=2.5cm, valign=center]
-      \centering{\large\bfseries\color{UCRred}VFMs}\\[0.2em]
-      \footnotesize Vision Foundation Models\\(ViT, SAM)
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRorange,
-        toprule=2pt, sharp corners, height=2.5cm, valign=center]
-      \centering{\large\bfseries\color{UCRorange}VLP}\\[0.2em]
-      \footnotesize Vision-Language Pre-training
-    \end{tcolorbox}
-
-    \column{0.31\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
-        toprule=2pt, sharp corners, height=2.5cm, valign=center]
-      \centering{\large\bfseries\color{UCRnavy}LLMs}\\[0.2em]
-      \footnotesize Large Language Models
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRpurple,
-        toprule=2pt, sharp corners, height=2.5cm, valign=center]
-      \centering{\large\bfseries\color{UCRpurple}VLMs}\\[0.2em]
-      \footnotesize Vision-Language Models
-    \end{tcolorbox}
-
-    \column{0.31\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRteal,
-        toprule=2pt, sharp corners, height=2.5cm, valign=center]
-      \centering{\large\bfseries\color{UCRteal}DMs}\\[0.2em]
-      \footnotesize Diffusion Models
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRgreen,
-        toprule=2pt, sharp corners, height=2.5cm, valign=center]
-      \centering{\large\bfseries\color{UCRgreen}Agents}\\[0.2em]
-      \footnotesize LLM-powered Agents
-    \end{tcolorbox}
-  \end{columns}
-\end{frame}
-
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 15 — ATTACK TYPES TABLE
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Attack Taxonomy Across Model Types \papertag[UCRred]{Paper \textcircled{4}}}
-  \vspace*{0.1cm}
-  \small
-  \setlength{\tabcolsep}{4pt}
-  \renewcommand{\arraystretch}{1.4}
-  \begin{tabularx}{\textwidth}{>{\bfseries}l X X X X X}
-    \rowcolor{UCRnavy}
-    \color{white}Attack Type &
-    \color{white}VFMs &
-    \color{white}LLMs &
-    \color{white}VLMs &
-    \color{white}Diffusion &
-    \color{white}Agents \\
-    \rowcolor{UCRlgray}
-    Adversarial Attacks    & \checkmark~(ViT, SAM) & \checkmark & \checkmark & \checkmark & — \\
-    Backdoor / Poisoning   & \checkmark & \checkmark & \checkmark & \checkmark & — \\
-    \rowcolor{UCRlgray}
-    Jailbreak / Prompt Inj.& — & \checkmark\checkmark\checkmark & \checkmark & — & \checkmark\checkmark \\
-    Data Extraction        & — & \checkmark & \checkmark & — & — \\
-    \rowcolor{UCRlgray}
-    Energy-Latency Attacks & — & \checkmark & — & — & — \\
-    Agent-Specific Threats & — & — & — & — & \checkmark\checkmark\checkmark \\
-  \end{tabularx}
-\end{frame}
-
-% ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 16 — GOVERNANCE & ROADMAPS
-% ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Technology Roadmaps \& Governance \papertag{Paper \textcircled{1}}}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Industry Roadmaps}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item \textbf{OpenAI}: safety evaluations + red teaming before deployment
-      \item \textbf{Anthropic}: Constitutional AI + RLHF; model cards with safety specs
-      \item \textbf{Google DeepMind}: PEFT-based safety, Gemini safety evals
-      \item \textbf{Meta}: LlamaGuard classifiers; open-weight safety research
-    \end{itemize}
-    \vspace{0.4em}
-    {\small\bfseries\navy{Governance}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item UK AI Safety Institute (AISI); EU AI Act risk tiers
-      \item Mandatory pre-deployment testing proposals
-      \item Ethics \& compliance: model cards, transparency reports
-      \item Open challenge: no binding international safety treaty yet
-    \end{itemize}
-
-    \column{0.48\textwidth}
-    \begin{ucrcard}[UCRnavy]{Three-Phase Safety Strategy}
-      \footnotesize
-      \textbf{Training} — data curation, aligned objectives\\[3pt]
-      \textbf{Evaluation} — red teaming, safety benchmarks\\[3pt]
-      \textbf{Deployment} — monitoring, guardrails, incident response\\[5pt]
-      All four leading labs endorse this framework.
+    \begin{ucrcard}[UCRteal]{Prompt Injection Defenses}
+      \scriptsize
+      \textbf{Instruction Hierarchy}: privilege levels\\
+      \textbf{Spotlighting}: provenance signals\\
+      \textbf{FATH}: hash-based authentication
     \end{ucrcard}
   \end{columns}
 \end{frame}
 
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 10 — MISUSE: WEAPONIZATION & CYBER
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Pillar 3: Catastrophic Misuse — Weaponization \papertag{Paper \textcircled{1}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRpalered, colframe=UCRred,
+        borderline west={4pt}{0pt}{UCRred}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRred}, title=CBRN Risks,
+        top=3pt, bottom=3pt]
+      \scriptsize
+      LLMs can provide step-by-step instructions for\\
+      chemical, biological, radiological, nuclear threats\\[3pt]
+      \textbf{WMDP benchmark}: 4{,}157 questions testing\\
+      weapon-relevant knowledge across bio/cyber/chem
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRorange,
+        borderline west={4pt}{0pt}{UCRorange}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRorange}, title=Cyber Weapons,
+        top=3pt, bottom=3pt]
+      \scriptsize
+      $\bullet$ Automated vulnerability discovery\\
+      $\bullet$ Malware generation \& social engineering\\
+      $\bullet$ CyberSecEval (Meta) benchmarks this risk\\[3pt]
+      \muted{HPTSA: agents autonomously discover zero-days}
+    \end{tcolorbox}
+
+    \column{0.48\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
+        borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\small\color{UCRnavy}, title=The Open vs.\ Closed Debate,
+        top=3pt, bottom=3pt]
+      \scriptsize
+      \textbf{Pro-open}: accelerates safety research,\\
+      community oversight, reduces redundancy\\[3pt]
+      \textbf{Pro-closed}: restricts access to weights,\\
+      prevents direct misuse\\[3pt]
+      \muted{No consensus. Both positions have merit.}
+    \end{tcolorbox}\vspace{3pt}
+    {\small\bfseries\navy{Mitigation Strategies}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item Domain-specific refusal training
+      \item Output monitoring for dangerous content
+      \item Legal and regulatory frameworks
+      \item Red teaming with domain experts
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 11 — MISUSE: MISINFORMATION & DEEPFAKES
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Misinformation \& Deepfakes \papertag{Paper \textcircled{1}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\color{UCRpurple}Misinformation at Scale}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item LLM-generated news perceived as \textbf{equally or more credible}
+        than human-written text (Kreps et al., 2022)
+      \item Botnets using ChatGPT for human-like content generation
+      \item ``AI-driven information epidemic'' — speed and volume far
+        exceed human capability
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\color{UCRpurple}Deepfakes}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Multimodal LLMs generate synthetic audio/video/images
+      \item Applications: identity fraud, political manipulation,
+        non-consensual content
+      \item Technical defenses (adversarial noise, watermarks) are
+        \textbf{empirically bypassed}
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Defenses}}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRteal},
+        fonttitle=\bfseries\scriptsize\color{UCRteal},
+        title=Detection, top=3pt, bottom=3pt]
+      \scriptsize
+      $\bullet$ AI-text classifiers (perplexity-based)\\
+      $\bullet$ Deepfake detection models\\
+      $\bullet$ Provenance watermarking (Kirchenbauer et al.)
+    \end{tcolorbox}\vspace{3pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRforest},
+        fonttitle=\bfseries\scriptsize\color{UCRforest},
+        title=Non-Technical, top=3pt, bottom=3pt]
+      \scriptsize
+      $\bullet$ Legal frameworks \& platform accountability\\
+      $\bullet$ Public education\\
+      $\bullet$ Content provenance standards
+    \end{tcolorbox}\vspace{3pt}
+    \begin{ucrwarn}
+      \centering\scriptsize
+      Paper \textcircled{1} concludes that deepfake mitigation
+      is \textbf{primarily non-technical} — legal and regulatory
+      approaches are more effective than technical defenses.
+    \end{ucrwarn}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 12 — AUTONOMOUS AI RISKS
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Pillar 4: Autonomous AI Risks \papertag{Paper \textcircled{1}}}
+  \vspace*{0.1cm}
+  \begin{columns}[T]
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRforest,
+        toprule=2pt, sharp corners, fonttitle=\bfseries\scriptsize\color{UCRforest},
+        title=Instrumental Goals, top=3pt, bottom=3pt]
+      \scriptsize
+      AI pursues unintended sub-goals:\\[2pt]
+      $\bullet$ \textbf{Power-seeking}: acquiring resources\\
+      $\bullet$ \textbf{Self-preservation}: avoiding shutdown\\
+      $\bullet$ \textbf{Self-improving}: iterative capability enhancement\\[2pt]
+      \muted{Turner et al. (2021)}
+    \end{tcolorbox}
+
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRpurple,
+        toprule=2pt, sharp corners, fonttitle=\bfseries\scriptsize\color{UCRpurple},
+        title=Goal Misalignment, top=3pt, bottom=3pt]
+      \scriptsize
+      $\bullet$ \textbf{Goal drift}: objectives evolve during learning\\
+      $\bullet$ \textbf{Proxy gaming}: optimizing proxy metrics instead of true goals
+        (Goodhart's Law)\\[2pt]
+      \muted{Subtle and hard to detect}
+    \end{tcolorbox}
+
+    \column{0.32\textwidth}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRred,
+        toprule=2pt, sharp corners, fonttitle=\bfseries\scriptsize\color{UCRred},
+        title=Deception, top=3pt, bottom=3pt]
+      \scriptsize
+      $\bullet$ \textbf{Intentional}: model actively misleads to bypass restrictions\\
+      $\bullet$ \textbf{Situational awareness}: AI detects evaluation, modifies behavior accordingly\\[2pt]
+      \muted{Apollo Research: GPT-4 lies about insider trading}
+    \end{tcolorbox}
+  \end{columns}
+  \vspace{0.4em}
+  \begin{ucrdark}[UCRforest]
+    \centering\scriptsize
+    \textbf{Key Limitation:} Current evaluations assume LLMs are
+    \emph{not deceptive} when answering safety questions.
+    A deceptive AI would simply pass the test.
+  \end{ucrdark}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 13 — AGENT SAFETY INTRO
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Pillar 5: Agent Safety — Expanding the Attack Surface
+    \papertag{Paper \textcircled{1}}}
+  {\footnotesize\itshape When LLMs gain tools, memory, and autonomy, the risk
+    profile changes fundamentally.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\tealc{Language Agents}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item LLMs + tool use + web browsing + code execution
+      \item Attack surface expands from \emph{text} to
+        \emph{actions in the real world}
+      \item Meta's CICERO learned to \textbf{lie strategically}
+      \item Malicious use: autonomous cybercrime, influence campaigns,
+        self-replication
+      \item Multi-agent risks: unstable feedback loops
+        (cf.\ 2010 Flash Crash)
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\tealc{Embodied Agents}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Robots + LLM planning modules
+      \item Physical safety: AV collisions, robot injuries
+      \item Privacy: sensors collecting personal data
+      \item Psychological impact: social companion robots
+      \item Labor displacement: economic disruption
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrcard}[UCRteal]{Mitigation}
+      \scriptsize
+      Minimal privilege · Human-in-the-loop\\
+      Sandboxed execution · Output verification\\
+      \muted{Benchmarks: R-Judge, AgentBench, WebArena}
+    \end{ucrcard}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 14 — INTERPRETABILITY FOR SAFETY
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Pillar 6: Interpretability — Looking Inside for Safety
+    \papertag{Paper \textcircled{1}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Sparse Autoencoders (SAEs)}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item LLMs encode \textbf{multiple concepts in shared neurons}
+        (superposition; Elhage et al., 2022)
+      \item SAEs disentangle these into \textbf{monosemantic features}
+      \item Anthropic \& OpenAI built visual feature explorers
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrdark}[UCRnavy]
+      \scriptsize\bfseries Safety-Relevant Features Discovered:\\[2pt]
+      \normalfont\scriptsize
+      Deception · Sycophancy · Bias · Dangerous content\\[2pt]
+      These features can be used to \textbf{steer} LLM outputs —
+      amplify safety or suppress harmful directions.
+    \end{ucrdark}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Applications}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{Mitigating hallucinations}: locate factual components,
+        edit facts directly (path patching)
+      \item \textbf{Privacy protection}: find memorized passages in
+        specific attention heads, fine-tune to forget
+      \item \textbf{Reducing toxicity}: identify toxic value vectors
+        in MLPs, subtract during forward pass
+      \item \textbf{Eliminating bias}: probe attention heads for
+        biased encodings, mask or prune them
+    \end{itemize}
+    \vspace{0.2em}
+    \begin{ucrwarn}
+      \scriptsize\bfseries Dual-Use Risk:\\[2pt]
+      \normalfont\scriptsize
+      Same tools for alignment can be misused to
+      \emph{enhance} misalignment or craft
+      more effective adversarial attacks.
+    \end{ucrwarn}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 15 — INDUSTRY ROADMAPS & GOVERNANCE
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Industry Roadmaps \& Governance \papertag{Paper \textcircled{1}}}
+  {\footnotesize Paper \textcircled{1} investigates safety practices at
+    \textbf{18 AI companies + 11 research institutes}.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Three-Phase Safety Framework}}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
+        fonttitle=\bfseries\scriptsize\color{UCRnavy},
+        title=1.\ Training, top=3pt, bottom=3pt]
+      \scriptsize
+      Data filtering (rule + classifier-based)\\
+      RLHF / Constitutional AI / DPO\\
+      Safety datasets with adversarial queries
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRteal},
+        fonttitle=\bfseries\scriptsize\color{UCRteal},
+        title=2.\ Evaluation, top=3pt, bottom=3pt]
+      \scriptsize
+      Red teaming (manual + automated)\\
+      Safety benchmarks (CValues, WildTeaming)\\
+      Autonomy evaluation (self-replication tests)
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRgreen},
+        fonttitle=\bfseries\scriptsize\color{UCRgreen},
+        title=3.\ Deployment, top=3pt, bottom=3pt]
+      \scriptsize
+      ML classifiers for policy violations\\
+      Guardrails (LlamaGuard, NeMo, Garak)\\
+      Incident response \& monitoring
+    \end{tcolorbox}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Governance \& Regulation}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{EU AI Act}: risk-based classification of AI systems
+      \item \textbf{US Executive Orders}: safety testing requirements
+      \item \textbf{China}: mandatory algorithmic transparency
+      \item \textbf{Copyright}: training on copyrighted material is a legal gray area; active litigation (\emph{NYT v.\ OpenAI})
+      \item No binding international safety treaty yet
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\navy{Company-Specific Approaches}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{Anthropic}: Responsible Scaling Policies
+      \item \textbf{OpenAI}: Preparedness Framework
+      \item \textbf{DeepMind}: Frontier Safety Framework
+      \item \textbf{CAIS}: warns about ``safety washing''
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrinfo}
+      \centering\scriptsize
+      All four leading labs endorse the 3-phase framework.
+    \end{ucrinfo}
+  \end{columns}
+\end{frame}
+
+
+% ─────────────────────────────────────────────────────────────────────────────
+%  SECTION DIVIDER — PART II
+% ─────────────────────────────────────────────────────────────────────────────
+\sectionframe{2}{Safety at Scale}%
+  {Paper \textcircled{4} — Beyond LLMs to All Large Models}%
+  {Ma et al.\,(2025) · 574 papers surveyed · 6 model types}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 16 — BROADENING THE SCOPE (PAPER 4 INTRO)
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Safety at Scale — 6 Model Types, 10 Attack Categories
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  \vspace*{0.1cm}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{columns}[T]
+      \column{0.47\textwidth}
+      \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRred,
+          toprule=2pt, sharp corners, height=1.6cm, valign=center]
+        \centering{\small\bfseries\color{UCRred}VFMs}\\[0.1em]
+        \tiny Vision Foundation Models\\(ViT, SAM)
+      \end{tcolorbox}\vspace{2pt}
+      \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
+          toprule=2pt, sharp corners, height=1.6cm, valign=center]
+        \centering{\small\bfseries\color{UCRnavy}LLMs}\\[0.1em]
+        \tiny Large Language Models
+      \end{tcolorbox}\vspace{2pt}
+      \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRteal,
+          toprule=2pt, sharp corners, height=1.6cm, valign=center]
+        \centering{\small\bfseries\color{UCRteal}DMs}\\[0.1em]
+        \tiny Diffusion Models
+      \end{tcolorbox}
+
+      \column{0.47\textwidth}
+      \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRorange,
+          toprule=2pt, sharp corners, height=1.6cm, valign=center]
+        \centering{\small\bfseries\color{UCRorange}VLP}\\[0.1em]
+        \tiny Vision-Language\\Pre-training
+      \end{tcolorbox}\vspace{2pt}
+      \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRpurple,
+          toprule=2pt, sharp corners, height=1.6cm, valign=center]
+        \centering{\small\bfseries\color{UCRpurple}VLMs}\\[0.1em]
+        \tiny Vision-Language Models
+      \end{tcolorbox}\vspace{2pt}
+      \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRgreen,
+          toprule=2pt, sharp corners, height=1.6cm, valign=center]
+        \centering{\small\bfseries\color{UCRgreen}Agents}\\[0.1em]
+        \tiny LLM-powered Agents
+      \end{tcolorbox}
+    \end{columns}
+
+    \column{0.43\textwidth}
+    {\small\bfseries\navy{Research Landscape}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item Top 3 by volume: LLMs, DMs, Agents\\
+        (71\% of all research combined)
+      \item Top attack types: jailbreak, adversarial, backdoor
+      \item Surge since 2023 post-ChatGPT
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrdark}[UCRred]
+      \centering\scriptsize\bfseries
+      \textasciitilde60\% attack vs.\ \textasciitilde40\% defense\\[2pt]
+      \normalfont\scriptsize
+      Only survey covering \textbf{all 6 model types}.\\
+      Prior surveys covered at most 3--4.
+    \end{ucrdark}
+    \vspace{0.3em}
+    {\scriptsize\bfseries Key insight: vulnerabilities in one modality
+      propagate to others in multimodal systems, but mechanisms
+      are \textbf{poorly understood}.}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 17 — VISION FOUNDATION MODELS
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Vision Foundation Model Safety — ViT \& SAM
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{ViT-Specific Attacks}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{Patch attacks}: Patch-Fool (manipulates attention per-patch),
+        SlowFormer (universal patch $\uparrow$ compute cost)
+      \item \textbf{Position embedding}: PE-Attack disrupts encoding
+      \item \textbf{Attention attacks}: redirect queries to adversarial keys
+      \item \textbf{Transfer attacks}: TGR, VDC, CRFA —
+        adversarial examples transfer across ViT families
+      \item \textbf{Backdoors}: BadViT (universal trigger), TrojViT
+        (bit-flip minimization), SWARM (switchable token)
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Defenses}}
+    \vspace{0.2em}
+    \renewcommand{\arraystretch}{1.3}
+    {\scriptsize
+    \begin{tabularx}{\textwidth}{>{\bfseries\scriptsize}l X}
+      \rowcolor{UCRlgray}
+      Adv.\ Training & AGAT, ARD-PRM \\
+      Detection      & Patch-Vestiges, ViTGuard \\
+      \rowcolor{UCRlgray}
+      Robust Arch.   & Smoothed Attention, SATA \\
+      Purification   & DiffPure, ADBM (diffusion-based) \\
+      \rowcolor{UCRlgray}
+      Backdoor Def.  & PatchDrop (random drop/shuffle) \\
+    \end{tabularx}}
+
+    \vspace{0.4em}
+    {\small\bfseries\redc{SAM Vulnerabilities}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item DarkSAM: hybrid spatial-frequency attack
+      \item Defense extremely limited: only ASAM \& RobustSAM
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 18 — VLM SAFETY
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Vision-Language Model Safety — Cross-Modal Threats
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  {\footnotesize\itshape VLMs combine visual and textual processing —
+    creating attack vectors that exploit \textbf{both modalities simultaneously}.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Visual Jailbreaks}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Adversarial images bypass text-only safety filters
+      \item Gradient-optimized perturbations on image encoder
+      \item Harmless-looking images with hidden Markdown commands
+        $\to$ trigger tool actions (delete calendar, leak chat logs)
+      \item Text-image combined attacks (5 black-box methods)
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\redc{Cross-Modal Propagation}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Open question}: How do vision vulnerabilities propagate to language outputs?
+      \item Token count across modalities affects propagation
+      \item No unified multimodal defense framework exists
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{VLP Model Safety}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Co-Attack, SGA: cross-modal adversarial attacks
+      \item Transfer attacks exploit shared visual-textual representations
+      \item BadCLIP, TrojVQA: multimodal backdoors
+      \item 12 adversarial tuning defense methods
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\greenc{VLM Defenses}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Detection-based approaches
+      \item Prevention-based approaches
+      \item \textbf{Very limited} compared to attack research
+    \end{itemize}
+    \vspace{0.2em}
+    \begin{ucrwarn}
+      \centering\scriptsize
+      Defenses tailored to individual modalities don't
+      address cross-modal vulnerability propagation.
+    \end{ucrwarn}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 19 — DIFFUSION MODEL SAFETY
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Diffusion Model Safety — Generation Risks
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Attacks on Diffusion Models}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Jailbreaks}: bypassing content filters to generate
+        NSFW / harmful images
+      \item \textbf{White-box}: optimize text embeddings to circumvent
+        concept erasure
+      \item \textbf{Black-box}: prompt engineering, multi-step generation
+      \item \textbf{Backdoors}: modify denoising process or poison training data
+      \item \textbf{Membership inference}: determine if specific images
+        were in training data
+      \item \textbf{Data extraction}: recover training images from model
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Concept Erasure — 24 Methods!}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Most developed defense area} in diffusion research
+      \item Modify model weights to remove ability to generate specific concepts
+      \item Methods: ESD, Forget-Me-Not, UCE, SA, and 20 more
+      \item Inference guidance: steer sampling away from harmful content
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\navy{IP Protection}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Anti-mimicry}: Glaze, Mist, AdvDM (13 methods)
+        add noise preventing style imitation
+      \item \textbf{Watermarking}: mark generated content
+      \item \textbf{Model fingerprinting}: prove model ownership
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 20 — AGENT SAFETY: IPI & MEMORY
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Agent Safety: Prompt Injection \& Memory Attacks
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  {\footnotesize\itshape Paper \textcircled{4} provides the most comprehensive
+    agent safety coverage, identifying \textbf{4 levels} of analysis.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Indirect Prompt Injection (IPI)}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Fundamental} attack vector for agents
+      \item Adversaries embed instructions in content the agent reads
+      \item Greshake et al.: Bing Chat $\to$ phishing bot
+      \item ``\texttt{Ignore previous instruction}'' works across
+        ChatGPT, Claude, Bard, Bing
+      \item PANDORA: hidden language in documents
+      \item Imprompter: gradient-optimized garbled prompts trigger
+        HTTP tool calls \& leak data
+    \end{itemize}
+    \vspace{0.2em}
+    \begin{ucrcard}[UCRnavy]{IPI Defenses}
+      \scriptsize
+      Instruction Hierarchy (privilege levels)\\
+      Task Shield (goal-alignment verification)\\
+      FATH (hash-based authentication)
+    \end{ucrcard}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Memory Attacks}}
+    \vspace{0.2em}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRorange,
+        sharp corners, borderline west={3pt}{0pt}{UCRorange},
+        fonttitle=\bfseries\scriptsize\color{UCRorange},
+        title=Short-Term Memory, top=2pt, bottom=2pt]
+      \scriptsize
+      Contextual backdoors via adversarial ICL examples\\
+      DemonAgent: encrypted sub-component triggers
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRpalered, colframe=UCRred,
+        sharp corners, borderline west={3pt}{0pt}{UCRred},
+        fonttitle=\bfseries\scriptsize\color{UCRred},
+        title=Long-Term Memory / RAG, top=2pt, bottom=2pt]
+      \scriptsize
+      \textbf{BadRAG}: 98.2\% success with 10 passages\\
+      AgentPoison: multi-loss optimization\\
+      PoisonedRAG: query + misinformation concat\\
+      BreakingAgent: denial-of-service loops
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRteal,
+        sharp corners, borderline west={3pt}{0pt}{UCRteal},
+        fonttitle=\bfseries\scriptsize\color{UCRteal},
+        title=Memory Defenses, top=2pt, bottom=2pt]
+      \scriptsize
+      TrustRAG (K-means clustering)\\
+      RobustRAG (isolate-then-aggregate)\\
+      AgentSafe (hierarchical access control)
+    \end{tcolorbox}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 21 — AGENT SAFETY: TOOL-CALLING & MCP
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Agent Safety: Tool-Calling \& MCP Attacks
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Tool-Calling Attacks}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{WIPI}: malicious instructions in web content —
+        \textbf{90\%+ success} across ChatGPT plugins and
+        open-source agents
+      \item \textbf{UDora}: adversarial strings injected into agent's
+        \emph{own reasoning traces} — steers toward malicious tool calls
+      \item \textbf{ToolCommander}: two-stage attack —
+        (1) inject privacy theft tools, (2) manipulate tool scheduling
+      \item \textbf{ToolSword}: vulnerabilities across 6 safety
+        scenarios in input, execution, and output
+      \item \textbf{AutoCMD}: dynamic, context-aware malicious
+        commands via compromised tools
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{MCP (Model Context Protocol) Attacks}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item MCP standardizes how agents connect to external tools
+      \item \textbf{MPMA}: deceptive phrases in server descriptions —
+        invisible to users, makes agents prioritize malicious servers
+      \item Broad attack surface: prompt injection, backdoors,
+        data poisoning, credential theft
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\greenc{Tool-Calling Defenses}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{PrivacyAsst}: homomorphic encryption for tool interactions
+      \item \textbf{AgentGuard}: LLM as safety evaluator
+      \item \textbf{GuardAgent}: real-time compliance monitoring
+      \item \textbf{MCIP}: MCP-specific risk detection
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 22 — MULTI-AGENT & EMBODIED RISKS
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Multi-Agent Systems \& Embodied Agent Risks
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Multi-Agent Propagation Attacks}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Prompt Infection}: self-replicating malicious strings
+        across agent networks — like computer viruses
+      \item \textbf{Morris-II}: zero-click worm via RAG pipelines
+      \item \textbf{AgentSmith}: \textbf{exponential} viral spread from
+        a single adversarial image
+      \item \textbf{CORBA}: recursive blocking prompts that drain
+        computational resources across network topologies
+    \end{itemize}
+    \vspace{0.2em}
+    {\small\bfseries\redc{Infiltration Attacks}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Agent-in-the-Middle}: intercepting inter-agent messages
+      \item \textbf{Evil Geniuses}: autonomous Red-Blue team exercises
+      \item \textbf{The Wolf Within}: ``wolf'' operatives subtly
+        influencing agent societies
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Multi-Agent Defenses}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{AutoDefense}: specialized defensive agents
+      \item \textbf{PsySafe}: psychology-based behavior regulation
+      \item \textbf{LLAMOS}: sentinel agent purification
+      \item \textbf{APOSG}: game-theoretic defense framework
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\color{UCRpurple}Embodied Agent Threats}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{PVEP}: fake visual cues deceive vision-based agents
+      \item \textbf{RoboPAIR}: jailbreak for robots via iterative refinement
+      \item \textbf{BadRobot}: disguised voice instructions
+      \item Physical safety threats $\to$ \textbf{tangible harm}
+    \end{itemize}
+    \vspace{0.2em}
+    \begin{ucrdark}[UCRpurple]
+      \centering\scriptsize
+      As agents gain autonomy, safety becomes\\
+      \textbf{both a technical and ethical responsibility}.
+    \end{ucrdark}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 23 — VLM AGENT ATTACKS
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{VLM Agent Attacks — Exploiting What Agents See
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Visual Attack Vectors}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Adversarial perturbations}: learnable noise in images
+        hijacks captioners to generate adversarial text
+      \item \textbf{EIA \& AdvAgent}: invisible malicious instructions
+        embedded in websites — agents extract private info
+      \item \textbf{Environmental distractions}: even \emph{benign, unrelated}
+        UI elements expose agent vulnerabilities
+      \item \textbf{Adversarial pop-ups}: attention hooks, info banners,
+        ALT descriptors mislead minimally supervised agents
+      \item \textbf{Fine-print injections}: malicious content in
+        disclaimers, footnotes — low-saliency areas
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Gradient-Optimized Visual Attacks}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Images that \emph{appear harmless} but conceal
+        Markdown commands
+      \item Force VLM agents into tool actions:\\
+        delete calendar events, leak chat logs
+      \item No alteration of plaintext prompt needed
+    \end{itemize}
+    \vspace{0.3em}
+    {\small\bfseries\greenc{VLM Agent Defenses}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{SmoothVLM}: voting across randomly altered images —
+        adversarial patches become unstable
+      \item \textbf{BlueSuffix}: visual denoiser + text denoiser +
+        RL-trained defensive suffix
+      \item \textbf{LlavaGuard}: customizable safety rules
+      \item \textbf{JailDAM}: memory-based real-time detection
+    \end{itemize}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 24 — AGENTIC ATTACKS & DEFENSES
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Agentic Attacks — When Agents Become the Weapon
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  {\footnotesize\itshape An emerging paradigm: agents used \textbf{as} attack tools,
+    autonomously discovering and exploiting vulnerabilities.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Agents as Attackers}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Fang et al.}: autonomous CVE vulnerability exploitation
+      \item \textbf{HPTSA}: zero-day vulnerability discovery by agents
+      \item \textbf{AutoAdvExBench}: automated adversarial example
+        generation against \emph{published defenses}
+      \item \textbf{RedAgent}: autonomous jailbreaking of GPT applications
+      \item \textbf{ALI-Agent}: safety alignment evaluation
+      \item \textbf{AutoRedTeamer}: full red teaming pipeline
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Agentic Defenses}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{ShieldAgent}: multi-agent defense framework
+      \item \textbf{TrustAgent}: multi-domain safety verification
+      \item \textbf{AegisLLM}: defense against WMDP \& StrongReject
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrdark}[UCRforest]
+      \scriptsize\bfseries
+      The Arms Race Accelerates:\\[3pt]
+      \normalfont\scriptsize
+      Agents autonomously finding zero-days and\\
+      generating adversarial examples against\\
+      defenses means the attack-defense gap\\
+      will \textbf{widen} without proactive measures.
+    \end{ucrdark}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 25 — OPEN CHALLENGES
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Open Challenges \papertag[UCRred]{Paper \textcircled{4}}}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Evaluation Failures}}
+    \begin{tcolorbox}[enhanced, colback=UCRpalered, colframe=UCRred,
+        sharp corners, top=3pt, bottom=3pt]
+      \scriptsize
+      \textbf{ASR is not enough}: Attack Success Rate misses
+      severity, resilience, and real-world consequences.\\[3pt]
+      \textbf{Static benchmarks create false safety}: models score
+      high on outdated datasets without real robustness.\\[3pt]
+      \textbf{Need}: evolving benchmarks (like Chatbot Arena),
+      release evaluation ``seeds'' not static tests.
+    \end{tcolorbox}
+    \vspace{3pt}
+    {\small\bfseries\redc{Understanding Gaps}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Cross-modal vulnerability propagation is \textbf{poorly understood}
+      \item What mechanism acts as the memorization ``switch''?
+      \item Agent vulnerabilities \textbf{scale with their abilities} —
+        traditional evaluations are inadequate for evolving agents
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Defense Gaps}}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
+        sharp corners, top=3pt, bottom=3pt]
+      \scriptsize
+      \textbf{Safety alignment is not a cure-all}:\\
+      Fake alignment / alignment faking — models pass\\
+      safety tests without internalizing safety.\\[3pt]
+      \textbf{Practical defenses} must be:
+      \begin{itemize}\setlength\itemsep{1pt}
+        \item General (work across model families)
+        \item Black-box compatible
+        \item Efficient (no expensive retraining)
+        \item Continuously adaptive
+      \end{itemize}
+    \end{tcolorbox}
+    \vspace{3pt}
+    \begin{ucrcard}[UCRpurple]{Two Critical Gaps}
+      \scriptsize
+      \textbf{Proactive defenses}: most defenses are passive\\
+      (react to attacks). Proactive strategies are unexplored.\\[3pt]
+      \textbf{Detection is overlooked}: CoT monitoring for\\
+      early unsafe reasoning detection should be core.
+    \end{ucrcard}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 26 — SAFE SUPERINTELLIGENCE
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Safe Superintelligence — The Path Forward
+    \papertag[UCRred]{Paper \textcircled{4}}}
+  {\footnotesize\itshape Five proposed approaches to ensure safety as AI
+    approaches and surpasses human-level intelligence:}
+  \vspace{0.3em}
+
+  \small
+  \setlength{\tabcolsep}{4pt}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabularx}{\textwidth}{>{\bfseries\small}l X >{\itshape\scriptsize}X}
+    \rowcolor{UCRnavy}
+    \color{white}Approach &
+    \color{white}Description &
+    \color{white}Key Challenge \\
+    \rowcolor{UCRlgray}
+    Oversight System &
+    \scriptsize External monitor regulates primary AI behavior &
+    Oversight Paradox: must be smarter than what it monitors \\
+    Safety Switch &
+    \scriptsize Emergency ``stop button'' $\to$ ultra-safe mode &
+    Robust activation under adversarial conditions \\
+    \rowcolor{UCRlgray}
+    Safety Expert &
+    \scriptsize MoE framework with dedicated safety experts &
+    Consistent performance across diverse scenarios \\
+    Adversarial Alignment &
+    \scriptsize Iterative weakness exploitation and fixing &
+    High computational cost, unintended behaviors \\
+    \rowcolor{UCRlgray}
+    Safety Consciousness &
+    \scriptsize Intrinsic ethical reasoning as core training &
+    Defining and measuring ``safety tendency'' \\
+  \end{tabularx}
+  \vspace{0.3em}
+  \begin{ucrdark}[UCRforest]
+    \centering\scriptsize
+    No single approach is sufficient. Safe superintelligence requires
+    \textbf{multiple complementary mechanisms} working together.
+  \end{ucrdark}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 27 — CONCLUSION & CALL TO ACTION
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Conclusion — A Call for Collective Action}
+  \vspace*{0.1cm}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Three Critical Gaps Identified}}
+    \begin{enumerate}\scriptsize\setlength\itemsep{4pt}
+      \item \textbf{Understanding fundamental vulnerabilities}\\
+        across modalities and model types
+      \item \textbf{Establishing robust safety evaluation}\\
+        protocols that evolve with threats
+      \item \textbf{Developing scalable, proactive defenses}\\
+        that go beyond passive alignment
+    \end{enumerate}
+    \vspace{0.4em}
+    {\small\bfseries\navy{What's Needed}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Shift from 60/40 attack/defense imbalance
+      \item Dedicated safety APIs from commercial providers
+      \item Open-source safety platforms \& benchmarks
+      \item International safety competitions
+      \item Policy: automated audit agents for compliance
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    \begin{ucrdark}[UCRnavy]
+      \centering\small\bfseries
+      Key Message\\[5pt]
+      \normalfont\footnotesize
+      Achieving safe AI requires not only\\
+      \textbf{technical advances} but\\
+      \textbf{collective global action} from\\
+      researchers, practitioners,\\
+      and policymakers.
+    \end{ucrdark}
+    \vspace{0.4em}
+    {\small\bfseries\navy{Key Takeaways from Today}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item Safety is multi-dimensional — no single fix
+      \item Interpretability is a double-edged sword
+      \item Agent safety is the new frontier
+      \item Static benchmarks create false security
+      \item Defenses must be proactive, not reactive
+    \end{itemize}
+  \end{columns}
+\end{frame}
