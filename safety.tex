@@ -111,8 +111,8 @@
     node distance=0.35cm and 1.8cm,
     box/.style={rectangle, draw=#1, fill=#1, text=white,
                 font=\footnotesize\bfseries, minimum width=2.6cm,
-                minimum height=0.7cm, text centered, rounded corners=1pt},
-    sub/.style={font=\tiny\itshape, text=UCRdark, text centered,
+                minimum height=0.7cm, align=center, rounded corners=1pt},
+    sub/.style={font=\tiny\itshape, text=UCRdark, align=center,
                 text width=2.6cm},
   ]
     \node[ellipse, draw=UCRnavy, fill=UCRnavy, text=white,
@@ -407,7 +407,7 @@
   \begin{tikzpicture}[
     stage/.style={rectangle, draw=#1, fill=#1!15, text=#1,
                   font=\footnotesize\bfseries, minimum width=2.2cm,
-                  minimum height=0.65cm, text centered, rounded corners=2pt},
+                  minimum height=0.65cm, align=center, rounded corners=2pt},
     desc/.style={font=\tiny, text=UCRdark, text width=2.4cm, align=center},
     arr/.style={-{Stealth[length=4pt]}, thick, UCRmgray},
   ]
