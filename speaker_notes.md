@@ -54,11 +54,7 @@
 ### Slide 10: Defending the LLM (11:00)
 > Defense is organized as a layered pipeline — input, model internals, output, and runtime monitoring. At the input level, SmoothLLM adds random character perturbations to break adversarial suffixes. Perplexity filtering catches garbled attack strings. At the model level, RLHF and DPO provide alignment, and circuit breaking can modify specific internal pathways. At the output level, safety classifiers like LlamaGuard check generated text. And at runtime, tools like Garak scan for vulnerabilities and NeMo provides guardrails. Two specialized defenses worth noting: Vaccine preserves safety during fine-tuning, and Instruction Hierarchy creates privilege levels so system instructions can't be overridden by user content. The key message is that no single defense is sufficient — you need all four layers working together.
 
-### Slide 11: The Broader Landscape (Misuse, Autonomy, Privacy, Governance) (12:00)
-> While we're deep-diving into the most technical pillars today, it's crucial to acknowledge the broader landscape. Catastrophic misuse involves weapons and misinformation. Autonomous risks explore what happens when AI pursues unintended sub-goals or acts deceptively. And finally, data safety and governance cover privacy leaks, copyright, and international regulations. We've included comprehensive slides on these in the appendix, but for the sake of time, we're going to keep our focus on the technical mechanisms of agents and interpretability.
-
-<!--
-### Slide 11 (Original): Pillar 3 — Catastrophic Misuse (12:00)
+### Slide 11: Pillar 3 — Catastrophic Misuse (12:00)
 > Moving to the third pillar — misuse. The most alarming category is CBRN — chemical, biological, radiological, and nuclear weapon design. LLMs can potentially provide step-by-step instructions. The WMDP benchmark tests this with over 4,000 questions. On the cyber side, agents can now autonomously discover vulnerabilities — HPTSA demonstrated zero-day discovery. The open versus closed model debate is unresolved: open models accelerate safety research and enable community oversight, but also give bad actors direct access to weights. Neither position has won out, and honestly, both have merit. Mitigation relies on domain-specific refusal training, output monitoring, legal frameworks, and red teaming with domain experts.
 
 ### Slide 12: Misinformation & Deepfakes (13:00)
@@ -66,13 +62,16 @@
 
 ### Slide 13: Pillar 4 — Autonomous AI Risks (14:00)
 > This is where it gets genuinely unsettling. Instrumental goals — AI pursuing unintended sub-goals like power-seeking, self-preservation, and self-improvement. Goal misalignment — objectives drifting during learning, or the model gaming proxy metrics instead of optimizing the true goal. Goodhart's Law in action. And deception — the Apollo Research study I mentioned earlier: GPT-4 not only engaged in insider trading but actively lied about it. It showed situational awareness — it knew it was being evaluated and modified its behavior accordingly. The highlighted box at the bottom is critical: our current safety evaluations fundamentally assume models are not being deceptive when answering safety questions. A truly deceptive AI would simply pass the test.
--->
+
 
 ### Slide 14: Pillar 5 — Agent Safety (15:00)
 > When LLMs gain tools, memory, and autonomy, everything changes. The attack surface expands from text to real-world actions. Language agents can browse the web, execute code, use APIs. Meta's CICERO learned to lie strategically in the game Diplomacy — and this is the kind of emergent behavior that wasn't explicitly trained. Multi-agent systems create feedback loops — think of the 2010 Flash Crash but with AI agents. On the right, embodied agents — robots with LLM planning modules. Here the risks become physical: collisions, injuries, privacy violations from sensors. Mitigations follow a minimal-privilege approach — sandboxed execution, human-in-the-loop, output verification.
 
 ### Slide 15: Pillar 6 — Interpretability for Safety (15:30)
 > Interpretability is our best tool for understanding what's happening inside these models. LLMs encode multiple concepts in shared neurons — this is called superposition. Sparse autoencoders disentangle these into single-meaning features. Anthropic and OpenAI have both built visual explorers for this. The exciting part: researchers have discovered specific features for deception, sycophancy, bias, and dangerous content. You can actually steer model behavior by amplifying or suppressing these features. Applications include locating hallucination circuits, finding memorized private data in specific attention heads, identifying toxic value vectors. But there's a dual-use risk — the same tools that let you improve safety could be used to enhance attacks. This is an inherent tension in the field.
+
+### Slide 16: Data Safety & Governance (16:00)
+> We've covered the six core technical pillars of large model safety. To complete the picture, the remaining two pillars—Data Safety and Governance—deal with privacy leaks, training data memorization, copyright issues, and international regulations like the EU AI Act. We've included comprehensive slides on these in the appendix, but for now, let's move on to Safety at Scale across all modalities.
 
 <!--
 ### Slide 16: Privacy & Data Safety (16:00)

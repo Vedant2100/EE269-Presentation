@@ -507,48 +507,6 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 11 — THE BROADER LANDSCAPE
-% ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{The Broader Landscape}
-  {\footnotesize\itshape Misuse, Autonomy, Privacy, and Governance}
-  \vspace{0.3em}
-
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    \begin{ucrcard}[UCRred]{Catastrophic Misuse}
-      \scriptsize
-      $\bullet$ Weaponization (CBRN \& Cyber)\\
-      $\bullet$ Misinformation campaigns at scale\\
-      $\bullet$ Deepfakes \& identity fraud
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrcard}[UCRpurple]{Autonomous AI Risks}
-      \scriptsize
-      $\bullet$ Power-seeking and self-preservation\\
-      $\bullet$ Goal drift and proxy gaming\\
-      $\bullet$ Strategic deception (e.g., Apollo Research)
-    \end{ucrcard}
-
-    \column{0.48\textwidth}
-    \begin{ucrcard}[UCRnavy]{Data Safety \& Governance}
-      \scriptsize
-      $\bullet$ Training data memorization \& extraction\\
-      $\bullet$ Privacy defenses (Differential Privacy)\\
-      $\bullet$ Regulations (EU AI Act, US Exec Orders)
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrinfo}
-      \centering\scriptsize\bfseries
-      Comprehensive slides on these topics are included\\
-      in the appendix. In the interest of time, we will\\
-      focus on the technical mechanisms of Agent Safety\\
-      and Interpretability.
-    \end{ucrinfo}
-  \end{columns}
-\end{frame}
-
-\iffalse
-% ═══════════════════════════════════════════════════════════════════════════════
 %  SLIDE 10 — MISUSE: WEAPONIZATION & CYBER
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Pillar 3: Catastrophic Misuse — Weaponization}
@@ -700,7 +658,6 @@
   \end{ucrdark}
 \end{frame}
 
-\fi
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
@@ -788,6 +745,39 @@
       more effective adversarial attacks.
     \end{ucrwarn}
   \end{columns}
+\end{frame}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 16 — DATA SAFETY & GOVERNANCE
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Data Safety \& Governance}
+  {\footnotesize\itshape The remaining two pillars of the safety taxonomy.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{ucrcard}[UCRnavy]{Data Safety \& Privacy}
+      \scriptsize
+      $\bullet$ Training data memorization \& extraction\\
+      $\bullet$ Membership inference attacks\\
+      $\bullet$ Privacy defenses (Differential Privacy, Unlearning)
+    \end{ucrcard}
+
+    \column{0.48\textwidth}
+    \begin{ucrcard}[UCRforest]{Industry Roadmaps \& Governance}
+      \scriptsize
+      $\bullet$ Three-Phase Framework (Training, Eval, Deployment)\\
+      $\bullet$ Regulations (EU AI Act, US Exec Orders)\\
+      $\bullet$ Copyright litigation and policy frameworks
+    \end{ucrcard}
+  \end{columns}
+  
+  \vspace{1em}
+  \begin{ucrinfo}
+    \centering\scriptsize\bfseries
+    Comprehensive slides on these topics are included\\
+    in the appendix. Let's now look at Safety at Scale.
+  \end{ucrinfo}
 \end{frame}
 
 
