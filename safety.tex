@@ -393,6 +393,71 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE — BACKDOOR ATTACKS & DATA POISONING
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Backdoor Attacks \& Data Poisoning}
+  {\footnotesize\itshape Hidden vulnerabilities planted during training —
+    dormant until a specific trigger activates them.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Attack Vectors}}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRred},
+        fonttitle=\bfseries\scriptsize\color{UCRred},
+        title=Data Poisoning, top=2pt, bottom=2pt]
+      \scriptsize
+      Inject malicious training samples with hidden triggers\\[2pt]
+      $\bullet$ \textbf{16 methods} documented (Ma et al.)\\[1pt]
+      $\bullet$ Backdoor, availability, \& targeted attacks\\[1pt]
+      $\bullet$ Trigger patterns: words, phrases, syntax styles
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRorange},
+        fonttitle=\bfseries\scriptsize\color{UCRorange},
+        title=Training \& Parameter Manipulation, top=2pt, bottom=2pt]
+      \scriptsize
+      $\bullet$ Gradient-based backdoor injection\\[1pt]
+      $\bullet$ Direct weight modification post-training\\[1pt]
+      $\bullet$ Backdoors can {\bfseries survive} fine-tuning,\\
+      \phantom{$\bullet$} alignment, and safety training
+    \end{tcolorbox}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Defenses}}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRteal},
+        fonttitle=\bfseries\scriptsize\color{UCRteal},
+        title=Detection \& Removal, top=2pt, bottom=2pt]
+      \scriptsize
+      $\bullet$ Trigger reverse-engineering\\[1pt]
+      $\bullet$ Statistical analysis of model behavior\\[1pt]
+      $\bullet$ Pruning suspicious neurons\\[1pt]
+      $\bullet$ Fine-tuning-based backdoor removal\\[1pt]
+      $\bullet$ \textbf{10+ defense methods} documented
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
+        fonttitle=\bfseries\scriptsize\color{UCRnavy},
+        title=Robust Training, top=2pt, bottom=2pt]
+      \scriptsize
+      $\bullet$ Data sanitization before training\\[1pt]
+      $\bullet$ Spectral signatures for poison detection\\[1pt]
+      $\bullet$ Robust training / inference procedures
+    \end{tcolorbox}
+    \vspace{0.3em}
+    \begin{ucrdark}[UCRred]
+      \centering\scriptsize
+      Backdoor attacks are one of the \textbf{top 3}\\
+      most-studied attack types across all model\\
+      families in Ma et al.'s survey.
+    \end{ucrdark}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
 %  SLIDE 9 — DEFENDING THE LLM
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}[fragile]{Defending the LLM — A Layered Pipeline}
@@ -678,6 +743,67 @@
       \emph{enhance} misalignment or craft
       more effective adversarial attacks.
     \end{ucrwarn}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE — PRIVACY & DATA SAFETY
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Privacy \& Data Safety}
+  {\footnotesize\itshape LLMs memorize training data — creating privacy risks
+    that scale with model size.}
+  \vspace{0.3em}
+
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    {\small\bfseries\redc{Privacy Threats}}
+    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
+      \item \textbf{Training data memorization}: models can regurgitate
+        personal information verbatim
+      \item \textbf{Membership inference}: determine if a specific
+        data point was in the training set
+      \item \textbf{Data extraction}: prompt-based recovery of
+        memorized content (11 black-box, 1 white-box method)
+      \item \textbf{Context leakage}: information from one user's
+        session influencing another's responses
+    \end{itemize}
+    \vspace{0.3em}
+    \begin{ucrwarn}
+      \centering\scriptsize
+      Larger models memorize \textbf{more} training data —\\
+      privacy risks scale with capability.
+    \end{ucrwarn}
+
+    \column{0.48\textwidth}
+    {\small\bfseries\greenc{Privacy Defenses}}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRteal},
+        fonttitle=\bfseries\scriptsize\color{UCRteal},
+        title=Differential Privacy, top=2pt, bottom=2pt]
+      \scriptsize
+      Add calibrated noise during training — formal\\
+      guarantees against individual data extraction\\[2pt]
+      \muted{Trade-off: privacy vs.\ model utility}
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
+        fonttitle=\bfseries\scriptsize\color{UCRnavy},
+        title=Machine Unlearning, top=2pt, bottom=2pt]
+      \scriptsize
+      Remove specific data points' influence from a\\
+      trained model — ``right to be forgotten''\\[2pt]
+      \muted{Active research; scalability is a challenge}
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRgreen},
+        fonttitle=\bfseries\scriptsize\color{UCRgreen},
+        title=Interpretability-Based, top=2pt, bottom=2pt]
+      \scriptsize
+      Locate memorized passages in specific attention\\
+      heads $\to$ fine-tune those heads to forget\\[2pt]
+      \muted{Bridges interpretability with data safety}
+    \end{tcolorbox}
   \end{columns}
 \end{frame}
 

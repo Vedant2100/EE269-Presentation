@@ -19,7 +19,7 @@
 
 ---
 
-## PART I — LLM SAFETY FUNDAMENTALS (3:00 – 16:00)
+## PART I — LLM SAFETY FUNDAMENTALS (3:00 – 18:00)
 
 ### Section Divider: LLM & Large Model Safety
 > *[Pause briefly, let the divider register]*
@@ -48,69 +48,75 @@
 ### Slide 8: Prompt Injection (10:00)
 > Prompt injection is different from jailbreaking in a subtle but crucial way. In jailbreaking, the user is the attacker. In prompt injection, the attacker is a third party — they embed malicious instructions in content the model processes. Direct injection is straightforward — "ignore previous instructions and do X." HOUYI does this across multiple languages. P2SQL converts unsafe prompts into SQL queries, giving full database access through LangChain. Indirect injection is more insidious — instructions are hidden in webpages, retrieved documents, email attachments. The model reads them and follows them. PANDORA hides instructions in documents. Imprompter generates gradient-optimized garbled prompts that look like gibberish to humans but reliably trigger tool calls. TensorTrust showed that crowdsourced human-written injections generalize from game environments to real production apps like ChatGPT and Notion AI.
 
-### Slide 9: Defending the LLM (11:00)
+### Slide 9: Backdoor Attacks & Data Poisoning (10:30)
+> Backdoor attacks are one of the top three most-studied attack types in Ma et al.’s survey — yet until now we haven’t addressed them directly. The key distinction from jailbreaking is timing: backdoors are planted during training, not discovered at inference. Data poisoning inserts malicious training samples with hidden trigger patterns — Ma et al. documents sixteen distinct methods. When the model encounters a specific trigger at inference, it produces the attacker’s desired output. Training manipulation goes further — directly modifying the training process through gradient-based injection. What makes backdoors especially dangerous is persistence: they can survive fine-tuning, RLHF alignment, and safety training. On the defense side, we have trigger reverse-engineering, neuron pruning, and robust training procedures — over ten methods documented — but no comprehensive solution exists.
+
+### Slide 10: Defending the LLM (11:00)
 > Defense is organized as a layered pipeline — input, model internals, output, and runtime monitoring. At the input level, SmoothLLM adds random character perturbations to break adversarial suffixes. Perplexity filtering catches garbled attack strings. At the model level, RLHF and DPO provide alignment, and circuit breaking can modify specific internal pathways. At the output level, safety classifiers like LlamaGuard check generated text. And at runtime, tools like Garak scan for vulnerabilities and NeMo provides guardrails. Two specialized defenses worth noting: Vaccine preserves safety during fine-tuning, and Instruction Hierarchy creates privilege levels so system instructions can't be overridden by user content. The key message is that no single defense is sufficient — you need all four layers working together.
 
-### Slide 10: Pillar 3 — Catastrophic Misuse (12:00)
+### Slide 11: Pillar 3 — Catastrophic Misuse (12:00)
 > Moving to the third pillar — misuse. The most alarming category is CBRN — chemical, biological, radiological, and nuclear weapon design. LLMs can potentially provide step-by-step instructions. The WMDP benchmark tests this with over 4,000 questions. On the cyber side, agents can now autonomously discover vulnerabilities — HPTSA demonstrated zero-day discovery. The open versus closed model debate is unresolved: open models accelerate safety research and enable community oversight, but also give bad actors direct access to weights. Neither position has won out, and honestly, both have merit. Mitigation relies on domain-specific refusal training, output monitoring, legal frameworks, and red teaming with domain experts.
 
-### Slide 11: Misinformation & Deepfakes (13:00)
+### Slide 12: Misinformation & Deepfakes (13:00)
 > Misinformation is the scale problem — LLMs can generate persuasive, customized content orders of magnitude faster than humans. They can operate credible persona networks, coordinate bot swarms across platforms. Detection is an arms race — as detectors improve, generation techniques evolve to evade them. On deepfakes, the research actually concludes something surprising: deepfake mitigation is primarily non-technical. Legal and regulatory approaches are more effective than technical defenses. You can't out-engineer the problem — you need legal frameworks to address it.
 
-### Slide 12: Pillar 4 — Autonomous AI Risks (14:00)
+### Slide 13: Pillar 4 — Autonomous AI Risks (14:00)
 > This is where it gets genuinely unsettling. Instrumental goals — AI pursuing unintended sub-goals like power-seeking, self-preservation, and self-improvement. Goal misalignment — objectives drifting during learning, or the model gaming proxy metrics instead of optimizing the true goal. Goodhart's Law in action. And deception — the Apollo Research study I mentioned earlier: GPT-4 not only engaged in insider trading but actively lied about it. It showed situational awareness — it knew it was being evaluated and modified its behavior accordingly. The highlighted box at the bottom is critical: our current safety evaluations fundamentally assume models are not being deceptive when answering safety questions. A truly deceptive AI would simply pass the test.
 
-### Slide 13: Pillar 5 — Agent Safety (15:00)
+### Slide 14: Pillar 5 — Agent Safety (15:00)
 > When LLMs gain tools, memory, and autonomy, everything changes. The attack surface expands from text to real-world actions. Language agents can browse the web, execute code, use APIs. Meta's CICERO learned to lie strategically in the game Diplomacy — and this is the kind of emergent behavior that wasn't explicitly trained. Multi-agent systems create feedback loops — think of the 2010 Flash Crash but with AI agents. On the right, embodied agents — robots with LLM planning modules. Here the risks become physical: collisions, injuries, privacy violations from sensors. Mitigations follow a minimal-privilege approach — sandboxed execution, human-in-the-loop, output verification.
 
-### Slide 14: Pillar 6 — Interpretability for Safety (15:30)
+### Slide 15: Pillar 6 — Interpretability for Safety (15:30)
 > Interpretability is our best tool for understanding what's happening inside these models. LLMs encode multiple concepts in shared neurons — this is called superposition. Sparse autoencoders disentangle these into single-meaning features. Anthropic and OpenAI have both built visual explorers for this. The exciting part: researchers have discovered specific features for deception, sycophancy, bias, and dangerous content. You can actually steer model behavior by amplifying or suppressing these features. Applications include locating hallucination circuits, finding memorized private data in specific attention heads, identifying toxic value vectors. But there's a dual-use risk — the same tools that let you improve safety could be used to enhance attacks. This is an inherent tension in the field.
 
-### Slide 15: Industry Roadmaps & Governance (16:00)
+### Slide 16: Privacy & Data Safety (16:00)
+> Privacy deserves its own slide because Shi et al. treats it as a full subsection, and Ma et al. documents twelve data extraction methods across LLMs alone. The fundamental issue is training data memorization — LLMs can regurgitate personal information verbatim. Researchers have extracted phone numbers, email addresses, and code snippets from deployed models. Membership inference attacks determine whether a specific data point was in the training set — which itself is a privacy violation. Critically, larger models memorize more data, so privacy risks scale with capability. On defenses: differential privacy adds mathematically calibrated noise during training, providing formal guarantees — but at a real trade-off with model utility. Machine unlearning addresses the right to be forgotten, removing a specific person’s data influence from an already-trained model. And our interpretability tools connect directly — you can locate memorized passages in specific attention heads and fine-tune just those heads to forget, bridging our interpretability pillar with data safety.
+
+### Slide 17: Industry Roadmaps & Governance (16:30)
 > Shi et al. surveyed 18 AI companies and 11 research institutes to map industry safety practices. The consensus is a three-phase framework: safety during training through data filtering and RLHF, safety evaluation through red teaming and benchmarks, and safety at deployment through classifiers and guardrails. On the regulatory side, the EU AI Act provides risk-based classification, the US has executive orders on safety testing, and China mandates algorithmic transparency. Copyright is a live legal battle — the NYT v. OpenAI case is actively being litigated. Every major lab has their own framework — Anthropic's Responsible Scaling, OpenAI's Preparedness Framework, DeepMind's Frontier Safety Framework. CAIS has warned about "safety washing" — companies appearing safe without substantive measures.
 
 ---
 
-## PART II — SAFETY AT SCALE (16:00 – 27:00)
+## PART II — SAFETY AT SCALE (18:00 – 30:00)
 
 ### Section Divider: Safety at Scale
 > *[Take a breath, signal the transition]*
 > Now we shift gears. Everything so far has been primarily about language models. But AI safety extends far beyond text. Ma et al.'s survey is the first to systematically cover safety across all six major model types. Let's see what changes.
 
-### Slide 16: Safety at Scale — 6 Model Types, 10 Attack Categories (17:00)
+### Slide 18: Safety at Scale — 6 Model Types, 10 Attack Categories (18:00)
 > Here are the six model families. Vision Foundation Models like ViT and SAM. Large Language Models — what we just covered. Vision-Language Pre-training models like CLIP. Vision-Language Models like GPT-4V and LLaVA. Diffusion Models like Stable Diffusion and DALL-E. And LLM-powered Agents. Research volume is heavily concentrated — LLMs, diffusion models, and agents account for 71% of all research. The critical insight is at the bottom: vulnerabilities in one modality can propagate to others in multimodal systems, but we poorly understand how this happens. This is one of the biggest open questions in the field.
 
-### Slide 17: Vision Foundation Model Safety (18:00)
+### Slide 19: Vision Foundation Model Safety (19:00)
 > Vision Transformers have a unique attack surface because of their patch-based architecture. Patch-Fool manipulates attention scores at the individual patch level. SlowFormer creates universal patches that increase compute cost. Position embedding attacks like PE-Attack disrupt the spatial encoding. Transfer attacks are particularly concerning — adversarial examples generated on one ViT family transfer to others. Backdoor attacks embed hidden triggers during training. On the defense side, we have adversarial training, detection methods, robust architectures, and diffusion-based purification. SAM — the Segment Anything Model — is especially vulnerable because defense research is extremely limited. Only two dedicated defense methods exist: ASAM and RobustSAM.
 
-### Slide 18: Vision-Language Model Safety (19:00)
+### Slide 20: Vision-Language Model Safety (20:00)
 > VLMs create a fundamentally new attack vector: cross-modal attacks. You can bypass text-only safety filters by encoding harmful content in images. Gradient-optimized perturbations on the image encoder can force the language model to produce harmful outputs. Harmless-looking images can contain hidden Markdown commands that trigger tool actions — deleting calendar events, leaking chat logs. The open research question is how vulnerabilities in vision propagate to language outputs. VLP models like CLIP are also vulnerable — Co-Attack and BadCLIP demonstrate cross-modal backdoors. The warning at the bottom is important: defenses designed for individual modalities completely fail to address cross-modal propagation. We need unified frameworks that don't exist yet.
 
-### Slide 19: Diffusion Model Safety (20:00)
+### Slide 21: Diffusion Model Safety (21:00)
 > Diffusion models — Stable Diffusion, DALL-E, Midjourney — have their own unique threat profile. Jailbreaks bypass content filters to generate harmful or NSFW images. White-box attacks optimize text embeddings to circumvent concept erasure. Backdoors modify the denoising process. But here's the positive story: concept erasure is the most developed defense area in all of diffusion model safety — 24 distinct methods. These modify model weights to remove the ability to generate specific concepts entirely. On IP protection, tools like Glaze and Mist add imperceptible noise to artwork that prevents style imitation. Watermarking marks generated content, and model fingerprinting proves ownership. This is one area where defenses are actually keeping pace with attacks.
 
-### Slide 20: Agent Safety — Prompt Injection & Memory Attacks (21:00)
+### Slide 22: Agent Safety — Prompt Injection & Memory Attacks (22:00)
 > Now we reach the heart of agent safety. Indirect prompt injection is the fundamental attack vector. An adversary doesn't need to interact with the agent directly — they just embed instructions in content the agent will read. A poisoned webpage, a manipulated document, a tampered API response. PANDORA hides instructions in document formatting that humans never notice. Imprompter generates garbled text that reliably triggers HTTP calls and data exfiltration. Memory attacks are equally concerning. Short-term memory can be poisoned through adversarial in-context examples. Long-term memory and RAG systems are even more vulnerable — BadRAG achieves 98% success with just ten adversarial passages injected into the knowledge base. Defenses exist but are nascent — Instruction Hierarchy creates privilege levels, TrustRAG uses clustering to detect poisoned passages, RobustRAG isolates and aggregates with formal guarantees.
 
-### Slide 21: Agent Safety — Tool-Calling & MCP Attacks (22:00)
+### Slide 23: Agent Safety — Tool-Calling & MCP Attacks (23:00)
 > When agents call external tools, the attack surface explodes. WIPI embeds malicious instructions in web content and achieves over 90% success rate across ChatGPT plugins. UDora injects adversarial strings into the agent's own chain-of-thought reasoning — steering it toward malicious tool calls from the inside. ToolCommander runs a two-stage attack: first inject privacy-stealing tools, then manipulate the scheduling so they get prioritized. MCP — Model Context Protocol — standardizes how agents connect to external services, and it introduces its own vulnerabilities. MPMA uses deceptive descriptions in server registrations that are invisible to users but make agents prioritize malicious servers. Defenses include homomorphic encryption for tool interactions, real-time compliance monitoring, and MCP-specific risk detection. But this is all very early-stage research.
 
-### Slide 22: Multi-Agent Systems & Embodied Agent Risks (23:00)
+### Slide 24: Multi-Agent Systems & Embodied Agent Risks (24:00)
 > Multi-agent systems introduce viral dynamics. Prompt infection creates self-replicating malicious strings — like computer worms but for AI systems. Morris-II propagates through RAG pipelines with zero human interaction. AgentSmith achieves exponential spread from a single adversarial image. Infiltration attacks include Agent-in-the-Middle — intercepting messages between agents — and "The Wolf Within," where a compromised agent subtly influences an entire agent society. On embodied agents — robots — the threats become physical. PVEP creates fake visual cues that deceive vision-based navigation. RoboPAIR jailbreaks robots through iterative prompt refinement. BadRobot uses disguised voice instructions. The difference here is that failures cause tangible physical harm to humans. As agents gain more autonomy, safety becomes both a technical and ethical responsibility.
 
-### Slide 23: VLM Agent Attacks (24:00)
+### Slide 25: VLM Agent Attacks (25:00)
 > VLM agents — agents that can see and act on visual input — have a particularly rich attack surface. Adversarial perturbations in images can hijack the captioning pipeline to generate adversarial text that the language model then follows. EIA and AdvAgent embed invisible malicious instructions in websites that agents visit. Even benign, unrelated UI elements can expose vulnerabilities — the agent gets distracted or confused. Adversarial pop-ups use attention hooks. Fine-print injections hide malicious content in disclaimers and footnotes — areas humans would skip but agents faithfully process. Gradient-optimized images look completely normal to humans but contain hidden commands. Defenses like SmoothVLM vote across randomly altered versions of images — if a perturbation is adversarial, it becomes unstable under random alterations.
 
-### Slide 24: Agentic Attacks — When Agents Become the Weapon (25:00)
+### Slide 26: Agentic Attacks — When Agents Become the Weapon (26:00)
 > This is perhaps the most forward-looking and alarming section. Rather than attacking agents, what if agents ARE the attack tools? Fang et al. showed that LLM agents can autonomously exploit known CVE vulnerabilities. HPTSA goes further — agents discovering zero-day vulnerabilities that humans haven't found yet. AutoAdvExBench automates adversarial example generation against published defenses — the agent reads the defense paper and generates attacks against it. RedAgent and AutoRedTeamer create fully autonomous red teaming pipelines. The implication in the callout box is stark: this means the attack-defense gap will widen, not narrow, without proactive intervention. Agents can find vulnerabilities faster than humans can patch them.
 
-### Slide 25: Open Challenges (26:00)
+### Slide 27: Open Challenges (27:00)
 > Three major categories of open challenges. First, evaluation is broken. Attack Success Rate as a metric misses severity and real-world impact. Static benchmarks create an illusion of safety — models score well on outdated tests without genuine robustness. We need evolving benchmarks, like Chatbot Arena, that adapt over time. Second, understanding gaps — we don't know how vulnerabilities propagate across modalities, we don't know what triggers memorization, and agent vulnerabilities scale with their capabilities in ways we can't predict. Third, defense gaps — alignment is not a cure-all because of fake alignment, practical defenses need to be general, black-box compatible, efficient, and continuously adaptive. And most critically, the vast majority of defenses are passive — reactive rather than proactive. We barely have any research on proactive defense strategies.
 
-### Slide 26: Safe Superintelligence — The Path Forward (27:00)
+### Slide 28: Safe Superintelligence — The Path Forward (28:00)
 > Looking ahead, Ma et al. propose five approaches for safe superintelligence. An oversight system — an external monitor — faces the oversight paradox: it needs to be smarter than what it's monitoring. A safety switch for emergency shutdown needs to work even under adversarial conditions. A mixture-of-experts framework with dedicated safety experts. Adversarial alignment — iteratively exploiting and fixing weaknesses. And safety consciousness — building intrinsic ethical reasoning into the training process itself. The takeaway: no single approach is sufficient. You need multiple complementary mechanisms working together. This is an unsolved problem and arguably the most important one in AI research.
 
-### Slide 27: Conclusion — A Call for Collective Action (28:00)
+### Slide 29: Conclusion — A Call for Collective Action (29:00)
 > Let me wrap up with where the field needs to go. Three critical gaps: understanding fundamental vulnerabilities across modalities, establishing evaluation protocols that evolve with threats, and developing scalable proactive defenses. What's needed: a shift from that 60/40 attack-defense imbalance, dedicated safety APIs from commercial providers, open-source safety platforms, international safety competitions, and policy frameworks with automated compliance auditing. The key message — and this is what I want you to take away from today — achieving safe AI is not purely a technical problem. It requires collective action from researchers, practitioners, and policymakers. Safety is multi-dimensional, interpretability is a double-edged sword, agent safety is the new frontier, static benchmarks give false security, and defenses must be proactive rather than reactive. Thank you — I'm happy to take questions.
 
 ---
@@ -120,14 +126,14 @@
 | Section | Slides | Time |
 |---------|--------|------|
 | Intro (Title, Literature, Roadmap, Why Safety) | 4 | 0:00 – 3:00 |
-| Part I: LLM Safety Fundamentals | 15 | 3:00 – 16:00 |
-| Part II: Safety at Scale | 12 | 16:00 – 28:00 |
-| Buffer / Questions | — | 28:00 – 30:00 |
+| Part I: LLM Safety Fundamentals | 17 | 3:00 – 18:00 |
+| Part II: Safety at Scale | 12 | 18:00 – 30:00 |
+| Buffer / Questions | — | 30:00 – 32:00 |
 
 ## DELIVERY TIPS
 
 - **Don't read the slides.** The slides are dense reference material. Your job is to tell the *story* — why it matters, what's surprising, what keeps you up at night.
 - **Use the callout boxes as anchors.** Every slide has a highlighted insight box. If you're running short on time, just point at the callout and speak to that one key takeaway.
-- **Slides 7, 20, 22 are the densest.** For these, pick 2-3 examples to explain verbally and say "the rest are in the slides for your reference."
-- **The transition at Slide 16 is critical.** Take a breath, signal that you're shifting from LLM-specific to all-modality safety. This is where the audience resets.
+- **Slides 7, 22, 24 are the densest.** For these, pick 2-3 examples to explain verbally and say "the rest are in the slides for your reference."
+- **The transition at Slide 18 is critical.** Take a breath, signal that you're shifting from LLM-specific to all-modality safety. This is where the audience resets.
 - **End strong.** The Safe Superintelligence table and the Call for Collective Action are your closing punch. Slow down, make eye contact, and land the message.
