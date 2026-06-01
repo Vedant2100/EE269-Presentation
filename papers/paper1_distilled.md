@@ -14,11 +14,11 @@ This survey provides a comprehensive, multi-dimensional review of LLM safety cov
 
 ## 1. Introduction & Taxonomy
 
-The paper's overarching taxonomy organizes LLM safety into **8 major pillars:**
+The paper's overarching taxonomy organizes LLM safety into **8 major categories:**
 
 ![Figure 1: Master taxonomy of LLM safety](paper1_figures/fig1_taxonomy_page3.png)
 
-| # | Pillar | Description |
+| # | Category | Description |
 |---|--------|-------------|
 | 1 | Value Misalignment (§3) | Bias, toxicity, ethics violations, hallucinations |
 | 2 | Robustness (§4) | Adversarial attacks, OOD robustness, prompt injection, jailbreaks |
