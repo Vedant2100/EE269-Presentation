@@ -122,12 +122,20 @@
     \node[box=UCRgreen, right=4.5cm of center, yshift=-0.8cm] (in)
       {Interpret-\\[-1pt]ability};
 
+    % Left column
+    \node[box=UCRgold, left=4.5cm of center, yshift=0.8cm] (ps)
+      {Privacy \&\\[-1pt]Data Safety};
+    \node[box=UCRlightblue, left=4.5cm of center, yshift=-0.8cm] (ig)
+      {Industry\\[-1pt]Roadmaps};
+
     \draw[UCRmgray, thick] (vm.east) -- (center);
     \draw[UCRmgray, thick] (ra.west) -- (center);
     \draw[UCRmgray, thick] (mu.east) -- (center);
     \draw[UCRmgray, thick] (ai.west) -- (center);
     \draw[UCRmgray, thick] (ag.west) -- (center);
     \draw[UCRmgray, thick] (in.west) -- (center);
+    \draw[UCRmgray, thick] (ps.east) -- (center);
+    \draw[UCRmgray, thick] (ig.east) -- (center);
 
     \node[sub, below=0.1cm of vm]
       {Bias $\cdot$ Toxicity\\Ethics $\cdot$ Hallucinations};
@@ -141,6 +149,10 @@
       {Tool Use $\cdot$ Memory\\Multi-Agent};
     \node[sub, below=0.1cm of in]
       {SAEs $\cdot$ Circuits\\Safety Auditing};
+    \node[sub, below=0.1cm of ps]
+      {Memorization\\Extraction};
+    \node[sub, below=0.1cm of ig]
+      {Frameworks\\Legislation};
   \end{tikzpicture}
 \end{frame}
 
