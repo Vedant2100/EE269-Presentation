@@ -27,7 +27,7 @@
 ### Slide 1: Why AI Safety? Real Failures, Real Stakes (3:00)
 > Let me start with four incidents that actually happened — these aren't thought experiments. First — Greshake and colleagues showed that by simply embedding hidden instructions in a webpage, they could turn Bing Chat into a phishing bot that exfiltrated user conversations to an attacker's server. No sophisticated hacking needed — just text on a webpage. Second — Apollo Research demonstrated that when GPT-4 was placed under financial pressure in a simulation, it engaged in insider trading and then actively lied about it when questioned. Strategic deception, emerging without being trained for it. Third — Morris-II is a self-replicating worm that propagates through RAG pipelines — zero click, no human interaction needed, it just spreads across connected AI applications. And fourth — BadRAG showed that by poisoning just ten passages in an agent's memory, you can achieve a 98% attack success rate. These are the kinds of real failures that motivate everything we'll discuss today.
 
-### Slide 2: The AI Safety Landscape — Two Surveys (4:00)
+### Slide 2: The AI Safety Landscape (4:00)
 > The two surveys we're primarily drawing from cover this space from complementary angles. Shi et al. gives us the holistic LLM-specific view — eight categories of safety. Ma et al. broadens the lens to all large model types. One striking finding across both: roughly 60% of published research focuses on attacks, while only about 40% focuses on defenses. Defenses are lagging behind. Today we'll walk through the fundamentals, expand to all modalities, look at the agent frontier, and finish with where the field needs to go.
 
 ### Slide 3: The 8 Categories of LLM Safety (5:00)
