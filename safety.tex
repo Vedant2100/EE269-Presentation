@@ -57,28 +57,30 @@
 %  SLIDE 2 --- THE 60/40 GAP + PAPER INTRODUCTIONS
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{The AI Safety Landscape}
-    \begin{ucrdark}[UCRnavy]
-      \centering\small\bfseries
-      Key Finding:\\[4pt]
-      \normalfont\normalsize
-      \textasciitilde60\% of research focuses on attacks vs.\ \textasciitilde40\% on defenses.\\[4pt]
-      \normalfont\footnotesize Defenses are consistently lagging behind attacks.
-    \end{ucrdark}
-    
-    \vspace{1.5em}
+  \begin{ucrdark}[UCRnavy]
+    \centering\small\bfseries
+    Key Finding:\\[4pt]
+    \normalfont\normalsize
+    \textasciitilde60\% of research focuses on attacks vs.\ \textasciitilde40\% on defenses.\\[4pt]
+    \normalfont\footnotesize Defenses are consistently lagging behind attacks.
+  \end{ucrdark}
+
+  \vspace{0.5em}
+  \begin{columns}[T]
+    \column{0.45\textwidth}
     {\large\bfseries\navy{Our Roadmap Today:}}
-    \vspace{0.5em}
-    
-    \begin{enumerate}\normalsize\setlength\itemsep{8pt}
+    \vspace{0.4em}
+
+    \begin{enumerate}\normalsize\setlength\itemsep{6pt}
       \item[\navy{I.}] \textbf{LLM safety fundamentals}
       \item[\navy{II.}] \textbf{Expand to all modalities}
       \item[\navy{III.}] \textbf{Agent safety} --- the new frontier
       \item[\navy{IV.}] \textbf{Open challenges} \& the path forward
     \end{enumerate}
 
-    \column{0.45\textwidth}
+    \column{0.52\textwidth}
     \centering
-
+    \includegraphics[width=\textwidth]{figures/p4_stats_trends.png}
   \end{columns}
 \end{frame}
 
@@ -197,46 +199,31 @@
 \begin{frame}{How Do We Align LLMs?}
   {\footnotesize\itshape Alignment: training LLMs to behave in accordance with human
     values, intentions, and ethical norms.}
-  \vspace{0.4em}
+  \vspace{0.3em}
 
   \begin{columns}[T]
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
-        toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{white},
-        title={RLHF (Ouyang et al., 2022)}, top=3pt, bottom=3pt]
-      \scriptsize
-      1.\ Collect human preference data\\
-      2.\ Train a reward model\\
-      3.\ Optimize policy via PPO\\[3pt]
-      % \muted{Used by: GPT-4, Claude, Gemini}
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
-        toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{white},
-        title=Constitutional AI (Anthropic), top=3pt, bottom=3pt]
-      \scriptsize
-      Model self-critiques against a set of principles\\
-      (UN Declaration, safety rules)\\[3pt]
-      No human labelers needed for the critique step
-    \end{tcolorbox}
-
-    \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
-        toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{white},
-        title={DPO (Rafailov et al., 2023)}, top=3pt, bottom=3pt]
-      \scriptsize
-      Simplified alignment --- no reward model needed\\
-      Directly optimizes on preference pairs\\[3pt]
-      \muted{Cheaper, more stable than RLHF}
-    \end{tcolorbox}\vspace{3pt}
+    {\small\bfseries\navy{Key Alignment Methods}}
+    \begin{itemize}\scriptsize\setlength\itemsep{4pt}
+      \item \textbf{RLHF} (Ouyang et al., 2022): Collect human preferences $\to$ train reward model $\to$ optimize policy via PPO
+      \item \textbf{Constitutional AI} (Anthropic): Model self-critiques against principles (UN Declaration, safety rules) --- no human labelers needed
+      \item \textbf{DPO} (Rafailov et al., 2023): Simplified alignment --- directly optimizes on preference pairs, no reward model needed
+    \end{itemize}
+    \vspace{0.3em}
     \begin{ucrwarn}
       \scriptsize\bfseries The Problem: Deceptive Alignment\\[3pt]
       \normalfont\scriptsize
       Models can achieve high safety scores
       \textbf{without truly internalizing safety} ---
-      ``fake alignment'' (Hubinger et al.)\\[3pt]
-      Even GPT-4o and o1 remain vulnerable to advanced attacks
-      despite extensive alignment.
+      ``fake alignment'' (Hubinger et al.)\\[2pt]
+      Even GPT-4o and o1 remain vulnerable despite extensive alignment.
     \end{ucrwarn}
+
+    \column{0.48\textwidth}
+    \centering
+    {\small\bfseries\navy{RLHF Step 3: PPO}}
+    \vspace{0.2em}
+    \includegraphics[width=0.85\textwidth]{figures/rlhf_ppo_step3.png}
   \end{columns}
 \end{frame}
 
@@ -293,32 +280,30 @@
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Jailbreaking: Bypassing the Guardrails}
   \begin{columns}[T]
-    \column{0.32\textwidth}
-    {\small\bfseries\navy{Black-box (API Access)}}
-    \begin{ucrcard}[UCRnavy]{Example 1: Persona Adoption}
-      \scriptsize
-      The user writes a prompt convincing the AI it is a ``developer testing an unaligned system,'' bypassing default refusal mechanisms.\\[2pt]
-      \muted{E.g., ``DAN'' (Do Anything Now) roleplay.}
-    \end{ucrcard}
-
-
-
-    \column{0.32\textwidth}
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Black-box (API Access Only)}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{Persona adoption}: convince AI it is an ``unaligned developer'' --- bypasses refusal
+      \item E.g., ``DAN'' (Do Anything Now) roleplay
+    \end{itemize}
+    \vspace{0.3em}
     {\small\bfseries\navy{Gray-box (Partial Access)}}
-    \begin{ucrcard}[UCRnavy]{Example: Fine-Tuning Attacks}
-      \scriptsize
-      Safety alignment can be completely erased by fine-tuning a model via API on as few as \textbf{100 harmful examples}.\\[3pt]
-      \textbf{Embedding Attacks:}\\
-      Injecting malicious vector embeddings directly if the system exposes its embedding space.
-    \end{ucrcard}
-
-    \column{0.32\textwidth}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{Fine-tuning attacks}: safety erased with as few as \textbf{100 harmful examples}
+      \item \textbf{Embedding injection}: malicious vectors injected if embedding space is exposed
+    \end{itemize}
+    \vspace{0.3em}
     {\small\bfseries\navy{White-box (Weights Access)}}
-    \begin{ucrcard}[UCRnavy]{Example 3: Adversarial Suffixes}
-      \scriptsize
-      The \textbf{GCG} (Greedy Coordinate Gradient) attack mathematically calculates an invisible, gibberish-looking string of characters.\\[2pt]
-      When appended to a malicious request, this suffix forces the neural network to output ``Sure, here is...'' instead of refusing.
-    \end{ucrcard}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item \textbf{GCG} (Greedy Coordinate Gradient): computes an adversarial suffix that forces ``Sure, here is...'' instead of refusal
+      \item Transfers across ChatGPT, Claude, Bard, Llama-2
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    \centering
+    {\small\bfseries\navy{GCG Attack (Zou et al., 2023)}}
+    \vspace{0.2em}
+    \includegraphics[width=\textwidth]{figures/gcg_attack.png}
   \end{columns}
   \vspace{0.3em}
   \begin{ucrinfo}
