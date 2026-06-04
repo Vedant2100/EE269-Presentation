@@ -5,129 +5,6 @@
 %  Styled to match safety.tex UCR theme
 % ═══════════════════════════════════════════════════════════════════════
 
-\documentclass[aspectratio=169, 10pt]{beamer}
-
-% ─── Packages ────────────────────────────────────────────────────────────────
-\usepackage{tikz}
-\usetikzlibrary{arrows.meta, positioning, shapes.geometric, shapes.misc}
-\usepackage{tcolorbox}
-\tcbuselibrary{skins, breakable}
-\usepackage{tabularx, booktabs, colortbl}
-\usepackage{amsmath}
-\usepackage{xcolor}
-
-% ─── UCR Color Palette (identical to safety.tex) ─────────────────────────────
-\definecolor{UCRnavy}{HTML}{002147}
-\definecolor{UCRnavy}{HTML}{C0272D}
-\definecolor{UCRnavy}{HTML}{007B8A}
-\definecolor{UCRnavy}{HTML}{6A0572}
-\definecolor{UCRnavy}{HTML}{2D6A4F}
-\definecolor{UCRnavy}{HTML}{E07B31}
-\definecolor{UCRnavy}{HTML}{3A7D44}
-\definecolor{UCRnavy}{HTML}{C9A84C}
-\definecolor{UCRnavy}{HTML}{4A90D9}
-\definecolor{UCRmgray}{HTML}{888888}
-\definecolor{UCRlgray}{HTML}{F5F5F5}
-\definecolor{UCRdark}{HTML}{333333}
-\definecolor{UCRnavy}{HTML}{FDEDED}
-
-% ─── Beamer Theme ────────────────────────────────────────────────────────────
-\usetheme{default}
-\usecolortheme[named=UCRnavy]{structure}
-\setbeamercolor{frametitle}{bg=UCRnavy, fg=white}
-\setbeamercolor{title}{fg=UCRnavy}
-\setbeamercolor{normal text}{fg=UCRdark}
-\setbeamertemplate{navigation symbols}{}
-\setbeamerfont{frametitle}{series=\bfseries, size=\normalsize}
-\setbeamertemplate{frametitle}[default][left, leftskip=0.6em]
-\addtobeamertemplate{frametitle}{}{\vspace{-2pt}}
-
-\setbeamertemplate{footline}{%
-  \leavevmode\hbox{%
-    \begin{beamercolorbox}[wd=.72\paperwidth,ht=2.4ex,dp=1ex,left,leftskip=1em]{author in head/foot}%
-      \scriptsize\color{UCRmgray}Lee et al.\ (EMNLP 2025) · Interpretation Meets Safety
-    \end{beamercolorbox}%
-    \begin{beamercolorbox}[wd=.28\paperwidth,ht=2.4ex,dp=1ex,right,rightskip=1em]{date in head/foot}%
-      \scriptsize\color{UCRmgray}\insertframenumber\,/\,\inserttotalframenumber
-    \end{beamercolorbox}}%
-  \vskip0pt%
-}
-
-% ─── Shorthand Color Commands ─────────────────────────────────────────────────
-\newcommand{\navy}[1]{{\color{UCRnavy}#1}}
-\newcommand{\redc}[1]{{\color{UCRnavy}#1}}
-\newcommand{\tealc}[1]{{\color{UCRnavy}#1}}
-\newcommand{\greenc}[1]{{\color{UCRnavy}#1}}
-\newcommand{\muted}[1]{{\color{UCRmgray}\itshape#1}}
-\newcommand{\orangec}[1]{{\color{UCRnavy}#1}}
-\newcommand{\purpc}[1]{{\color{UCRnavy}#1}}
-
-% ─── Custom Box Environments (matching safety.tex) ───────────────────────────
-\newtcolorbox{ucrcard}[2][UCRnavy]{
-  enhanced, sharp corners,
-  colback=UCRlgray, colframe=#1,
-  toprule=3pt, bottomrule=0.5pt, leftrule=0.5pt, rightrule=0.5pt,
-  fonttitle=\bfseries\small\color{#1}, title={#2},
-  top=3pt, bottom=3pt, left=4pt, right=4pt,
-}
-
-\newtcolorbox{ucrdark}[1][UCRnavy]{
-  enhanced, sharp corners,
-  colback=#1, colframe=#1, colupper=white,
-  fontupper=\small, top=4pt, bottom=4pt, left=6pt, right=6pt,
-}
-
-\newtcolorbox{ucrwarn}{
-  enhanced, sharp corners,
-  colback=UCRnavy, colframe=UCRnavy,
-  borderline west={3pt}{0pt}{UCRnavy},
-  top=3pt, bottom=3pt, left=6pt, right=6pt,
-}
-
-\newtcolorbox{ucrinfo}{
-  enhanced, sharp corners,
-  colback=UCRlgray, colframe=UCRnavy,
-  borderline west={3pt}{0pt}{UCRnavy},
-  top=3pt, bottom=3pt, left=6pt, right=6pt,
-}
-
-% ─── Section Divider Frame ────────────────────────────────────────────────────
-\newcommand{\sectionframe}[4]{%
-  \begin{frame}[plain]
-    \begin{tikzpicture}[remember picture, overlay]
-      \fill[UCRnavy] (current page.north west) rectangle (current page.south east);
-      % Gold accent bar on left
-      \fill[UCRnavy] (current page.north west)
-        rectangle ([xshift=0.35cm]current page.south west);
-      % Section number
-      \node[anchor=north west, text=UCRnavy, font=\Huge\bfseries,
-            opacity=0.25, scale=3]
-        at ([xshift=0.55cm, yshift=-0.4cm]current page.north west) {\S#1};
-      % Title
-      \node[anchor=center, text=white, font=\LARGE\bfseries,
-            text width=0.82\paperwidth, align=center]
-        at ([yshift=0.6cm]current page.center) {#2};
-      % Subtitle
-      \node[anchor=center, text=white!75!UCRnavy, font=\large,
-            text width=0.78\paperwidth, align=center]
-        at ([yshift=-0.3cm]current page.center) {#3};
-      % Source line
-      \node[anchor=center, text=UCRnavy!80!UCRnavy, font=\small\itshape]
-        at ([yshift=-1.2cm]current page.center) {#4};
-    \end{tikzpicture}
-  \end{frame}
-}
-
-% ─── Title ───────────────────────────────────────────────────────────────────
-\title{Interpretation Meets Safety}
-\subtitle{How Interpretability Methods Understand and Enhance LLM Safety}
-\author{}
-\date{}
-
-% ════════════════════════════════════════════════════════════════════════════
-\begin{document}
-% ════════════════════════════════════════════════════════════════════════════
-
 % ─── TITLE FRAME ─────────────────────────────────────────────────────────────
 \begin{frame}[plain]
   \begin{tikzpicture}[remember picture, overlay]
@@ -280,21 +157,15 @@
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\navy{Three Attribution Approaches}}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Representation-Based, top=2pt, bottom=2pt]
+    \begin{ucrcard}[UCRnavy]{Representation-Based}
       \scriptsize Compare similarity of training example latent vectors to the output. Fast, but does \textbf{not establish causality}.
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Gradient-Based (TracIn / Influence Functions), top=2pt, bottom=2pt]
+    \end{ucrcard}\vspace{2pt}
+    \begin{ucrcard}[UCRnavy]{Gradient-Based (TracIn / Influence Functions)}
       \scriptsize Estimates how removing a training point would change model parameters. Theoretically grounded --- but \textbf{expensive to scale} to LLMs and sensitive to convexity assumptions.
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Data Shapley, top=2pt, bottom=2pt]
+    \end{ucrcard}\vspace{2pt}
+    \begin{ucrcard}[UCRnavy]{Data Shapley}
       \scriptsize Marginal-contribution based attribution. Principled, but \textbf{limited to smaller models} due to computational cost.
-    \end{tcolorbox}
+    \end{ucrcard}
 
     \column{0.48\textwidth}
     {\small\bfseries\navy{Safety Applications}}
@@ -360,26 +231,20 @@
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\navy{Probing Techniques}}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Mean Difference Vectors, top=2pt, bottom=2pt]
+    \begin{ucrcard}[UCRnavy]{Mean Difference Vectors}
       \scriptsize
       Compute mean latent vector for harmful vs.\ harmless prompts. Their difference encodes the ``harmfulness direction.''\\[2pt]
       \muted{Zou et al.\ (2023): Representation Engineering}
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Probing Classifiers, top=2pt, bottom=2pt]
+    \end{ucrcard}\vspace{2pt}
+    \begin{ucrcard}[UCRnavy]{Probing Classifiers}
       \scriptsize
       Train a linear classifier on latent vectors to predict safety properties. Successfully detects hallucinations, jailbreaks, and bias.\\[2pt]
       \muted{Known issue: poor cross-task generalization.}
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=PCA / SVD on Activations, top=2pt, bottom=2pt]
+    \end{ucrcard}\vspace{2pt}
+    \begin{ucrcard}[UCRnavy]{PCA / SVD on Activations}
       \scriptsize
       Dimensionality reduction uncovers the principal axes of unsafe behavior (Ball et al., 2024; Duan et al., 2024).
-    \end{tcolorbox}
+    \end{ucrcard}
 
     \column{0.48\textwidth}
     {\small\bfseries\navy{Key Safety Discoveries}}
@@ -630,21 +495,15 @@
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\navy{Approach Family}}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Pruning / Downscaling, top=2pt, bottom=2pt]
+    \begin{ucrcard}[UCRnavy]{Pruning / Downscaling}
       \scriptsize Remove or downweight attention heads / sublayers identified as responsible for harmful outputs. Layer-specific jailbreak defense (Zhao et al., 2024), hallucination heads (Li et al., 2024), bias heads (Ma et al., 2023).
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Safety Direction Editing, top=2pt, bottom=2pt]
+    \end{ucrcard}\vspace{2pt}
+    \begin{ucrcard}[UCRnavy]{Safety Direction Editing}
       \scriptsize Compare aligned vs.\ unaligned model weights $\to$ find the ``safety direction'' in parameter space $\to$ steer critical parameters accordingly. \textit{Safety Arithmetic} (Hazra et al., 2024).
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, sharp corners,
-        borderline west={3pt}{0pt}{UCRnavy}, fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Knowledge Editing (ROME / MEMIT), top=2pt, bottom=2pt]
+    \end{ucrcard}\vspace{2pt}
+    \begin{ucrcard}[UCRnavy]{Knowledge Editing (ROME / MEMIT)}
       \scriptsize Edit specific factual associations in model weights without retraining. Can remove dangerous knowledge or correct biased associations at the fact level.
-    \end{tcolorbox}
+    \end{ucrcard}
 
     \column{0.48\textwidth}
     {\small\bfseries\navy{Key Results}}
@@ -721,32 +580,24 @@
   \vspace{0.3em}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, toprule=2pt,
-        sharp corners, fonttitle=\bfseries\small\color{UCRnavy},
-        title=\S5.1\ Training Data Attribution Visualizers, top=3pt, bottom=3pt]
+    \begin{ucrcard}[UCRnavy]{\S5.1\ Training Data Attribution Visualizers}
       \scriptsize
       \textbf{LLM Attributor} (Lee et al., 2025): interactive tool tracing model outputs to training data. Users inspect which examples caused a hallucinated fact or toxic output --- and can flag them for removal.
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, toprule=2pt,
-        sharp corners, fonttitle=\bfseries\small\color{UCRnavy},
-        title=\S5.2\ Input Token Visualizations, top=3pt, bottom=3pt]
+    \end{ucrcard}\vspace{3pt}
+    \begin{ucrcard}[UCRnavy]{\S5.2\ Input Token Visualizations}
       \scriptsize
       Tools like \textbf{BertViz} (Vig, 2019), \textbf{iScore}, \textbf{PromptAID} (Mishra et al., 2025): visualize attention patterns across heads, reveal spurious token associations indicating bias. Support \textbf{interactive perturbation} --- edit tokens, observe output shift live.
-    \end{tcolorbox}
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, toprule=2pt,
-        sharp corners, fonttitle=\bfseries\small\color{UCRnavy},
-        title=\S5.3\ Latent Vector Visualizations, top=3pt, bottom=3pt]
+    \begin{ucrcard}[UCRnavy]{\S5.3\ Latent Vector Visualizations}
       \scriptsize
       Project latent vectors into 2D space; \textbf{logit lens} visualizers show vocabulary-level semantics at each layer; interactive steering tools let users push activations toward safer regions live. \textit{LM-Debugger} (Geva et al., 2022); \textit{Dashboard for Transparency} (Chen et al., 2024).
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, toprule=2pt,
-        sharp corners, fonttitle=\bfseries\small\color{UCRnavy},
-        title=\S5.4\ Neuron \& SAE Visualizations, top=3pt, bottom=3pt]
+    \end{ucrcard}\vspace{3pt}
+    \begin{ucrcard}[UCRnavy]{\S5.4\ Neuron \& SAE Visualizations}
       \scriptsize
       \textbf{Neuronpedia} (Lin, 2023): interactive reference for SAE neuron concepts. \textbf{Neuroscope} (Nanda, 2022): browser for mechanistic interpretability of LLMs. Enable safety researchers to find, inspect, and manipulate safety-relevant features at scale.
-    \end{tcolorbox}
+    \end{ucrcard}
     \vspace{0.2em}
     \begin{ucrinfo}
       \centering\scriptsize
@@ -768,40 +619,30 @@
 \begin{frame}{Open Challenges at the Interpretability–Safety Interface}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRnavy, colframe=UCRnavy, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy},
-        title=[!] Interpretation-Based Attacks, top=3pt, bottom=3pt]
+    \begin{ucrcard}[UCRnavy]{[!} Interpretation-Based Attacks, top=3pt, bottom=3pt]
       \scriptsize
       Interpretation reveals \emph{why} certain tokens trigger unsafe outputs --- enabling adversaries to craft \textbf{more targeted} jailbreak suffixes (Lin et al., 2024; Winninger et al., 2025).\\[3pt]
       Adversaries use SAE feature maps to identify and manipulate model components linked to safety alignment (Arditi et al., 2024).\\[3pt]
       \textbf{Tools built for transparency become attack vectors.}
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy},
-        title=[?] Reliable Evaluation of Interpretations, top=3pt, bottom=3pt]
+    \end{ucrcard}\vspace{3pt}
+    \begin{ucrcard}[UCRnavy]{[?} Reliable Evaluation of Interpretations, top=3pt, bottom=3pt]
       \scriptsize
       No field consensus on ``faithful'' or ``interpretable.'' Evaluation scores vary with \emph{presentation format}. Requires interdisciplinary collaboration: ML $+$ HCI $+$ cognitive science.
-    \end{tcolorbox}
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy},
-        title=[DB] TDA for Safety Enhancement, top=3pt, bottom=3pt]
+    \begin{ucrcard}[UCRnavy]{[DB} TDA for Safety Enhancement, top=3pt, bottom=3pt]
       \scriptsize
       TDA can trace unsafe behavior to training data --- but \textbf{using that information to fix safety} (retrain without bad data) only demonstrated on small, non-generative models. Scaling to LLMs is an open problem.
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy},
-        title=[People] User-Centered Presentation, top=3pt, bottom=3pt]
+    \end{ucrcard}\vspace{3pt}
+    \begin{ucrcard}[UCRnavy]{[People} User-Centered Presentation, top=3pt, bottom=3pt]
       \scriptsize
       Conversational interaction (e.g., TalkToModel) aids human understanding --- but \textbf{no tools} apply this to safety-oriented interpretation. Different stakeholders (developers, auditors, regulators) need different views.
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy},
-        title=[Scope] Broader Safety Dimensions, top=3pt, bottom=3pt]
+    \end{ucrcard}\vspace{3pt}
+    \begin{ucrcard}[UCRnavy]{[Scope} Broader Safety Dimensions, top=3pt, bottom=3pt]
       \scriptsize
       Interpretation research focuses on hallucination, jailbreaks, bias, and privacy. \textbf{Under-studied}: code security, OOD robustness, and over-refusal (Siska \& Sankaran, 2025).
-    \end{tcolorbox}
+    \end{ucrcard}
   \end{columns}
 \end{frame}
 
@@ -949,4 +790,3 @@
   \end{ucrinfo}
 \end{frame}
 
-\end{document}
