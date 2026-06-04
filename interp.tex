@@ -31,8 +31,8 @@
     \end{tcolorbox}
 
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRteal,
-        toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{UCRteal},
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
+        toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{UCRnavy},
         title=Mechanistic Interpretability]
       \begin{itemize}\footnotesize\setlength\itemsep{3pt}
         \item Identifies neurons, heads, circuits responsible for behaviors
@@ -43,7 +43,7 @@
     \end{tcolorbox}
   \end{columns}
   \vspace{0.3em}
-  \begin{ucrinfo}[UCRteal]
+  \begin{ucrinfo}[UCRnavy]
     \footnotesize\bfseries Core shift:\normalfont\ from observational science
     (`what happens?') $\to$ actionable intervention discipline (`how do we fix it?')
   \end{ucrinfo}
@@ -52,7 +52,7 @@
 % ═════════════════════════════════════════════════════════════════════════════
 %  SLIDE 19 --- LOCATE $\to$ STEER $\to$ IMPROVE PIPELINE
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{The ``Locate $\to$ Steer $\to$ Improve'' Pipeline \papertag[UCRteal]{Paper \textcircled{2}}}
+\begin{frame}{The ``Locate $\to$ Steer $\to$ Improve'' Pipeline \papertag[UCRnavy]{Paper \textcircled{2}}}
   \vspace*{0.3cm}
   \begin{tikzpicture}[
     block/.style={rectangle, rounded corners=2pt, draw=#1, fill=UCRlgray,
@@ -60,9 +60,9 @@
                   align=center},
     arr/.style={-{Stealth[length=6pt]}, UCRmgray, very thick},
   ]
-    \node[block=UCRteal, label={[font=\Huge\bfseries\color{UCRteal},
+    \node[block=UCRnavy, label={[font=\Huge\bfseries\color{UCRnavy},
           opacity=0.2]center:1}] (l) at (0,0)
-      {{\bfseries\color{UCRteal}\large LOCATE}\\[0.15em]
+      {{\bfseries\color{UCRnavy}\large LOCATE}\\[0.15em]
        \footnotesize\itshape(Diagnose)\\[0.5em]
        \footnotesize Identify which components --- neurons, heads, circuits,
        SAE features --- are causally responsible for a specific behavior.};
@@ -74,9 +74,9 @@
        \footnotesize Actively manipulate identified components: amplitude
        manipulation, targeted optimization, vector arithmetic.};
 
-    \node[block=UCRgreen, label={[font=\Huge\bfseries\color{UCRgreen},
+    \node[block=UCRnavy, label={[font=\Huge\bfseries\color{UCRnavy},
           opacity=0.2]center:3}] (i) at (8.2,0)
-      {{\bfseries\color{UCRgreen}\large IMPROVE}\\[0.15em]
+      {{\bfseries\color{UCRnavy}\large IMPROVE}\\[0.15em]
        \footnotesize\itshape(Apply)\\[0.5em]
        \footnotesize Translate insights into practical improvements in
        alignment, capability, and efficiency --- without full retraining.};
@@ -92,13 +92,13 @@
 % ═════════════════════════════════════════════════════════════════════════════
 %  SLIDE 20 --- CORE INTERPRETABLE OBJECTS OVERVIEW
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Core Interpretable Objects of LLMs \papertag[UCRteal]{Paper \textcircled{2}}}
+\begin{frame}{Core Interpretable Objects of LLMs \papertag[UCRnavy]{Paper \textcircled{2}}}
   {\small The `interpretable objects' are the units MI methods analyze and
     intervene upon inside a Transformer LLM:}
   \vspace{0.3em}
 
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={3pt}{0pt}{UCRteal}, sharp corners, top=3pt, bottom=3pt]
+      borderline west={3pt}{0pt}{UCRnavy}, sharp corners, top=3pt, bottom=3pt]
     \small\bfseries\tealc{1. Token Embedding}\normalfont\
     --- Maps discrete tokens to continuous vectors; entry point; encodes lexical \& positional meaning.
   \end{tcolorbox}\vspace{2pt}
@@ -108,18 +108,18 @@
     --- Central `highway' of information. Features are linear combinations of all prior component outputs.
   \end{tcolorbox}\vspace{2pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={3pt}{0pt}{UCRpurple}, sharp corners, top=3pt, bottom=3pt]
-    \small\bfseries{\color{UCRpurple}3. Multi-Head Attention (MHA)}\normalfont\
+      borderline west={3pt}{0pt}{UCRnavy}, sharp corners, top=3pt, bottom=3pt]
+    \small\bfseries{\color{UCRnavy}3. Multi-Head Attention (MHA)}\normalfont\
     --- Manages information routing; key units: QK (where to attend), OV (what to copy).
   \end{tcolorbox}\vspace{2pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={3pt}{0pt}{UCRorange}, sharp corners, top=3pt, bottom=3pt]
-    \small\bfseries{\color{UCRorange}4. Feed-Forward Network (FFN)}\normalfont\
+      borderline west={3pt}{0pt}{UCRnavy}, sharp corners, top=3pt, bottom=3pt]
+    \small\bfseries{\color{UCRnavy}4. Feed-Forward Network (FFN)}\normalfont\
     --- Acts as key-value memory; stores factual associations; neurons encode specific world-knowledge tokens.
   \end{tcolorbox}\vspace{2pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={3pt}{0pt}{UCRgreen}, sharp corners, top=3pt, bottom=3pt]
-    \small\bfseries\greenc{5. Sparse Autoencoder (SAE) Feature}\normalfont\
+      borderline west={3pt}{0pt}{UCRnavy}, sharp corners, top=3pt, bottom=3pt]
+    \small\bfseries\navy{5. Sparse Autoencoder (SAE) Feature}\normalfont\
     --- Disentangles polysemantic neurons into monosemantic features via sparse coding --- a `microscope' for LLM representations.
   \end{tcolorbox}
 \end{frame}
@@ -155,8 +155,8 @@
   \vspace{0.4em}
   \begin{tikzpicture}
     \foreach \i/\lbl/\col in {
-      0/Input Tokens/UCRteal, 1/Embed ($x^0$)/UCRnavy,
-      2/Block 1/UCRnavy, 3/Block $L$/UCRnavy, 4/Output Logits/UCRgreen}
+      0/Input Tokens/UCRnavy, 1/Embed ($x^0$)/UCRnavy,
+      2/Block 1/UCRnavy, 3/Block $L$/UCRnavy, 4/Output Logits/UCRnavy}
     {
       \node[rectangle, fill=\col, text=white, font=\tiny\bfseries,
             minimum width=1.8cm, minimum height=0.65cm, text centered]
@@ -212,7 +212,7 @@
 \begin{frame}{Sparse Autoencoders: Resolving Superposition}
   \begin{columns}[T]
     \column{0.52\textwidth}
-    {\small\bfseries\redc{The Problem: Superposition}}\\[0.2em]
+    {\small\bfseries\navy{The Problem: Superposition}}\\[0.2em]
     {\footnotesize Neural networks store more features than neurons by encoding
       them as nearly-orthogonal directions in high-dimensional space.
       One neuron $\to$ many unrelated concepts.}
@@ -231,7 +231,7 @@
 
     \column{0.44\textwidth}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, fonttitle=\bfseries\small\color{UCRteal},
+        sharp corners, fonttitle=\bfseries\small\color{UCRnavy},
         title=SAE Architecture]
       \begin{tikzpicture}
         \node[rectangle, fill=UCRnavy, text=white, font=\tiny\bfseries,
@@ -239,7 +239,7 @@
           (dense) {Dense Activation $x^l$\;($d_{\text{model}}$)};
         \draw[-{Stealth[length=4pt]}, UCRmgray]
           (dense.south) -- +(0,-0.3);
-        \node[rectangle, fill=UCRteal, text=white, font=\tiny\bfseries,
+        \node[rectangle, fill=UCRnavy, text=white, font=\tiny\bfseries,
               minimum width=3.5cm, minimum height=0.6cm, text centered,
               below=0.3cm of dense]
           (enc) {SAE Encoder $\to$ Sparse $a$\;($d_{\text{SAE}}$)};
@@ -270,8 +270,8 @@
   \begin{columns}[T]
     \column{0.48\textwidth}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRteal}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRteal},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Magnitude Analysis, top=3pt, bottom=3pt]
       \scriptsize Rank objects by activation magnitude or weight norms.
       High-magnitude elements $\approx$ salient components.
@@ -284,8 +284,8 @@
       measure causal effect on output. Precise causal identification.
     \end{tcolorbox}\vspace{3pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRpurple}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRpurple},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Gradient Detection, top=3pt, bottom=3pt]
       \scriptsize Integrated Gradients, SmoothGrad, saliency maps.
       Identifies which inputs drive which computations.
@@ -293,22 +293,22 @@
 
     \column{0.48\textwidth}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRorange}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRorange},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Probing, top=3pt, bottom=3pt]
       \scriptsize Train lightweight classifiers on internal activations.
       Tests what information is encoded where.
     \end{tcolorbox}\vspace{3pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRgreen}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRgreen},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Vocabulary Projection (Logit Lens), top=3pt, bottom=3pt]
       \scriptsize Project residual stream states to vocabulary space.
       Reveals what each layer `predicts' at each step.
     \end{tcolorbox}\vspace{3pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRred}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRred},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Circuit Discovery, top=3pt, bottom=3pt]
       \scriptsize Extract minimal subgraphs (circuits) implementing a task.
       Path patching traces information flow.
@@ -346,7 +346,7 @@
     \end{itemize}
   \end{columns}
   \vspace{0.3em}
-  \begin{ucrinfo}[UCRteal]
+  \begin{ucrinfo}[UCRnavy]
     \footnotesize\bfseries Mechanistic Insight:\normalfont\ A small fraction of
     components (sometimes \textless5\% of parameters) is responsible for specific
     capabilities. MI allows `surgical' edits without degrading the rest.
@@ -358,14 +358,14 @@
 % ═════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Steering Methods: Intervening on LLM Internals}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={4pt}{0pt}{UCRteal}, sharp corners,
-      fonttitle=\bfseries\small\color{UCRteal}, title=Amplitude Manipulation,
+      borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
+      fonttitle=\bfseries\small\color{UCRnavy}, title=Amplitude Manipulation,
       top=3pt, bottom=3pt]
     \footnotesize Inference-time activation control: \textbf{ablation} (zero out),
     \textbf{patching} (replace), \textbf{scaling} (amplify/attenuate).
     Reversible; no weight update. Tang et al.\ (2024): zero out Chinese neurons $\to$
     force English output.
-    \hfill\redc{\tiny \textbf{!} fragile if target is polysemantic}
+    \hfill\navy{\tiny \textbf{!} fragile if target is polysemantic}
   \end{tcolorbox}
   \vspace{3pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
@@ -376,28 +376,28 @@
     $\theta' \leftarrow \theta + (M \odot \Delta\theta)$.
     ROME/MEMIT edit factual knowledge in FFN layers.
     Persistent across inference calls.
-    \hfill\redc{\tiny \textbf{!} careful mask selection required}
+    \hfill\navy{\tiny \textbf{!} careful mask selection required}
   \end{tcolorbox}
   \vspace{3pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={4pt}{0pt}{UCRgreen}, sharp corners,
-      fonttitle=\bfseries\small\color{UCRgreen}, title=Vector Arithmetic,
+      borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
+      fonttitle=\bfseries\small\color{UCRnavy}, title=Vector Arithmetic,
       top=3pt, bottom=3pt]
     \footnotesize Operate on the residual stream: add/subtract steering vectors
     for semantic directions. Refusal direction: add refusal vector $\to$ suppress
     jailbreaks (Arditi et al., 2024). Representation Engineering (RepE) steers
     via contrastive pairs.
-    \hfill\redc{\tiny \textbf{!} linear assumption may break down}
+    \hfill\navy{\tiny \textbf{!} linear assumption may break down}
   \end{tcolorbox}
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
 %  SLIDE 27 --- APPLICATIONS: ALIGNMENT
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{MI Applications: Improve Alignment \papertag[UCRteal]{Paper \textcircled{2}}}
+\begin{frame}{MI Applications: Improve Alignment \papertag[UCRnavy]{Paper \textcircled{2}}}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={4pt}{0pt}{UCRgreen}, sharp corners,
-      fonttitle=\bfseries\small\color{UCRgreen}, title=Safety \& Reliability,
+      borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
+      fonttitle=\bfseries\small\color{UCRnavy}, title=Safety \& Reliability,
       top=3pt, bottom=3pt]
     \begin{itemize}\footnotesize\setlength\itemsep{2pt}
       \item Locate safety-critical attention heads/neurons via causal attribution
@@ -410,8 +410,8 @@
   \end{tcolorbox}
   \vspace{3pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-      borderline west={4pt}{0pt}{UCRteal}, sharp corners,
-      fonttitle=\bfseries\small\color{UCRteal}, title=Fairness \& Bias,
+      borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
+      fonttitle=\bfseries\small\color{UCRnavy}, title=Fairness \& Bias,
       top=3pt, bottom=3pt]
     \begin{itemize}\footnotesize\setlength\itemsep{2pt}
       \item Identify gender/demographic bias in specific attention heads
@@ -433,14 +433,14 @@
 % ═════════════════════════════════════════════════════════════════════════════
 %  SLIDE 28 --- APPLICATIONS: CAPABILITY & EFFICIENCY
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{MI Applications: Capability \& Efficiency \papertag[UCRteal]{Paper \textcircled{2}}}
+\begin{frame}{MI Applications: Capability \& Efficiency \papertag[UCRnavy]{Paper \textcircled{2}}}
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\tealc{Improve Capability}}
 
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRteal}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRteal},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Multilingualism, top=3pt, bottom=3pt]
       \scriptsize Locate language-specific neurons; cross-lingual transfer by
       enabling/disabling circuits. Tang et al.\ (2024): zero out Chinese neurons $\to$ force English.
@@ -453,8 +453,8 @@
       optimization updates/erases specific facts without full retraining.
     \end{tcolorbox}\vspace{2pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRpurple}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRpurple},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Logic \& Reasoning, top=3pt, bottom=3pt]
       \scriptsize SAE features for reasoning (Galichin et al., 2025); scaling
       reflection features increases reasoning depth; arithmetic circuits discovered.
@@ -471,15 +471,15 @@
       Men et al.\ (2025): remove low-causal-effect layers $\to$ faster inference.
     \end{tcolorbox}\vspace{2pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRteal}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRteal},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=Attention Head Pruning, top=3pt, bottom=3pt]
       \scriptsize Many heads are functionally redundant; retain only
       task-critical heads $\to$ faster inference with minimal quality loss.
     \end{tcolorbox}\vspace{2pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        borderline west={3pt}{0pt}{UCRgreen}, sharp corners,
-        fonttitle=\bfseries\footnotesize\color{UCRgreen},
+        borderline west={3pt}{0pt}{UCRnavy}, sharp corners,
+        fonttitle=\bfseries\footnotesize\color{UCRnavy},
         title=MI-Informed Fine-tuning, top=3pt, bottom=3pt]
       \scriptsize Target LoRA updates to MI-localized components $\to$
       parameter-efficient adaptation with stronger guarantees.
