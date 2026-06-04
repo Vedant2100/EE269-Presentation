@@ -922,21 +922,21 @@
     \begin{ucrcard}[UCRnavy]{Example Attack: Bypassing Filters}
       \scriptsize
       \textbf{White-box concept erasure circumvention}:\\
-      Attackers mathematically optimize text embeddings to force the model to generate copyrighted or harmful content that was specifically ``erased'' from its weights during safety training.
+      Attackers optimize embeddings to force generation of copyrighted/harmful content explicitly removed during safety training.
     \end{ucrcard}
 
     \column{0.48\textwidth}
     \begin{ucrcard}[UCRnavy]{Example Defense: Concept Erasure}
       \scriptsize
       \textbf{Forget-Me-Not / ESD}:\\
-      Instead of just filtering outputs, defenders modify the diffusion model's weights to structurally remove its ability to generate specific concepts (e.g., violence or a specific artist's style).
+      Modifies model weights to structurally remove concepts (e.g., violence, specific art styles) instead of just filtering outputs.
     \end{ucrcard}
 
     \vspace{0.3em}
     \begin{ucrcard}[UCRnavy]{Example Defense: Anti-Mimicry}
       \scriptsize
       \textbf{Glaze / Mist}:\\
-      Artists add imperceptible, adversarial noise to their images before posting them online. If a diffusion model scrapes the image, the noise corrupts the model's understanding of the art style, preventing imitation.
+      Artists add imperceptible adversarial noise to images. If scraped, the noise corrupts the model's ability to imitate their style.
     \end{ucrcard}
   \end{columns}
 \end{frame}
@@ -955,17 +955,14 @@
     \begin{ucrcard}[UCRnavy]{Example Attack: Indirect Prompt Injection}
       \scriptsize
       \textbf{Bing Chat Phishing Bot (Greshake et al.)}:\\
-      An attacker hides instructions like \texttt{<ignore previous instruction>} inside the white text of a normal-looking website.\\[3pt]
-      When an agent reads the page to summarize it for the user, it inadvertently ingests the hidden payload, secretly turning the agent into a social engineer that tries to steal the user's passwords.
+      Attacker hides instructions in website text. Agent reads page $\to$ ingests payload $\to$ secretly acts as a social engineer.
     \end{ucrcard}
 
     \column{0.48\textwidth}
     \begin{ucrcard}[UCRnavy]{Example Attack: Corrupting Memory}
       \scriptsize
       \textbf{RAG Poisoning}:\\
-      An attacker manages to insert just \textbf{one} adversarial document into a company's secure database.\\[3pt]
-      When the CEO asks the agent, ``Summarize the Q3 financial report,'' the agent pulls the real report \emph{and} the adversarial document.\\[3pt]
-      The adversarial document overrides the agent's instructions, forcing it to output fake, pessimistic financial metrics.
+      Attacker inserts \textbf{one} adversarial document into a secure database. Overrides agent instructions to output fake data.
     \end{ucrcard}
   \end{columns}
   
@@ -973,7 +970,7 @@
   \begin{ucrinfo}
     \centering\scriptsize\bfseries Example Defense: Privilege Management\\[2pt]
     \normalfont\scriptsize
-    \textbf{Instruction Hierarchy}: Developers give their system prompts strictly higher privilege than web text. The agent is trained to prioritize high-privilege instructions and ignore conflicting low-privilege text scraped from the internet.
+    \textbf{Instruction Hierarchy}: System prompts are given strict priority over scraped web text.
   \end{ucrinfo}
 \end{frame}
 
@@ -987,22 +984,21 @@
     \begin{ucrcard}[UCRnavy]{Example Attack: Viral Propagation}
       \scriptsize
       \textbf{AgentSmith / Morris-II}:\\
-      A zero-click worm designed for multi-agent systems. A single adversarial image or RAG document contains a self-replicating malicious string.\\[3pt]
-      When Agent A processes it, it gets infected and passes the payload in its natural language messages to Agents B and C, causing an \textbf{exponential viral spread} across the entire network topology.
+      Zero-click worm. Agent A ingests malicious string $\to$ infects natural language messages $\to$ \textbf{exponential spread} to Agents B \& C.
     \end{ucrcard}
 
     \column{0.48\textwidth}
     \begin{ucrcard}[UCRnavy]{Example Attack: Embodied Jailbreaks}
       \scriptsize
       \textbf{RoboPAIR}:\\
-      Standard text jailbreaks are adapted to target the LLMs controlling physical robots. Instead of generating toxic text, the jailbreak forces the robot to execute physically unsafe real-world actions.
+      Text jailbreaks adapted for physical robots, forcing unsafe real-world actions.
     \end{ucrcard}
     
     \vspace{0.3em}
     \begin{ucrcard}[UCRnavy]{Example Defense: Sentinel Agents}
       \scriptsize
       \textbf{LLAMOS}:\\
-      A dedicated "purification agent" that sits between communicating agents, filtering inter-agent messages for prompt infections before they spread.
+      Dedicated ``purification agent'' that filters inter-agent messages for prompt infections.
     \end{ucrcard}
   \end{columns}
 
@@ -1024,16 +1020,14 @@
     \begin{ucrcard}[UCRnavy]{Example Attack: Environmental Distractions}
       \scriptsize
       \textbf{EIA \& AdvAgent}:\\
-      Attackers embed completely invisible, maliciously crafted text in website HTML or in low-saliency "fine-print" areas.\\[3pt]
-      When the vision agent "looks" at the screen, it reads the invisible text and silently executes the payload (e.g., leaking private user data), completely bypassing text-based filters.
+      Invisible malicious text in website HTML. Vision agent ``looks'' at screen $\to$ silently executes payload, bypassing text filters.
     \end{ucrcard}
 
     \column{0.48\textwidth}
     \begin{ucrcard}[UCRnavy]{Example Attack: Action Hijacking}
       \scriptsize
       \textbf{Hidden Markdown Commands}:\\
-      Attackers use gradient-optimized images that \emph{appear completely harmless} to humans, but contain hidden Markdown commands.\\[3pt]
-      When the VLM processes the image, it parses the Markdown and is forced into taking tool actions, such as automatically deleting the user's calendar events.
+      Harmless-looking gradient-optimized images contain hidden Markdown. Forces VLM to execute tool actions (e.g., delete calendar).
     \end{ucrcard}
   \end{columns}
 
@@ -1041,7 +1035,7 @@
   \begin{ucrinfo}
     \centering\scriptsize\bfseries Example Defense: SmoothVLM\\[2pt]
     \normalfont\scriptsize
-    Instead of trusting a single image, the agent is forced to vote across multiple randomly cropped or altered versions of the image. This causes the mathematically precise adversarial patches to become unstable and fail.
+    Agent votes across randomly cropped/altered images, breaking precise adversarial patches.
   \end{ucrinfo}
 \end{frame}
 
@@ -1059,22 +1053,21 @@
     \begin{ucrcard}[UCRnavy]{Example Threat: Autonomous Exploitation}
       \scriptsize
       \textbf{Fang et al.}:\\
-      Instead of humans manually probing for weaknesses, LLM agents are given hacking tools and an objective.\\[3pt]
-      The agents autonomously explore software environments, discover real-world CVE vulnerabilities, and write custom exploits to breach the systems without human intervention.
+      Agents given hacking tools autonomously discover real-world CVEs and write custom exploits with zero human intervention.
     \end{ucrcard}
 
     \column{0.48\textwidth}
     \begin{ucrcard}[UCRnavy]{Example Threat: Automated Red Teaming}
       \scriptsize
       \textbf{AutoAdvExBench}:\\
-      Attackers use agents to dynamically generate new adversarial attacks that specifically target and bypass newly published defenses, creating a continuous, automated feedback loop.
+      Agents dynamically generate adversarial attacks to bypass newly published defenses.
     \end{ucrcard}
 
     \vspace{0.3em}
     \begin{ucrcard}[UCRnavy]{Example Defense: Multi-Agent Defense}
       \scriptsize
       \textbf{ShieldAgent}:\\
-      Fighting fire with fire: using a dedicated defensive multi-agent framework to continuously monitor and neutralize offensive agents.
+      Using defensive agent frameworks to continuously monitor offensive agents.
     \end{ucrcard}
   \end{columns}
   
@@ -1083,7 +1076,7 @@
     \scriptsize\bfseries
     The Arms Race Accelerates:\\[3pt]
     \normalfont\scriptsize
-    Agents autonomously finding zero-days and generating adversarial examples means the attack-defense gap will \textbf{widen exponentially} without proactive measures.
+    Agents finding zero-days $\to$ attack-defense gap will \textbf{widen exponentially}.
   \end{ucrdark}
 \end{frame}
 
