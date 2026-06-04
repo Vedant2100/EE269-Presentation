@@ -93,11 +93,14 @@ For each slide, you'll find **Key Points** (for a quick glance while presenting)
 - **Gray-box**: Erasing safety via fine-tuning on just 100 harmful examples.
 - **White-box (GCG)**: Math-calculated adversarial suffixes that force harmful outputs.
 - **Transferability**: Suffixes optimized on open models can break closed models.
+- **Defenses**: Input/Output Filtering (SmoothLLM) and Anti-Fine-Tuning (Vaccine).
 
 **Talk Track:**
 > "Jailbreaking is a direct attack by the user to bypass safety filters. If you have Black-box API access, you might use a 'Persona Adoption' jailbreak like the famous DAN prompt, tricking the model into a roleplay where safety rules don't apply.
 >
-> If you have White-box access, you can use something called a GCG attack—Greedy Coordinate Gradient. This uses math to calculate an invisible, gibberish string of characters that, when appended to a prompt, literally forces the neural network's weights to output a harmful response. It bypasses all alignment. And terrifyingly, safety alignment can be completely erased by fine-tuning on as few as 100 harmful examples."
+> If you have White-box access, you can use something called a GCG attack—Greedy Coordinate Gradient. This uses math to calculate an invisible, gibberish string of characters that, when appended to a prompt, literally forces the neural network's weights to output a harmful response. It bypasses all alignment. And terrifyingly, safety alignment can be completely erased by fine-tuning on as few as 100 harmful examples. 
+>
+> On the defense side, we have Input/Output Filtering—like SmoothLLM, which randomly perturbs inputs to break these adversarial suffixes—and Anti-Fine-Tuning Defenses like Vaccine, which preserve safety alignment against Gray-box manipulation."
 
 ---
 
