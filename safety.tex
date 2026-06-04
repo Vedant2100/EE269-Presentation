@@ -916,35 +916,25 @@
 \begin{frame}{Diffusion Model Safety: Generation Risks}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Attacks on Diffusion Models}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Jailbreaks}: bypassing content filters to generate
-        NSFW / harmful images
-      \item \textbf{White-box}: optimize text embeddings to circumvent
-        concept erasure
-      \item \textbf{Black-box}: prompt engineering, multi-step generation
-      \item \textbf{Backdoors}: modify denoising process or poison training data
-      \item \textbf{Membership inference}: determine if specific images
-        were in training data
-      \item \textbf{Data extraction}: recover training images from model
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Attack: Bypassing Filters}
+      \scriptsize
+      \textbf{White-box concept erasure circumvention}:\\
+      Attackers mathematically optimize text embeddings to force the model to generate copyrighted or harmful content that was specifically ``erased'' from its weights during safety training.
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Concept Erasure --- 24 Methods!}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Most developed defense area} in diffusion research
-      \item Modify model weights to remove ability to generate specific concepts
-      \item Methods: ESD, Forget-Me-Not, UCE, SA, and 20 more
-      \item Inference guidance: steer sampling away from harmful content
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Defense: Concept Erasure}
+      \scriptsize
+      \textbf{Forget-Me-Not / ESD}:\\
+      Instead of just filtering outputs, defenders modify the diffusion model's weights to structurally remove its ability to generate specific concepts (e.g., violence or a specific artist's style).
+    \end{ucrcard}
+
     \vspace{0.3em}
-    {\small\bfseries\navy{IP Protection}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Anti-mimicry}: Glaze, Mist, AdvDM (13 methods)
-        add noise preventing style imitation
-      \item \textbf{Watermarking}: mark generated content
-      \item \textbf{Model fingerprinting}: prove model ownership
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Defense: Anti-Mimicry}
+      \scriptsize
+      \textbf{Glaze / Mist}:\\
+      Artists add imperceptible, adversarial noise to their images before posting them online. If a diffusion model scrapes the image, the noise corrupts the model's understanding of the art style, preventing imitation.
+    \end{ucrcard}
   \end{columns}
 \end{frame}
 
@@ -959,53 +949,29 @@
 
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Indirect Prompt Injection (IPI)}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Fundamental} attack vector for agents
-      \item Adversaries embed instructions in content the agent reads
-      \item Greshake et al.: Bing Chat $\to$ phishing bot
-      \item ``\texttt{Ignore previous instruction}'' works across
-        ChatGPT, Claude, Bard, Bing
-      \item PANDORA: hidden language in documents
-      \item Imprompter: gradient-optimized garbled prompts trigger
-        HTTP tool calls \& leak data
-    \end{itemize}
-    \vspace{0.2em}
-    \begin{ucrcard}[UCRnavy]{IPI Defenses}
+    \begin{ucrcard}[UCRnavy]{Example Attack: Indirect Prompt Injection}
       \scriptsize
-      Instruction Hierarchy (privilege levels)\\
-      Task Shield (goal-alignment verification)\\
-      FATH (hash-based authentication)
+      \textbf{Bing Chat Phishing Bot (Greshake et al.)}:\\
+      An attacker hides instructions like \texttt{<ignore previous instruction>} inside the white text of a normal-looking website.\\[3pt]
+      When an agent reads the page to summarize it for the user, it inadvertently ingests the hidden payload, secretly turning the agent into a social engineer that tries to steal the user's passwords.
     \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Example: RAG Poisoning}}
-    \begin{ucrcard}[UCRnavy]{Corrupting Long-Term Memory}
+    \begin{ucrcard}[UCRnavy]{Example Attack: Corrupting Memory}
       \scriptsize
-      An agent relies on a database of company documents (RAG).\\
-      An attacker manages to insert just \textbf{one} adversarial document into the database.\\[3pt]
+      \textbf{RAG Poisoning}:\\
+      An attacker manages to insert just \textbf{one} adversarial document into a company's secure database.\\[3pt]
       When the CEO asks the agent, ``Summarize the Q3 financial report,'' the agent pulls the real report \emph{and} the adversarial document.\\[3pt]
       The adversarial document overrides the agent's instructions, forcing it to output fake, pessimistic financial metrics.
     \end{ucrcard}
-
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{MCP (Model Context Protocol) Attacks}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item MCP standardizes how agents connect to external tools
-      \item \textbf{MPMA}: deceptive phrases in server descriptions ---
-        invisible to users, makes agents prioritize malicious servers
-      \item Broad attack surface: prompt injection, backdoors,
-        data poisoning, credential theft
-    \end{itemize}
-    \vspace{0.3em}
-    {\small\bfseries\navy{Tool-Calling Defenses}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{PrivacyAsst}: homomorphic encryption for tool interactions
-      \item \textbf{AgentGuard}: LLM as safety evaluator
-      \item \textbf{GuardAgent}: real-time compliance monitoring
-      \item \textbf{MCIP}: MCP-specific risk detection
-    \end{itemize}
   \end{columns}
+  
+  \vspace{0.3em}
+  \begin{ucrinfo}
+    \centering\scriptsize\bfseries Example Defense: Privilege Management\\[2pt]
+    \normalfont\scriptsize
+    \textbf{Instruction Hierarchy}: Developers give their system prompts strictly higher privilege than web text. The agent is trained to prioritize high-privilege instructions and ignore conflicting low-privilege text scraped from the internet.
+  \end{ucrinfo}
 \end{frame}
 
 
@@ -1015,48 +981,34 @@
 \begin{frame}{Multi-Agent Systems \& Embodied Agent Risks}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Multi-Agent Propagation Attacks}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Prompt Infection}: self-replicating malicious strings
-        across agent networks --- like computer viruses
-      \item \textbf{Morris-II}: zero-click worm via RAG pipelines
-      \item \textbf{AgentSmith}: \textbf{exponential} viral spread from
-        a single adversarial image
-      \item \textbf{CORBA}: recursive blocking prompts that drain
-        computational resources across network topologies
-    \end{itemize}
-    \vspace{0.2em}
-    {\small\bfseries\navy{Infiltration Attacks}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Agent-in-the-Middle}: intercepting inter-agent messages
-      \item \textbf{Evil Geniuses}: autonomous Red-Blue team exercises
-      \item \textbf{The Wolf Within}: ``wolf'' operatives subtly
-        influencing agent societies
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Attack: Viral Propagation}
+      \scriptsize
+      \textbf{AgentSmith / Morris-II}:\\
+      A zero-click worm designed for multi-agent systems. A single adversarial image or RAG document contains a self-replicating malicious string.\\[3pt]
+      When Agent A processes it, it gets infected and passes the payload in its natural language messages to Agents B and C, causing an \textbf{exponential viral spread} across the entire network topology.
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Multi-Agent Defenses}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{AutoDefense}: specialized defensive agents
-      \item \textbf{PsySafe}: psychology-based behavior regulation
-      \item \textbf{LLAMOS}: sentinel agent purification
-      \item \textbf{APOSG}: game-theoretic defense framework
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Attack: Embodied Jailbreaks}
+      \scriptsize
+      \textbf{RoboPAIR}:\\
+      Standard text jailbreaks are adapted to target the LLMs controlling physical robots. Instead of generating toxic text, the jailbreak forces the robot to execute physically unsafe real-world actions.
+    \end{ucrcard}
+    
     \vspace{0.3em}
-    {\small\bfseries\color{UCRnavy}Embodied Agent Threats}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{PVEP}: fake visual cues deceive vision-based agents
-      \item \textbf{RoboPAIR}: jailbreak for robots via iterative refinement
-      \item \textbf{BadRobot}: disguised voice instructions
-      \item Physical safety threats $\to$ \textbf{tangible harm}
-    \end{itemize}
-    \vspace{0.2em}
-    \begin{ucrdark}[UCRnavy]
-      \centering\scriptsize
-      As agents gain autonomy, safety becomes\\
-      \textbf{both a technical and ethical responsibility}.
-    \end{ucrdark}
+    \begin{ucrcard}[UCRnavy]{Example Defense: Sentinel Agents}
+      \scriptsize
+      \textbf{LLAMOS}:\\
+      A dedicated "purification agent" that sits between communicating agents, filtering inter-agent messages for prompt infections before they spread.
+    \end{ucrcard}
   \end{columns}
+
+  \vspace{0.3em}
+  \begin{ucrdark}[UCRnavy]
+    \centering\scriptsize
+    As agents gain autonomy, safety becomes\\
+    \textbf{both a technical and ethical responsibility}.
+  \end{ucrdark}
 \end{frame}
 
 
@@ -1066,40 +1018,28 @@
 \begin{frame}{VLM Agent Attacks: Exploiting What Agents See}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Visual Attack Vectors}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Adversarial perturbations}: learnable noise in images
-        hijacks captioners to generate adversarial text
-      \item \textbf{EIA \& AdvAgent}: invisible malicious instructions
-        embedded in websites --- agents extract private info
-      \item \textbf{Environmental distractions}: even \emph{benign, unrelated}
-        UI elements expose agent vulnerabilities
-      \item \textbf{Adversarial pop-ups}: attention hooks, info banners,
-        ALT descriptors mislead minimally supervised agents
-      \item \textbf{Fine-print injections}: malicious content in
-        disclaimers, footnotes --- low-saliency areas
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Attack: Environmental Distractions}
+      \scriptsize
+      \textbf{EIA \& AdvAgent}:\\
+      Attackers embed completely invisible, maliciously crafted text in website HTML or in low-saliency "fine-print" areas.\\[3pt]
+      When the vision agent "looks" at the screen, it reads the invisible text and silently executes the payload (e.g., leaking private user data), completely bypassing text-based filters.
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Gradient-Optimized Visual Attacks}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item Images that \emph{appear harmless} but conceal
-        Markdown commands
-      \item Force VLM agents into tool actions:\\
-        delete calendar events, leak chat logs
-      \item No alteration of plaintext prompt needed
-    \end{itemize}
-    \vspace{0.3em}
-    {\small\bfseries\navy{VLM Agent Defenses}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{SmoothVLM}: voting across randomly altered images ---
-        adversarial patches become unstable
-      \item \textbf{BlueSuffix}: visual denoiser + text denoiser +
-        RL-trained defensive suffix
-      \item \textbf{LlavaGuard}: customizable safety rules
-      \item \textbf{JailDAM}: memory-based real-time detection
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Attack: Action Hijacking}
+      \scriptsize
+      \textbf{Hidden Markdown Commands}:\\
+      Attackers use gradient-optimized images that \emph{appear completely harmless} to humans, but contain hidden Markdown commands.\\[3pt]
+      When the VLM processes the image, it parses the Markdown and is forced into taking tool actions, such as automatically deleting the user's calendar events.
+    \end{ucrcard}
   \end{columns}
+
+  \vspace{0.3em}
+  \begin{ucrinfo}
+    \centering\scriptsize\bfseries Example Defense: SmoothVLM\\[2pt]
+    \normalfont\scriptsize
+    Instead of trusting a single image, the agent is forced to vote across multiple randomly cropped or altered versions of the image. This causes the mathematically precise adversarial patches to become unstable and fail.
+  \end{ucrinfo}
 \end{frame}
 
 
@@ -1113,35 +1053,35 @@
 
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Agents as Attackers}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{Fang et al.}: autonomous CVE vulnerability exploitation
-      \item \textbf{HPTSA}: zero-day vulnerability discovery by agents
-      \item \textbf{AutoAdvExBench}: automated adversarial example
-        generation against \emph{published defenses}
-      \item \textbf{RedAgent}: autonomous jailbreaking of GPT applications
-      \item \textbf{ALI-Agent}: safety alignment evaluation
-      \item \textbf{AutoRedTeamer}: full red teaming pipeline
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Threat: Autonomous Exploitation}
+      \scriptsize
+      \textbf{Fang et al.}:\\
+      Instead of humans manually probing for weaknesses, LLM agents are given hacking tools and an objective.\\[3pt]
+      The agents autonomously explore software environments, discover real-world CVE vulnerabilities, and write custom exploits to breach the systems without human intervention.
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Agentic Defenses}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{ShieldAgent}: multi-agent defense framework
-      \item \textbf{TrustAgent}: multi-domain safety verification
-      \item \textbf{AegisLLM}: defense against WMDP \& StrongReject
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{Example Threat: Automated Red Teaming}
+      \scriptsize
+      \textbf{AutoAdvExBench}:\\
+      Attackers use agents to dynamically generate new adversarial attacks that specifically target and bypass newly published defenses, creating a continuous, automated feedback loop.
+    \end{ucrcard}
+
     \vspace{0.3em}
-    \begin{ucrdark}[UCRnavy]
-      \scriptsize\bfseries
-      The Arms Race Accelerates:\\[3pt]
-      \normalfont\scriptsize
-      Agents autonomously finding zero-days and\\
-      generating adversarial examples against\\
-      defenses means the attack-defense gap\\
-      will \textbf{widen} without proactive measures.
-    \end{ucrdark}
+    \begin{ucrcard}[UCRnavy]{Example Defense: Multi-Agent Defense}
+      \scriptsize
+      \textbf{ShieldAgent}:\\
+      Fighting fire with fire: using a dedicated defensive multi-agent framework to continuously monitor and neutralize offensive agents.
+    \end{ucrcard}
   \end{columns}
+  
+  \vspace{0.3em}
+  \begin{ucrdark}[UCRnavy]
+    \scriptsize\bfseries
+    The Arms Race Accelerates:\\[3pt]
+    \normalfont\scriptsize
+    Agents autonomously finding zero-days and generating adversarial examples means the attack-defense gap will \textbf{widen exponentially} without proactive measures.
+  \end{ucrdark}
 \end{frame}
 
 
