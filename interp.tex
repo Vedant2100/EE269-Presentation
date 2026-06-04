@@ -2,16 +2,16 @@
 %  PART 2 SECTION DIVIDER
 % ─────────────────────────────────────────────────────────────────────────────
 \sectionframe{2}{Mechanistic Interpretability}%
-  {Paper \textcircled{2} — Locate, Steer \& Improve}%
+  {Paper \textcircled{2} --- Locate, Steer \& Improve}%
   {Zhang et al.\,(2026) $\cdot$ arXiv 2601.14004}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 18 — WHAT IS MI?
+%  SLIDE 18 --- WHAT IS MI?
 % ═════════════════════════════════════════════════════════════════════════════
 \begin{frame}{What Is Mechanistic Interpretability?}
   \begin{ucrinfo}
     \small\itshape
-    ``Mechanistic Interpretability (MI) aims to reverse-engineer neural networks —
+    ``Mechanistic Interpretability (MI) aims to reverse-engineer neural networks ---
     decomposing their intricate computations into understandable components
     and causal mechanisms.'' \hfill\muted{\footnotesize Zhang et al., 2026}
   \end{ucrinfo}
@@ -50,7 +50,7 @@
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 19 — LOCATE $\to$ STEER $\to$ IMPROVE PIPELINE
+%  SLIDE 19 --- LOCATE $\to$ STEER $\to$ IMPROVE PIPELINE
 % ═════════════════════════════════════════════════════════════════════════════
 \begin{frame}{The ``Locate $\to$ Steer $\to$ Improve'' Pipeline \papertag[UCRteal]{Paper \textcircled{2}}}
   \vspace*{0.3cm}
@@ -64,8 +64,8 @@
           opacity=0.2]center:1}] (l) at (0,0)
       {{\bfseries\color{UCRteal}\large LOCATE}\\[0.15em]
        \footnotesize\itshape(Diagnose)\\[0.5em]
-       \footnotesize Identify which components — neurons, heads, circuits,
-       SAE features — are causally responsible for a specific behavior.};
+       \footnotesize Identify which components --- neurons, heads, circuits,
+       SAE features --- are causally responsible for a specific behavior.};
 
     \node[block=UCRnavy, label={[font=\Huge\bfseries\color{UCRnavy},
           opacity=0.2]center:2}] (s) at (4.1,0)
@@ -79,7 +79,7 @@
       {{\bfseries\color{UCRgreen}\large IMPROVE}\\[0.15em]
        \footnotesize\itshape(Apply)\\[0.5em]
        \footnotesize Translate insights into practical improvements in
-       alignment, capability, and efficiency — without full retraining.};
+       alignment, capability, and efficiency --- without full retraining.};
 
     \draw[arr] (l.east) -- (s.west);
     \draw[arr] (s.east) -- (i.west);
@@ -90,7 +90,7 @@
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 20 — CORE INTERPRETABLE OBJECTS OVERVIEW
+%  SLIDE 20 --- CORE INTERPRETABLE OBJECTS OVERVIEW
 % ═════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Core Interpretable Objects of LLMs \papertag[UCRteal]{Paper \textcircled{2}}}
   {\small The `interpretable objects' are the units MI methods analyze and
@@ -100,32 +100,32 @@
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
       borderline west={3pt}{0pt}{UCRteal}, sharp corners, top=3pt, bottom=3pt]
     \small\bfseries\tealc{1. Token Embedding}\normalfont\
-    — Maps discrete tokens to continuous vectors; entry point; encodes lexical \& positional meaning.
+    --- Maps discrete tokens to continuous vectors; entry point; encodes lexical \& positional meaning.
   \end{tcolorbox}\vspace{2pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
       borderline west={3pt}{0pt}{UCRnavy}, sharp corners, top=3pt, bottom=3pt]
     \small\bfseries\navy{2. Transformer Block \& Residual Stream}\normalfont\
-    — Central `highway' of information. Features are linear combinations of all prior component outputs.
+    --- Central `highway' of information. Features are linear combinations of all prior component outputs.
   \end{tcolorbox}\vspace{2pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
       borderline west={3pt}{0pt}{UCRpurple}, sharp corners, top=3pt, bottom=3pt]
     \small\bfseries{\color{UCRpurple}3. Multi-Head Attention (MHA)}\normalfont\
-    — Manages information routing; key units: QK (where to attend), OV (what to copy).
+    --- Manages information routing; key units: QK (where to attend), OV (what to copy).
   \end{tcolorbox}\vspace{2pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
       borderline west={3pt}{0pt}{UCRorange}, sharp corners, top=3pt, bottom=3pt]
     \small\bfseries{\color{UCRorange}4. Feed-Forward Network (FFN)}\normalfont\
-    — Acts as key-value memory; stores factual associations; neurons encode specific world-knowledge tokens.
+    --- Acts as key-value memory; stores factual associations; neurons encode specific world-knowledge tokens.
   \end{tcolorbox}\vspace{2pt}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
       borderline west={3pt}{0pt}{UCRgreen}, sharp corners, top=3pt, bottom=3pt]
     \small\bfseries\greenc{5. Sparse Autoencoder (SAE) Feature}\normalfont\
-    — Disentangles polysemantic neurons into monosemantic features via sparse coding — a `microscope' for LLM representations.
+    --- Disentangles polysemantic neurons into monosemantic features via sparse coding --- a `microscope' for LLM representations.
   \end{tcolorbox}
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 21 — TOKEN EMBEDDING & RESIDUAL STREAM
+%  SLIDE 21 --- TOKEN EMBEDDING & RESIDUAL STREAM
 % ═════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Token Embedding \& Residual Stream}
   \begin{columns}[T]
@@ -135,7 +135,7 @@
       \item $W_E \in \mathbb{R}^{|V|\times d_{\text{model}}}$ maps token ids to vectors
       \item Initial residual stream state:
         $x^0_i = W_E[t_i] + p_i$
-      \item Modern LLMs use RoPE (Rotary Position Embedding) —
+      \item Modern LLMs use RoPE (Rotary Position Embedding) ---
         positional info applied to Q/K, not the stream
       \item \textbf{Logit Lens}: project intermediate states back to
         vocabulary to inspect per-layer predictions
@@ -168,11 +168,11 @@
   \end{tikzpicture}
   \vspace{0.1em}
   \centerline{\muted{\tiny\itshape
-    Residual stream flows through all layers — each block reads from it and writes back additively}}
+    Residual stream flows through all layers --- each block reads from it and writes back additively}}
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 22 — MHA & FFN
+%  SLIDE 22 --- MHA & FFN
 % ═════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Multi-Head Attention \& Feed-Forward Networks}
   \begin{columns}[T]
@@ -201,15 +201,15 @@
   \vspace{0.3em}
   \begin{ucrwarn}
     \small\bfseries Superposition Problem:\normalfont\ Neurons are
-    \emph{polysemantic} — a single neuron activates for multiple unrelated
+    \emph{polysemantic} --- a single neuron activates for multiple unrelated
     concepts. This is the core challenge MI must solve, and why SAEs are needed.
   \end{ucrwarn}
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 23 — SPARSE AUTOENCODERS
+%  SLIDE 23 --- SPARSE AUTOENCODERS
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Sparse Autoencoders — Resolving Superposition}
+\begin{frame}{Sparse Autoencoders --- Resolving Superposition}
   \begin{columns}[T]
     \column{0.52\textwidth}
     {\small\bfseries\redc{The Problem: Superposition}}\\[0.2em]
@@ -260,9 +260,9 @@
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 24 — LOCALIZING METHODS
+%  SLIDE 24 --- LOCALIZING METHODS
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Localizing Methods — Finding the Right Components}
+\begin{frame}{Localizing Methods --- Finding the Right Components}
   {\footnotesize\itshape Goal: identify internal objects causally responsible
     for a specific behavior.}
   \vspace{0.2em}
@@ -317,7 +317,7 @@
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 25 — CAUSAL ATTRIBUTION & CIRCUIT DISCOVERY
+%  SLIDE 25 --- CAUSAL ATTRIBUTION & CIRCUIT DISCOVERY
 % ═════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Deep Dive: Causal Attribution \& Circuit Discovery}
   \begin{columns}[T]
@@ -354,9 +354,9 @@
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 26 — STEERING METHODS
+%  SLIDE 26 --- STEERING METHODS
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Steering Methods — Intervening on LLM Internals}
+\begin{frame}{Steering Methods --- Intervening on LLM Internals}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
       borderline west={4pt}{0pt}{UCRteal}, sharp corners,
       fonttitle=\bfseries\small\color{UCRteal}, title=Amplitude Manipulation,
@@ -392,9 +392,9 @@
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 27 — APPLICATIONS: ALIGNMENT
+%  SLIDE 27 --- APPLICATIONS: ALIGNMENT
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{MI Applications — Improve Alignment \papertag[UCRteal]{Paper \textcircled{2}}}
+\begin{frame}{MI Applications --- Improve Alignment \papertag[UCRteal]{Paper \textcircled{2}}}
   \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
       borderline west={4pt}{0pt}{UCRgreen}, sharp corners,
       fonttitle=\bfseries\small\color{UCRgreen}, title=Safety \& Reliability,
@@ -416,7 +416,7 @@
     \begin{itemize}\footnotesize\setlength\itemsep{2pt}
       \item Identify gender/demographic bias in specific attention heads
       \item Ahsan et al.\ (2025): `Male patch' intervention changes clinical predictions
-        for depression — reveals causal link between demographic representations and
+        for depression --- reveals causal link between demographic representations and
         model decisions
     \end{itemize}
   \end{tcolorbox}
@@ -431,9 +431,9 @@
 \end{frame}
 
 % ═════════════════════════════════════════════════════════════════════════════
-%  SLIDE 28 — APPLICATIONS: CAPABILITY & EFFICIENCY
+%  SLIDE 28 --- APPLICATIONS: CAPABILITY & EFFICIENCY
 % ═════════════════════════════════════════════════════════════════════════════
-\begin{frame}{MI Applications — Capability \& Efficiency \papertag[UCRteal]{Paper \textcircled{2}}}
+\begin{frame}{MI Applications --- Capability \& Efficiency \papertag[UCRteal]{Paper \textcircled{2}}}
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\tealc{Improve Capability}}

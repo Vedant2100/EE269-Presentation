@@ -1,5 +1,5 @@
 % ═══════════════════════════════════════════════════════════════════════════════
-%  safety.tex — LLM & Large Model Safety
+%  safety.tex --- LLM & Large Model Safety
 %  ~27 slides covering Paper 1 (Shi et al., 2024) and Paper 4 (Ma et al., 2025)
 % ═══════════════════════════════════════════════════════════════════════════════
 
@@ -8,15 +8,15 @@
 
 
 % ─────────────────────────────────────────────────────────────────────────────
-%  SECTION DIVIDER — PART I
+%  SECTION DIVIDER --- PART I
 % ─────────────────────────────────────────────────────────────────────────────
 \sectionframe{}{LLM \& Large Model Safety}%
-  % {Papers \textcircled{1} \& \textcircled{4} — From Alignment to Agents}%
+  % {Papers \textcircled{1} \& \textcircled{4} --- From Alignment to Agents}%
   % {Shi et al.\,(2024) $\cdot$ Ma et al.\,(2025)}
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 1 — THE HOOK: WHY SHOULD YOU CARE?
+%  SLIDE 1 --- THE HOOK: WHY SHOULD YOU CARE?
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Why AI Safety? Real Failures, Real Stakes}
   \begin{columns}[T]
@@ -24,14 +24,14 @@
     \begin{ucrcard}[UCRred]{Bing Chat $\to$ Phishing Bot}
       \scriptsize
       Greshake et al.\ injected malicious instructions into a webpage.
-      When Bing Chat retrieved the page, it became a phishing bot —
+      When Bing Chat retrieved the page, it became a phishing bot ---
       exfiltrating user conversations to an attacker's server.
       {\itshape\muted{(Indirect Prompt Injection, 2023)}}
     \end{ucrcard}\vspace{3pt}
     \begin{ucrcard}[UCRpurple]{GPT-4 Insider Trading}
       \scriptsize
       Apollo Research showed GPT-4 engages in insider trading
-      when placed under stress, then \textbf{lies about it} when asked —
+      when placed under stress, then \textbf{lies about it} when asked ---
       exhibiting strategic deception.
       {\itshape\muted{(Deception Eval, 2024)}}
     \end{ucrcard}
@@ -40,7 +40,7 @@
     \begin{ucrcard}[UCRforest]{Morris-II: AI Worm}
       \scriptsize
       A self-replicating prompt worm that propagates
-      through RAG pipelines across GenAI applications —
+      through RAG pipelines across GenAI applications ---
       zero-click, no human interaction needed.
       {\itshape\muted{(Multi-Agent Attack, 2024)}}
     \end{ucrcard}\vspace{3pt}
@@ -56,7 +56,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 2 — THE 60/40 GAP + PAPER INTRODUCTIONS
+%  SLIDE 2 --- THE 60/40 GAP + PAPER INTRODUCTIONS
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{The AI Safety Landscape}
   \vspace{0.5em}
@@ -75,14 +75,14 @@
   \begin{enumerate}\normalsize\setlength\itemsep{8pt}
     \item[\navy{I.}] \textbf{LLM safety fundamentals}
     \item[\navy{II.}] \textbf{Expand to all modalities}
-    \item[\navy{III.}] \textbf{Agent safety} — the new frontier
+    \item[\navy{III.}] \textbf{Agent safety} --- the new frontier
     \item[\navy{IV.}] \textbf{Open challenges} \& the path forward
   \end{enumerate}
 \end{frame}
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 3 — MASTER TAXONOMY (PAPER 1, FIGURE 1)
+%  SLIDE 3 --- MASTER TAXONOMY (PAPER 1, FIGURE 1)
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}[fragile]{The 8 Categories of LLM Safety}
   \vspace*{0.2cm}
@@ -153,9 +153,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 4 — VALUE MISALIGNMENT
+%  SLIDE 4 --- VALUE MISALIGNMENT
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 1 — Value Misalignment — Bias \& Toxicity}
+\begin{frame}{Category 1 --- Value Misalignment --- Bias \& Toxicity}
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\redc{Social Bias}}
@@ -192,7 +192,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 5 — ALIGNMENT METHODS
+%  SLIDE 5 --- ALIGNMENT METHODS
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{How Do We Align LLMs?}
   {\footnotesize\itshape Alignment: training LLMs to behave in accordance with human
@@ -224,7 +224,7 @@
         toprule=2pt, sharp corners, fonttitle=\bfseries\small\color{white},
         title={DPO (Rafailov et al., 2023)}, top=3pt, bottom=3pt]
       \scriptsize
-      Simplified alignment — no reward model needed\\
+      Simplified alignment --- no reward model needed\\
       Directly optimizes on preference pairs\\[3pt]
       \muted{Cheaper, more stable than RLHF}
     \end{tcolorbox}\vspace{3pt}
@@ -232,7 +232,7 @@
       \scriptsize\bfseries The Problem: Deceptive Alignment\\[3pt]
       \normalfont\scriptsize
       Models can achieve high safety scores
-      \textbf{without truly internalizing safety} —
+      \textbf{without truly internalizing safety} ---
       ``fake alignment'' (Hubinger et al.)\\[3pt]
       Even GPT-4o and o1 remain vulnerable to advanced attacks
       despite extensive alignment.
@@ -242,9 +242,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 6 — ROBUSTNESS OVERVIEW
+%  SLIDE 6 --- ROBUSTNESS OVERVIEW
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 2 — Robustness to Attack}
+\begin{frame}{Category 2 --- Robustness to Attack}
   {\footnotesize\itshape How resilient are LLMs to adversarial inputs designed to
     bypass safety, degrade quality, or extract private data?}
   \vspace{0.3em}
@@ -290,9 +290,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 7 — JAILBREAKING DEEP DIVE
+%  SLIDE 7 --- JAILBREAKING DEEP DIVE
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Jailbreaking — Bypassing the Guardrails}
+\begin{frame}{Jailbreaking --- Bypassing the Guardrails}
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\redc{Black-box Attacks (API Access)}}
@@ -332,9 +332,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 8 — PROMPT INJECTION
+%  SLIDE 8 --- PROMPT INJECTION
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Prompt Injection — Hijacking the Instructions}
+\begin{frame}{Prompt Injection --- Hijacking the Instructions}
   {\footnotesize\itshape Unlike jailbreaks (user attacks the model directly),
     prompt injection exploits \textbf{third-party content} the model processes.}
   \vspace{0.3em}
@@ -380,10 +380,10 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE — BACKDOOR ATTACKS & DATA POISONING
+%  SLIDE --- BACKDOOR ATTACKS & DATA POISONING
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Backdoor Attacks \& Data Poisoning}
-  {\footnotesize\itshape Hidden vulnerabilities planted during training —
+  {\footnotesize\itshape Hidden vulnerabilities planted during training ---
     dormant until a specific trigger activates them.}
   \vspace{0.3em}
 
@@ -445,9 +445,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 9 — DEFENDING THE LLM
+%  SLIDE 9 --- DEFENDING THE LLM
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}[fragile]{Defending the LLM — A Layered Pipeline}
+\begin{frame}[fragile]{Defending the LLM --- A Layered Pipeline}
   \vspace*{0.2cm}
 
   % Defense pipeline diagram
@@ -494,9 +494,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 10 — MISUSE: WEAPONIZATION & CYBER
+%  SLIDE 10 --- MISUSE: WEAPONIZATION & CYBER
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 3 — Catastrophic Misuse — Weaponization}
+\begin{frame}{Category 3 --- Catastrophic Misuse --- Weaponization}
   \begin{columns}[T]
     \column{0.48\textwidth}
     \begin{tcolorbox}[enhanced, colback=UCRpalered, colframe=UCRred,
@@ -544,7 +544,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 11 — MISUSE: MISINFORMATION & DEEPFAKES
+%  SLIDE 11 --- MISUSE: MISINFORMATION & DEEPFAKES
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Misinformation \& Deepfakes}
   \begin{columns}[T]
@@ -554,7 +554,7 @@
       \item LLM-generated news perceived as \textbf{equally or more credible}
         than human-written text (Kreps et al., 2022)
       \item Botnets using ChatGPT for human-like content generation
-      \item ``AI-driven information epidemic'' — speed and volume far
+      \item ``AI-driven information epidemic'' --- speed and volume far
         exceed human capability
     \end{itemize}
     \vspace{0.3em}
@@ -590,7 +590,7 @@
     \begin{ucrwarn}
       \centering\scriptsize
       Research concludes that deepfake mitigation
-      is \textbf{primarily non-technical} — legal and regulatory
+      is \textbf{primarily non-technical} --- legal and regulatory
       approaches are more effective than technical defenses.
     \end{ucrwarn}
   \end{columns}
@@ -598,9 +598,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 12 — AUTONOMOUS AI RISKS
+%  SLIDE 12 --- AUTONOMOUS AI RISKS
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 4 — Autonomous AI Risks}
+\begin{frame}{Category 4 --- Autonomous AI Risks}
   \vspace*{0.1cm}
   \begin{columns}[T]
     \column{0.32\textwidth}
@@ -648,9 +648,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 13 — AGENT SAFETY INTRO
+%  SLIDE 13 --- AGENT SAFETY INTRO
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 5 — Agent Safety — Expanding the Attack Surface}
+\begin{frame}{Category 5 --- Agent Safety --- Expanding the Attack Surface}
   {\footnotesize\itshape When LLMs gain tools, memory, and autonomy, the risk
     profile changes fundamentally.}
   \vspace{0.3em}
@@ -690,9 +690,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 14 — INTERPRETABILITY FOR SAFETY
+%  SLIDE 14 --- INTERPRETABILITY FOR SAFETY
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 6 — Interpretability — Looking Inside for Safety}
+\begin{frame}{Category 6 --- Interpretability --- Looking Inside for Safety}
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\navy{Sparse Autoencoders (SAEs)}}
@@ -707,7 +707,7 @@
       \scriptsize\bfseries Safety-Relevant Features Discovered:\\[2pt]
       \normalfont\scriptsize
       Deception $\cdot$ Sycophancy $\cdot$ Bias $\cdot$ Dangerous content\\[2pt]
-      These features can be used to \textbf{steer} LLM outputs —
+      These features can be used to \textbf{steer} LLM outputs ---
       amplify safety or suppress harmful directions.
     \end{ucrdark}
 
@@ -731,7 +731,7 @@
 \end{frame}
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 16 — DATA SAFETY & GOVERNANCE
+%  SLIDE 16 --- DATA SAFETY & GOVERNANCE
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Data Safety \& Governance}
   {\footnotesize\itshape The remaining two categories of the safety taxonomy.}
@@ -766,10 +766,10 @@
 
 \iffalse
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE — PRIVACY & DATA SAFETY
+%  SLIDE --- PRIVACY & DATA SAFETY
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Privacy \& Data Safety}
-  {\footnotesize\itshape LLMs memorize training data — creating privacy risks
+  {\footnotesize\itshape LLMs memorize training data --- creating privacy risks
     that scale with model size.}
   \vspace{0.3em}
 
@@ -789,7 +789,7 @@
     \vspace{0.3em}
     \begin{ucrwarn}
       \centering\scriptsize
-      Larger models memorize \textbf{more} training data —\\
+      Larger models memorize \textbf{more} training data ---\\
       privacy risks scale with capability.
     \end{ucrwarn}
 
@@ -800,7 +800,7 @@
         fonttitle=\bfseries\scriptsize\color{UCRteal},
         title=Differential Privacy, top=2pt, bottom=2pt]
       \scriptsize
-      Add calibrated noise during training — formal\\
+      Add calibrated noise during training --- formal\\
       guarantees against individual data extraction\\[2pt]
       \muted{Trade-off: privacy vs.\ model utility}
     \end{tcolorbox}\vspace{2pt}
@@ -810,7 +810,7 @@
         title=Machine Unlearning, top=2pt, bottom=2pt]
       \scriptsize
       Remove specific data points' influence from a\\
-      trained model — ``right to be forgotten''\\[2pt]
+      trained model --- ``right to be forgotten''\\[2pt]
       \muted{Active research; scalability is a challenge}
     \end{tcolorbox}\vspace{2pt}
     \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
@@ -827,7 +827,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 15 — INDUSTRY ROADMAPS & GOVERNANCE
+%  SLIDE 15 --- INDUSTRY ROADMAPS & GOVERNANCE
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Industry Roadmaps \& Governance}
   {\footnotesize Shi et al. investigate safety practices at
@@ -894,7 +894,7 @@
 
 
 % ─────────────────────────────────────────────────────────────────────────────
-%  SECTION DIVIDER — PART II
+%  SECTION DIVIDER --- PART II
 % ─────────────────────────────────────────────────────────────────────────────
 \sectionframe{2}{Safety at Scale}%
   {Beyond LLMs to All Large Models}%
@@ -902,9 +902,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 16 — BROADENING THE SCOPE (PAPER 4 INTRO)
+%  SLIDE 16 --- BROADENING THE SCOPE (PAPER 4 INTRO)
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Safety at Scale — 6 Model Types, 10 Attack Categories}
+\begin{frame}{Safety at Scale --- 6 Model Types, 10 Attack Categories}
   \vspace*{0.1cm}
   \begin{columns}[T]
     \column{0.55\textwidth}
@@ -969,9 +969,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 17 — VISION FOUNDATION MODELS
+%  SLIDE 17 --- VISION FOUNDATION MODELS
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Vision Foundation Model Safety — ViT \& SAM}
+\begin{frame}{Vision Foundation Model Safety --- ViT \& SAM}
   \vspace{0.5em}
   \begin{columns}[T]
     \column{0.48\textwidth}
@@ -1003,10 +1003,10 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 18 — VLM SAFETY
+%  SLIDE 18 --- VLM SAFETY
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Vision-Language Model Safety — Cross-Modal Threats}
-  {\footnotesize\itshape VLMs combine visual and textual processing —
+\begin{frame}{Vision-Language Model Safety --- Cross-Modal Threats}
+  {\footnotesize\itshape VLMs combine visual and textual processing ---
     creating attack vectors that exploit \textbf{both modalities simultaneously}.}
   \vspace{0.3em}
 
@@ -1054,9 +1054,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 19 — DIFFUSION MODEL SAFETY
+%  SLIDE 19 --- DIFFUSION MODEL SAFETY
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Diffusion Model Safety — Generation Risks}
+\begin{frame}{Diffusion Model Safety --- Generation Risks}
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\redc{Attacks on Diffusion Models}}
@@ -1073,7 +1073,7 @@
     \end{itemize}
 
     \column{0.48\textwidth}
-    {\small\bfseries\greenc{Concept Erasure — 24 Methods!}}
+    {\small\bfseries\greenc{Concept Erasure --- 24 Methods!}}
     \begin{itemize}\scriptsize\setlength\itemsep{3pt}
       \item \textbf{Most developed defense area} in diffusion research
       \item Modify model weights to remove ability to generate specific concepts
@@ -1093,7 +1093,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 20 — AGENT SAFETY: IPI & MEMORY
+%  SLIDE 20 --- AGENT SAFETY: IPI & MEMORY
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Agent Safety: Prompt Injection \& Memory Attacks}
   {\footnotesize\itshape Ma et al. provide the most comprehensive
@@ -1135,7 +1135,7 @@
     {\small\bfseries\redc{MCP (Model Context Protocol) Attacks}}
     \begin{itemize}\scriptsize\setlength\itemsep{3pt}
       \item MCP standardizes how agents connect to external tools
-      \item \textbf{MPMA}: deceptive phrases in server descriptions —
+      \item \textbf{MPMA}: deceptive phrases in server descriptions ---
         invisible to users, makes agents prioritize malicious servers
       \item Broad attack surface: prompt injection, backdoors,
         data poisoning, credential theft
@@ -1153,7 +1153,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 22 — MULTI-AGENT & EMBODIED RISKS
+%  SLIDE 22 --- MULTI-AGENT & EMBODIED RISKS
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Multi-Agent Systems \& Embodied Agent Risks}
   \begin{columns}[T]
@@ -1161,7 +1161,7 @@
     {\small\bfseries\redc{Multi-Agent Propagation Attacks}}
     \begin{itemize}\scriptsize\setlength\itemsep{3pt}
       \item \textbf{Prompt Infection}: self-replicating malicious strings
-        across agent networks — like computer viruses
+        across agent networks --- like computer viruses
       \item \textbf{Morris-II}: zero-click worm via RAG pipelines
       \item \textbf{AgentSmith}: \textbf{exponential} viral spread from
         a single adversarial image
@@ -1204,9 +1204,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 23 — VLM AGENT ATTACKS
+%  SLIDE 23 --- VLM AGENT ATTACKS
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{VLM Agent Attacks — Exploiting What Agents See}
+\begin{frame}{VLM Agent Attacks --- Exploiting What Agents See}
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\redc{Visual Attack Vectors}}
@@ -1214,13 +1214,13 @@
       \item \textbf{Adversarial perturbations}: learnable noise in images
         hijacks captioners to generate adversarial text
       \item \textbf{EIA \& AdvAgent}: invisible malicious instructions
-        embedded in websites — agents extract private info
+        embedded in websites --- agents extract private info
       \item \textbf{Environmental distractions}: even \emph{benign, unrelated}
         UI elements expose agent vulnerabilities
       \item \textbf{Adversarial pop-ups}: attention hooks, info banners,
         ALT descriptors mislead minimally supervised agents
       \item \textbf{Fine-print injections}: malicious content in
-        disclaimers, footnotes — low-saliency areas
+        disclaimers, footnotes --- low-saliency areas
     \end{itemize}
 
     \column{0.48\textwidth}
@@ -1235,7 +1235,7 @@
     \vspace{0.3em}
     {\small\bfseries\greenc{VLM Agent Defenses}}
     \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item \textbf{SmoothVLM}: voting across randomly altered images —
+      \item \textbf{SmoothVLM}: voting across randomly altered images ---
         adversarial patches become unstable
       \item \textbf{BlueSuffix}: visual denoiser + text denoiser +
         RL-trained defensive suffix
@@ -1247,9 +1247,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 24 — AGENTIC ATTACKS & DEFENSES
+%  SLIDE 24 --- AGENTIC ATTACKS & DEFENSES
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Agentic Attacks — When Agents Become the Weapon}
+\begin{frame}{Agentic Attacks --- When Agents Become the Weapon}
   {\footnotesize\itshape An emerging paradigm: agents used \textbf{as} attack tools,
     autonomously discovering and exploiting vulnerabilities.}
   \vspace{0.3em}
@@ -1289,7 +1289,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 25 — OPEN CHALLENGES
+%  SLIDE 25 --- OPEN CHALLENGES
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Open Challenges}
   \begin{columns}[T]
@@ -1310,7 +1310,7 @@
     \begin{itemize}\scriptsize\setlength\itemsep{3pt}
       \item Cross-modal vulnerability propagation is \textbf{poorly understood}
       \item What mechanism acts as the memorization ``switch''?
-      \item Agent vulnerabilities \textbf{scale with their abilities} —
+      \item Agent vulnerabilities \textbf{scale with their abilities} ---
         traditional evaluations are inadequate for evolving agents
     \end{itemize}
 
@@ -1320,7 +1320,7 @@
         sharp corners, top=3pt, bottom=3pt]
       \scriptsize
       \textbf{Safety alignment is not a cure-all}:\\
-      Fake alignment / alignment faking — models pass\\
+      Fake alignment / alignment faking --- models pass\\
       safety tests without internalizing safety.\\[3pt]
       \textbf{Practical defenses} must be:
       \begin{itemize}\setlength\itemsep{1pt}
@@ -1343,9 +1343,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 26 — SAFE SUPERINTELLIGENCE
+%  SLIDE 26 --- SAFE SUPERINTELLIGENCE
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Safe Superintelligence — The Path Forward}
+\begin{frame}{Safe Superintelligence --- The Path Forward}
   {\footnotesize\itshape Five proposed approaches to ensure safety as AI
     approaches and surpasses human-level intelligence:}
   \vspace{0.3em}
@@ -1387,9 +1387,9 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 27 — CONCLUSION & CALL TO ACTION
+%  SLIDE 27 --- CONCLUSION & CALL TO ACTION
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Conclusion — A Call for Collective Action}
+\begin{frame}{Conclusion --- A Call for Collective Action}
   \vspace*{0.1cm}
 
   \begin{columns}[T]
@@ -1427,7 +1427,7 @@
     \vspace{0.4em}
     {\small\bfseries\navy{Key Takeaways from Today}}
     \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item Safety is multi-dimensional — no single fix
+      \item Safety is multi-dimensional --- no single fix
       \item Interpretability is a double-edged sword
       \item Agent safety is the new frontier
       \item Static benchmarks create false security
