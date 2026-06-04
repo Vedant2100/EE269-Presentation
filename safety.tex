@@ -387,57 +387,44 @@
   \begin{columns}[T]
     \column{0.48\textwidth}
     {\small\bfseries\navy{Attack Vectors}}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Data Poisoning, top=2pt, bottom=2pt]
+    \begin{ucrcard}[UCRnavy]{Data Poisoning}
       \scriptsize
-      Inject malicious training samples with hidden triggers\\[2pt]
-      $\bullet$ \textbf{16 methods} documented (Ma et al.)\\[1pt]
-      $\bullet$ Backdoor, availability, \& targeted attacks\\[1pt]
-      $\bullet$ Trigger patterns: words, phrases, syntax styles
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Training \& Parameter Manipulation, top=2pt, bottom=2pt]
+      Injecting malicious samples into training data.\\[2pt]
+      $\bullet$ \textbf{16 distinct methods} surveyed\\
+      $\bullet$ Triggers can be specific words, phrases, or syntax
+    \end{ucrcard}
+
+    \vspace{0.3em}
+    \begin{ucrcard}[UCRnavy]{Parameter Manipulation}
       \scriptsize
-      $\bullet$ Gradient-based backdoor injection\\[1pt]
-      $\bullet$ Direct weight modification post-training\\[1pt]
-      $\bullet$ Backdoors can {\bfseries survive} fine-tuning,\\
-      \phantom{$\bullet$} alignment, and safety training
-    \end{tcolorbox}
+      Directly altering weights or gradients.\\[2pt]
+      $\bullet$ Highly stealthy post-training attacks\\
+      $\bullet$ Can \textbf{survive} safety alignment \& fine-tuning!
+    \end{ucrcard}
 
     \column{0.48\textwidth}
     {\small\bfseries\navy{Defenses}}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Detection \& Removal, top=2pt, bottom=2pt]
+    \begin{ucrcard}[UCRnavy]{Detection \& Removal}
       \scriptsize
-      $\bullet$ Trigger reverse-engineering\\[1pt]
-      $\bullet$ Statistical analysis of model behavior\\[1pt]
-      $\bullet$ Pruning suspicious neurons\\[1pt]
-      $\bullet$ Fine-tuning-based backdoor removal\\[1pt]
-      $\bullet$ \textbf{10+ defense methods} documented
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Robust Training, top=2pt, bottom=2pt]
-      \scriptsize
-      $\bullet$ Data sanitization before training\\[1pt]
-      $\bullet$ Spectral signatures for poison detection\\[1pt]
-      $\bullet$ Robust training / inference procedures
-    \end{tcolorbox}
+      Identifying anomalies after the model is trained.\\[2pt]
+      $\bullet$ Trigger reverse-engineering\\
+      $\bullet$ Pruning suspicious neurons
+    \end{ucrcard}
+
     \vspace{0.3em}
-    \begin{ucrdark}[UCRnavy]
-      \centering\scriptsize
-      Backdoor attacks are one of the \textbf{top 3}\\
-      most-studied attack types across all model\\
-      families in Ma et al.'s survey.
-    \end{ucrdark}
+    \begin{ucrcard}[UCRnavy]{Robust Training}
+      \scriptsize
+      Preventing attacks during the training phase.\\[2pt]
+      $\bullet$ Data sanitization (filtering out poison)\\
+      $\bullet$ Spectral signatures for poison detection
+    \end{ucrcard}
   \end{columns}
+
+  \vspace{0.3em}
+  \begin{ucrdark}[UCRnavy]
+    \centering\scriptsize\bfseries
+    Backdoor attacks are one of the top 3 most-studied threats across all model families.
+  \end{ucrdark}
 \end{frame}
 
 
