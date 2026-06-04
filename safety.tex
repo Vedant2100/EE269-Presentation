@@ -1089,149 +1089,35 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 25 --- OPEN CHALLENGES
+%  SLIDE 25 --- THE PATH FORWARD
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Open Challenges}
+\begin{frame}{The Path Forward}
+  \vspace*{0.2cm}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Evaluation Failures}}
-    \begin{tcolorbox}[enhanced, colback=UCRnavy, colframe=UCRnavy,
-        sharp corners, top=3pt, bottom=3pt]
-      \scriptsize
-      \textbf{ASR is not enough}: Attack Success Rate misses
-      severity, resilience, and real-world consequences.\\[3pt]
-      \textbf{Static benchmarks create false safety}: models score
-      high on outdated datasets without real robustness.\\[3pt]
-      \textbf{Need}: evolving benchmarks (like Chatbot Arena),
-      release evaluation ``seeds'' not static tests.
-    \end{tcolorbox}
-    \vspace{3pt}
-    {\small\bfseries\navy{Understanding Gaps}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item Cross-modal vulnerability propagation is \textbf{poorly understood}
-      \item What mechanism acts as the memorization ``switch''?
-      \item Agent vulnerabilities \textbf{scale with their abilities} ---
-        traditional evaluations are inadequate for evolving agents
-    \end{itemize}
+    \begin{ucrcard}[UCRnavy]{1. The Safety Arms Race}
+      \small
+      \textbf{Passive Defenses \& Static Tests:}\\
+      Current safety evaluations rely on static benchmarks that models easily memorize, creating a false sense of security.\\[6pt]
+      \textbf{The Proactive Shift:}\\
+      As agents gain autonomy, the attack-defense gap will widen exponentially. We must shift from reactive patching to proactive, continuous monitoring (e.g., Chain-of-Thought auditing).
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Defense Gaps}}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
-        sharp corners, top=3pt, bottom=3pt]
-      \scriptsize
-      \textbf{Safety alignment is not a cure-all}:\\
-      Fake alignment / alignment faking --- models pass\\
-      safety tests without internalizing safety.\\[3pt]
-      \textbf{Practical defenses} must be:
-      \begin{itemize}\setlength\itemsep{1pt}
-        \item General (work across model families)
-        \item Black-box compatible
-        \item Efficient (no expensive retraining)
-        \item Continuously adaptive
-      \end{itemize}
-    \end{tcolorbox}
-    \vspace{3pt}
-    \begin{ucrcard}[UCRnavy]{Two Critical Gaps}
-      \scriptsize
-      \textbf{Proactive defenses}: most defenses are passive\\
-      (react to attacks). Proactive strategies are unexplored.\\[3pt]
-      \textbf{Detection is overlooked}: CoT monitoring for\\
-      early unsafe reasoning detection should be core.
+    \begin{ucrcard}[UCRnavy]{2. Guarding Superintelligence}
+      \small
+      \textbf{The Oversight Paradox:}\\
+      How do you build a monitor that can successfully regulate an AI smarter than its creators?\\[6pt]
+      \textbf{Layered Defense Strategy:}\\
+      No single "stop button" is enough. Safe superintelligence requires a layered approach combining external oversight, robust safety switches, and intrinsic ethical alignment.
     \end{ucrcard}
   \end{columns}
-\end{frame}
 
-
-% ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 26 --- SAFE SUPERINTELLIGENCE
-% ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Safe Superintelligence: The Path Forward}
-  {\footnotesize\itshape Five proposed approaches to ensure safety as AI
-    approaches and surpasses human-level intelligence:}
-  \vspace{0.3em}
-
-  \small
-  \setlength{\tabcolsep}{4pt}
-  \renewcommand{\arraystretch}{1.5}
-  \begin{tabularx}{\textwidth}{>{\bfseries\small}l X >{\itshape\scriptsize}X}
-    \rowcolor{UCRnavy}
-    \color{white}Approach &
-    \color{white}Description &
-    \color{white}Key Challenge \\
-    \rowcolor{UCRlgray}
-    Oversight System &
-    \scriptsize External monitor regulates primary AI behavior &
-    Oversight Paradox: must be smarter than what it monitors \\
-    Safety Switch &
-    \scriptsize Emergency ``stop button'' $\to$ ultra-safe mode &
-    Robust activation under adversarial conditions \\
-    \rowcolor{UCRlgray}
-    Safety Expert &
-    \scriptsize MoE framework with dedicated safety experts &
-    Consistent performance across diverse scenarios \\
-    Adversarial Alignment &
-    \scriptsize Iterative weakness exploitation and fixing &
-    High computational cost, unintended behaviors \\
-    \rowcolor{UCRlgray}
-    Safety Consciousness &
-    \scriptsize Intrinsic ethical reasoning as core training &
-    Defining and measuring ``safety tendency'' \\
-  \end{tabularx}
-  \vspace{0.3em}
+  \vspace{0.5em}
   \begin{ucrdark}[UCRnavy]
-    \centering\scriptsize
-    No single approach is sufficient. Safe superintelligence requires
-    \textbf{multiple complementary mechanisms} working together.
+    \centering\small\bfseries
+    Final Takeaway\\[3pt]
+    \normalfont\footnotesize
+    Agent safety is the new frontier. We can no longer rely on single-fix solutions or static tests; AI safety must evolve as dynamically as the models themselves.
   \end{ucrdark}
-\end{frame}
-
-
-% ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 27 --- CONCLUSION & CALL TO ACTION
-% ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Conclusion: A Call for Collective Action}
-  \vspace*{0.1cm}
-
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Three Critical Gaps Identified}}
-    \begin{enumerate}\scriptsize\setlength\itemsep{4pt}
-      \item \textbf{Understanding fundamental vulnerabilities}\\
-        across modalities and model types
-      \item \textbf{Establishing robust safety evaluation}\\
-        protocols that evolve with threats
-      \item \textbf{Developing scalable, proactive defenses}\\
-        that go beyond passive alignment
-    \end{enumerate}
-    \vspace{0.4em}
-    {\small\bfseries\navy{What's Needed}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item Shift from 60/40 attack/defense imbalance
-      \item Dedicated safety APIs from commercial providers
-      \item Open-source safety platforms \& benchmarks
-      \item International safety competitions
-      \item Policy: automated audit agents for compliance
-    \end{itemize}
-
-    \column{0.48\textwidth}
-    \begin{ucrdark}[UCRnavy]
-      \centering\small\bfseries
-      Key Message\\[5pt]
-      \normalfont\footnotesize
-      Achieving safe AI requires not only\\
-      \textbf{technical advances} but\\
-      \textbf{collective global action} from\\
-      researchers, practitioners,\\
-      and policymakers.
-    \end{ucrdark}
-    \vspace{0.4em}
-    {\small\bfseries\navy{Key Takeaways from Today}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item Safety is multi-dimensional --- no single fix
-      \item Interpretability is a double-edged sword
-      \item Agent safety is the new frontier
-      \item Static benchmarks create false security
-      \item Defenses must be proactive, not reactive
-    \end{itemize}
-  \end{columns}
 \end{frame}
