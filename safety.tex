@@ -310,11 +310,12 @@
 
     \column{0.32\textwidth}
     {\small\bfseries\navy{Gray-box (Partial Access)}}
-    \begin{ucrinfo}
-      \scriptsize\bfseries Fine-Tuning Vulnerability:\\[2pt]
-      \normalfont\scriptsize
-      Safety alignment can be completely erased by fine-tuning a model on as few as \textbf{100 harmful examples}.
-    \end{ucrinfo}
+    \begin{ucrcard}[UCRnavy]{Example: Fine-Tuning Attacks}
+      \scriptsize
+      Safety alignment can be completely erased by fine-tuning a model via API on as few as \textbf{100 harmful examples}.\\[3pt]
+      \textbf{Embedding Attacks:}\\
+      Injecting malicious vector embeddings directly if the system exposes its embedding space.
+    \end{ucrcard}
 
     \column{0.32\textwidth}
     {\small\bfseries\navy{White-box (Weights Access)}}
