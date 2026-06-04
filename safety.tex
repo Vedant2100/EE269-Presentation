@@ -214,14 +214,12 @@
       \item \textbf{DPO} (Rafailov et al., 2023): Simplified alignment --- directly optimizes on preference pairs, no reward model needed
     \end{itemize}
     \vspace{0.3em}
-    \begin{ucrwarn}
-      \tiny\bfseries The Problem: Deceptive Alignment\\[3pt]
-      \normalfont\tiny
-      Models can achieve high safety scores
-      \textbf{without truly internalizing safety} ---
-      ``fake alignment'' (Hubinger et al.)\\[2pt]
-      Even GPT-4o and o1 remain vulnerable despite extensive alignment.
-    \end{ucrwarn}
+    \vspace{0.3em}
+    {\small\bfseries\navy{The Problem: Deceptive Alignment}}
+    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
+      \item Models achieve high safety scores \textbf{without truly internalizing safety} --- ``fake alignment'' (Hubinger et al.)
+      \item Even GPT-4o and o1 remain vulnerable despite extensive alignment
+    \end{itemize}
 
     \column{0.48\textwidth}
     \vspace{0pt}% force top-alignment
@@ -254,27 +252,14 @@
     \column{0.48\textwidth}
     {\small\bfseries\navy{Threat Models}}
     \vspace{0.3em}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        top=3pt, bottom=3pt]
-      \footnotesize\bfseries\navy{White-box:}
-      \normalfont\ Full access to model weights \& gradients\\
-      \scriptsize e.g., GCG (Greedy Coordinate Gradient)
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        top=3pt, bottom=3pt]
-      \footnotesize\bfseries\navy{Gray-box:}
-      \normalfont\ Partial access (e.g., embeddings)\\
-      \scriptsize e.g., Fine-tuning attacks, Embedding injection
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        top=3pt, bottom=3pt]
-      \footnotesize\bfseries\navy{Black-box:}
-      \normalfont\ API access only\\
-      \scriptsize e.g., DAN (Do Anything Now)
-    \end{tcolorbox}
+    \begin{itemize}\scriptsize\setlength\itemsep{4pt}
+      \item \textbf{\navy{White-box:}} Full access to model weights \& gradients\\
+            \muted{e.g., GCG (Greedy Coordinate Gradient)}
+      \item \textbf{\navy{Gray-box:}} Partial access (e.g., embeddings)\\
+            \muted{e.g., Fine-tuning attacks, Embedding injection}
+      \item \textbf{\navy{Black-box:}} API access only\\
+            \muted{e.g., DAN (Do Anything Now)}
+    \end{itemize}
   \end{columns}
 \end{frame}
 
