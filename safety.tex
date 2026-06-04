@@ -837,49 +837,33 @@
 %  SLIDE 18 --- VLM SAFETY
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Vision-Language Model Safety: Cross-Modal Threats}
-  {\footnotesize\itshape VLMs combine visual and textual processing ---
-    creating attack vectors that exploit \textbf{both modalities simultaneously}.}
+  {\footnotesize\itshape VLMs combine visual and textual processing --- creating attack vectors that exploit \textbf{both modalities simultaneously}.}
   \vspace{0.3em}
 
   \begin{columns}[T]
-    \column{0.48\textwidth}
+    \column{0.55\textwidth}
     \begin{ucrcard}[UCRnavy]{Visual Jailbreaks}
       \scriptsize
       $\bullet$ Adversarial images bypass text-only safety filters\\
       $\bullet$ Gradient-optimized perturbations on image encoder\\
-      $\bullet$ Hidden Markdown commands trigger tool actions\\
-      $\bullet$ Text-image combined attacks
+      $\bullet$ Hidden Markdown commands trigger tool actions
     \end{ucrcard}
-
     \vspace{0.3em}
-    \begin{ucrcard}[UCRnavy]{Cross-Modal Propagation}
-      \scriptsize
-      $\bullet$ \textbf{Open question}: How do vision vulnerabilities propagate to language outputs?\\
-      $\bullet$ Token count across modalities affects propagation
-    \end{ucrcard}
-
-    \column{0.48\textwidth}
     \begin{ucrcard}[UCRnavy]{VLP Model Safety}
       \scriptsize
       $\bullet$ Cross-modal adversarial attacks (Co-Attack, SGA)\\
-      $\bullet$ Transfer attacks exploit shared representations\\
       $\bullet$ Multimodal backdoors (BadCLIP, TrojVQA)
     \end{ucrcard}
-
     \vspace{0.3em}
-    \begin{ucrcard}[UCRnavy]{VLM Defenses}
-      \scriptsize
-      $\bullet$ Detection \& prevention-based approaches\\
-      $\bullet$ \textbf{Very limited} compared to attack research
-    \end{ucrcard}
-
-    \vspace{0.2em}
     \begin{ucrinfo}
       \centering\scriptsize\bfseries The Multimodal Gap:\\[2pt]
       \normalfont\scriptsize
-      Defenses tailored to individual modalities don't
-      address cross-modal vulnerability propagation.
+      Defenses tailored to individual modalities don't address cross-modal vulnerability propagation.
     \end{ucrinfo}
+
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{table6_vlm_page20.png}
   \end{columns}
 \end{frame}
 
@@ -924,32 +908,33 @@
 %  SLIDE 20 --- AGENT SAFETY: IPI & MEMORY
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Agent Safety: Prompt Injection \& Memory Attacks}
-  {\footnotesize\itshape Ma et al. provide the most comprehensive
-    agent safety coverage, identifying \textbf{4 levels} of analysis.}
+  {\footnotesize\itshape Ma et al. provide the most comprehensive agent safety coverage, identifying \textbf{4 levels} of analysis.}
   \vspace{0.3em}
 
   \begin{columns}[T]
-    \column{0.48\textwidth}
+    \column{0.55\textwidth}
     \begin{ucrcard}[UCRnavy]{Example Attack: Indirect Prompt Injection}
       \scriptsize
       \textbf{Bing Chat Phishing Bot (Greshake et al.)}:\\
       Attacker hides instructions in website text. Agent reads page $\to$ ingests payload $\to$ secretly acts as a social engineer.
     \end{ucrcard}
-
-    \column{0.48\textwidth}
+    \vspace{0.3em}
     \begin{ucrcard}[UCRnavy]{Example Attack: Corrupting Memory}
       \scriptsize
       \textbf{RAG Poisoning}:\\
       Attacker inserts \textbf{one} adversarial document into a secure database. Overrides agent instructions to output fake data.
     \end{ucrcard}
+    \vspace{0.3em}
+    \begin{ucrinfo}
+      \centering\scriptsize\bfseries Example Defense:\\[2pt]
+      \normalfont\scriptsize
+      \textbf{Instruction Hierarchy}: System prompts are given strict priority over scraped web text.
+    \end{ucrinfo}
+
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{table12_agent_p1_page34.png}
   \end{columns}
-  
-  \vspace{0.3em}
-  \begin{ucrinfo}
-    \centering\scriptsize\bfseries Example Defense: Privilege Management\\[2pt]
-    \normalfont\scriptsize
-    \textbf{Instruction Hierarchy}: System prompts are given strict priority over scraped web text.
-  \end{ucrinfo}
 \end{frame}
 
 
