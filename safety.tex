@@ -453,28 +453,11 @@
   \end{tikzpicture}
 
   \vspace{0.5em}
-  \begin{columns}[T]
-    \column{0.32\textwidth}
-    \begin{ucrcard}[UCRnavy]{Jailbreak Defenses}
-      \scriptsize
-      \textbf{SmoothLLM}: random perturbation\\
-      \textbf{SelfDefend}: token-level safety checks
-    \end{ucrcard}
-
-    \column{0.31\textwidth}
-    \begin{ucrcard}[UCRnavy]{Anti-Fine-Tuning Defenses}
-      \scriptsize
-      \textbf{Vaccine}: preserves safety during tuning\\
-      \textbf{SafetyLock}: prevents safety regression
-    \end{ucrcard}
-
-    \column{0.32\textwidth}
-    \begin{ucrcard}[UCRnavy]{Prompt Injection Defenses}
-      \scriptsize
-      \textbf{Instruction Hierarchy}: privilege levels\\
-      \textbf{Spotlighting}: provenance signals
-    \end{ucrcard}
-  \end{columns}
+  \begin{ucrcard}[UCRnavy]{The Need for Defense-in-Depth (Ensemble Defenses)}
+    \scriptsize
+    No single layer is foolproof. State-of-the-art security requires \textbf{Multi-Defense Ensembles} that integrate multiple stages to offset individual weaknesses.\\[2pt]
+    \textbf{Example (AutoDefense):} An ensemble framework that explicitly combines \textbf{input filtering} and \textbf{output verification} to provide comprehensive protection against adaptive attacks.
+  \end{ucrcard}
 \end{frame}
 
 
