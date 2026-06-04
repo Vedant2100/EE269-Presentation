@@ -159,7 +159,7 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 4 — VALUE MISALIGNMENT: BIAS & TOXICITY
+%  SLIDE 4 — VALUE MISALIGNMENT
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Category 1: Value Misalignment — Bias \& Toxicity}
   \begin{columns}[T]
@@ -168,7 +168,7 @@
     \begin{itemize}\footnotesize\setlength\itemsep{3pt}
       \item Training data reflects societal biases $\to$ models \textbf{amplify} them
       \item Gender, racial, religious, political biases measured via
-        WinoBias, BBQ, StereoSet, CrowS-Pairs
+        WinoBias, BBQ, StereoSet, CrowS-Pairs benchmark datasets.
       \item Example (WinoBias): Models consistently assume ``doctors'' are male and ``nurses'' are female when resolving ambiguous pronouns
     \end{itemize}
     \vspace{0.3em}
@@ -193,12 +193,6 @@
       \item Models may produce self-harm, violence, or illegal content
       \item Defining ``universal ethics'' across cultures remains unsolved
     \end{itemize}
-    \vspace{0.3em}
-    \begin{ucrinfo}
-      \centering\scriptsize
-      These risks emerge across the \textbf{entire lifecycle}:\\
-      data collection $\to$ pre-training $\to$ fine-tuning $\to$ deployment
-    \end{ucrinfo}
   \end{columns}
 \end{frame}
 
