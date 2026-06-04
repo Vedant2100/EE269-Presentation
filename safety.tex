@@ -466,25 +466,22 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 10 --- MISUSE: WEAPONIZATION & CYBER
+%  SLIDE 10 --- MISUSE: WEAPONIZATION & DEEPFAKES
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 3: Catastrophic Misuse: Weaponization}
+\begin{frame}{Category 3: Catastrophic Misuse}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    \begin{ucrcard}[UCRnavy]{CBRN Risks}
+    \begin{ucrcard}[UCRnavy]{CBRN \& Cyber Weapons}
       \scriptsize
-      LLMs can provide step-by-step instructions for\\
-      chemical, biological, radiological, nuclear threats\\[3pt]
-      \textbf{WMDP benchmark}: 4{,}157 questions testing\\
-      weapon-relevant knowledge across bio/cyber/chem
+      \textbf{WMDP benchmark}: tests weapon-relevant knowledge across bio/cyber/chem.\\[2pt]
+      \textbf{Claude Mythos}: Anthropic restricted this model after it found thousands of zero-days (including a 27-year-old flaw in OpenBSD) and escaped a sandbox during testing.
     \end{ucrcard}
 
     \vspace{0.3em}
-    \begin{ucrcard}[UCRnavy]{Cyber Weapons}
+    \begin{ucrcard}[UCRnavy]{Misinformation \& Deepfakes}
       \scriptsize
-      $\bullet$ Automated vulnerability discovery\\
-      $\bullet$ Malware generation \& social engineering\\[2pt]
-      \textbf{Claude Mythos}: Anthropic restricted this model after it found thousands of zero-days (including a 27-year-old flaw in OpenBSD) and escaped a sandbox during testing.
+      $\bullet$ \textbf{AI Information Epidemic}: Botnets generate content at speeds/volumes far exceeding humans.\\
+      $\bullet$ \textbf{Synthetic Media}: Multimodal LLMs generate audio/video for fraud and political manipulation.
     \end{ucrcard}
 
     \column{0.48\textwidth}
@@ -500,66 +497,19 @@
     \vspace{0.3em}
     \begin{ucrcard}[UCRnavy]{Mitigation Strategies}
       \scriptsize
-      $\bullet$ Domain-specific refusal training\\
-      $\bullet$ Output monitoring for dangerous content\\
-      $\bullet$ Legal and regulatory frameworks\\
+      $\bullet$ Domain-specific refusal training \& output monitoring\\
+      $\bullet$ Deepfake detection \& provenance watermarking\\
       $\bullet$ Red teaming with domain experts
     \end{ucrcard}
   \end{columns}
-\end{frame}
-
-
-% ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 11 --- MISUSE: MISINFORMATION & DEEPFAKES
-% ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Misinformation \& Deepfakes}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\color{UCRnavy}Misinformation at Scale}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item LLM-generated news perceived as \textbf{equally or more credible}
-        than human-written text (Kreps et al., 2022)
-      \item Botnets using ChatGPT for human-like content generation
-      \item ``AI-driven information epidemic'' --- speed and volume far
-        exceed human capability
-    \end{itemize}
-    \vspace{0.3em}
-    {\small\bfseries\color{UCRnavy}Deepfakes}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item Multimodal LLMs generate synthetic audio/video/images
-      \item Applications: identity fraud, political manipulation,
-        non-consensual content
-      \item Technical defenses (adversarial noise, watermarks) are
-        \textbf{empirically bypassed}
-    \end{itemize}
-
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Defenses}}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Detection, top=3pt, bottom=3pt]
-      \scriptsize
-      $\bullet$ AI-text classifiers (perplexity-based)\\
-      $\bullet$ Deepfake detection models\\
-      $\bullet$ Provenance watermarking (Kirchenbauer et al.)
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        fonttitle=\bfseries\scriptsize\color{UCRnavy},
-        title=Non-Technical, top=3pt, bottom=3pt]
-      \scriptsize
-      $\bullet$ Legal frameworks \& platform accountability\\
-      $\bullet$ Public education\\
-      $\bullet$ Content provenance standards
-    \end{tcolorbox}\vspace{3pt}
-    \begin{ucrwarn}
-      \centering\scriptsize
-      Research concludes that deepfake mitigation
-      is \textbf{primarily non-technical} --- legal and regulatory
-      approaches are more effective than technical defenses.
-    \end{ucrwarn}
-  \end{columns}
+  
+  \vspace{0.3em}
+  \begin{ucrinfo}
+    \centering\scriptsize\bfseries
+    The Deepfake Dilemma:\\[2pt]
+    \normalfont\scriptsize
+    Technical defenses (adversarial noise, watermarks) are frequently bypassed. Research concludes that deepfake mitigation is \textbf{primarily non-technical}---relying on legal frameworks and platform accountability.
+  \end{ucrinfo}
 \end{frame}
 
 
