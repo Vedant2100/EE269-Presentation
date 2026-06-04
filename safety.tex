@@ -600,76 +600,42 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 14 --- INTERPRETABILITY FOR SAFETY
+%  SLIDE 14 --- REMAINING CATEGORIES
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 6: Interpretability: Looking Inside for Safety}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Sparse Autoencoders (SAEs)}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item LLMs encode \textbf{multiple concepts in shared neurons}
-        (superposition; Elhage et al., 2022)
-      \item SAEs disentangle these into \textbf{monosemantic features}
-      \item Anthropic \& OpenAI built visual feature explorers
-    \end{itemize}
-    \vspace{0.3em}
-    \begin{ucrdark}[UCRnavy]
-      \scriptsize\bfseries Safety-Relevant Features Discovered:\\[2pt]
-      \normalfont\scriptsize
-      Deception $\cdot$ Sycophancy $\cdot$ Bias $\cdot$ Dangerous content\\[2pt]
-      These features can be used to \textbf{steer} LLM outputs ---
-      amplify safety or suppress harmful directions.
-    \end{ucrdark}
-
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Concrete Example: Steering Behavior}}
-    \begin{ucrcard}[UCRnavy]{The "Golden Gate Bridge" Feature}
-      \scriptsize
-      Anthropic researchers physically located the precise neural circuit responsible for the concept of the ``Golden Gate Bridge'' inside Claude.\\[3pt]
-      By artificially turning this feature ``up'' during inference, the model became obsessed, forcing mentions of the bridge into every response.\\[3pt]
-      \textbf{Implication:} We can do the exact same thing to find and artificially turn ``down'' features for \emph{deception} or \emph{bias}.
-    \end{ucrcard}
-    \vspace{0.2em}
-    \begin{ucrwarn}
-      \scriptsize\bfseries Dual-Use Risk:\\[2pt]
-      \normalfont\scriptsize
-      Same tools for alignment can be misused to
-      \emph{enhance} misalignment or craft
-      more effective adversarial attacks.
-    \end{ucrwarn}
-  \end{columns}
-\end{frame}
-
-% ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 16 --- DATA SAFETY & GOVERNANCE
-% ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Data Safety \& Governance}
-  {\footnotesize\itshape The remaining two categories of the safety taxonomy.}
+\begin{frame}{Remaining Safety Categories}
+  {\footnotesize\itshape Overview of the remaining categories (covered by other presenters or in the appendix).}
   \vspace{0.3em}
 
   \begin{columns}[T]
-    \column{0.48\textwidth}
-    \begin{ucrcard}[UCRnavy]{Data Safety \& Privacy}
+    \column{0.32\textwidth}
+    \begin{ucrcard}[UCRnavy]{Data Safety}
       \scriptsize
-      $\bullet$ Training data memorization \& extraction\\
-      $\bullet$ Membership inference attacks\\
-      $\bullet$ Privacy defenses (Differential Privacy, Unlearning)
+      $\bullet$ Training data memorization\\
+      $\bullet$ Membership inference\\
+      $\bullet$ Differential Privacy
     \end{ucrcard}
 
-    \column{0.48\textwidth}
-    \begin{ucrcard}[UCRnavy]{Industry Roadmaps \& Governance}
+    \column{0.32\textwidth}
+    \begin{ucrcard}[UCRnavy]{Governance}
       \scriptsize
-      $\bullet$ Three-Phase Framework (Training, Eval, Deployment)\\
-      $\bullet$ Regulations (EU AI Act, US Exec Orders)\\
-      $\bullet$ Copyright litigation and policy frameworks
+      $\bullet$ AI Evaluation Frameworks\\
+      $\bullet$ Regulations (EU AI Act)\\
+      $\bullet$ Copyright \& Policy
+    \end{ucrcard}
+
+    \column{0.32\textwidth}
+    \begin{ucrcard}[UCRnavy]{Interpretability}
+      \scriptsize
+      $\bullet$ Sparse Autoencoders (SAEs)\\
+      $\bullet$ Feature extraction\\
+      $\bullet$ Steering model behavior
     \end{ucrcard}
   \end{columns}
   
   \vspace{1em}
   \begin{ucrinfo}
     \centering\scriptsize\bfseries
-    Comprehensive slides on these topics are included\\
-    in the appendix. Let's now look at Safety at Scale.
+    Let's now transition to looking at Safety at Scale.
   \end{ucrinfo}
 \end{frame}
 
