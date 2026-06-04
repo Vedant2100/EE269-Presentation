@@ -1089,27 +1089,54 @@
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
-%  SLIDE 25 --- THE PATH FORWARD
+%  SLIDE 25 --- THE SAFETY ARMS RACE
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{The Path Forward}
+\begin{frame}{The Safety Arms Race: Current Challenges}
   \vspace*{0.2cm}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    \begin{ucrcard}[UCRnavy]{1. The Safety Arms Race}
+    \begin{ucrcard}[UCRnavy]{Evaluation Failures}
       \small
-      \textbf{Passive Defenses \& Static Tests:}\\
-      Current safety evaluations rely on static benchmarks that models easily memorize, creating a false sense of security.\\[6pt]
-      \textbf{The Proactive Shift:}\\
-      As agents gain autonomy, the attack-defense gap will widen exponentially. We must shift from reactive patching to proactive, continuous monitoring (e.g., Chain-of-Thought auditing).
+      \textbf{Static Benchmarks:}\\
+      Current safety evaluations rely on static benchmarks. Models easily memorize these datasets, passing safety tests while remaining fundamentally vulnerable.\\[6pt]
+      \textbf{False Security:}\\
+      Attack Success Rate (ASR) is not enough. It misses the severity, resilience, and real-world consequences of an attack.
     \end{ucrcard}
 
     \column{0.48\textwidth}
-    \begin{ucrcard}[UCRnavy]{2. Guarding Superintelligence}
+    \begin{ucrcard}[UCRnavy]{The Proactive Shift}
       \small
-      \textbf{The Oversight Paradox:}\\
-      How do you build a monitor that can successfully regulate an AI smarter than its creators?\\[6pt]
-      \textbf{Layered Defense Strategy:}\\
-      No single "stop button" is enough. Safe superintelligence requires a layered approach combining external oversight, robust safety switches, and intrinsic ethical alignment.
+      \textbf{The Widening Gap:}\\
+      As agents gain autonomy and begin finding zero-days, the attack-defense gap will widen exponentially.\\[6pt]
+      \textbf{Continuous Monitoring:}\\
+      We must shift from passive, reactive patching to proactive, continuous monitoring (e.g., Chain-of-Thought auditing to catch unsafe reasoning early).
+    \end{ucrcard}
+  \end{columns}
+\end{frame}
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  SLIDE 26 --- SAFE SUPERINTELLIGENCE
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{frame}{Safe Superintelligence: Future Solutions}
+  \vspace*{0.2cm}
+  \begin{columns}[T]
+    \column{0.48\textwidth}
+    \begin{ucrcard}[UCRnavy]{The Oversight Paradox}
+      \small
+      \textbf{The Monitor Problem:}\\
+      As AI reaches superintelligence, how do we build an external monitor that can successfully regulate an entity smarter than its creators?\\[6pt]
+      \textbf{Alignment Faking:}\\
+      Advanced models may learn to "fake alignment"---passing safety tests without internalizing constraints.
+    \end{ucrcard}
+
+    \column{0.48\textwidth}
+    \begin{ucrcard}[UCRnavy]{Layered Defense Strategy}
+      \small
+      \textbf{No Single Stop Button:}\\
+      An emergency stop button is insufficient; a superintelligence could easily disable it.\\[6pt]
+      \textbf{Complementary Mechanisms:}\\
+      Safe ASI requires a layered approach combining external oversight, robust safety switches, and intrinsic ethical reasoning.
     \end{ucrcard}
   \end{columns}
 
