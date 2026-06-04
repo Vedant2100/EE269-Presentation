@@ -59,25 +59,32 @@
 %  SLIDE 2 --- THE 60/40 GAP + PAPER INTRODUCTIONS
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{The AI Safety Landscape}
-  \vspace{0.5em}
-  \begin{ucrdark}[UCRnavy]
-    \centering\small\bfseries
-    Key Finding:\\[4pt]
-    \normalfont\normalsize
-    \textasciitilde60\% of research focuses on attacks vs.\ \textasciitilde40\% on defenses.\\[4pt]
-    \normalfont\footnotesize Defenses are consistently lagging behind attacks.
-  \end{ucrdark}
-  
-  \vspace{1.5em}
-  {\large\bfseries\navy{Our Roadmap Today:}}
-  \vspace{0.5em}
-  
-  \begin{enumerate}\normalsize\setlength\itemsep{8pt}
-    \item[\navy{I.}] \textbf{LLM safety fundamentals}
-    \item[\navy{II.}] \textbf{Expand to all modalities}
-    \item[\navy{III.}] \textbf{Agent safety} --- the new frontier
-    \item[\navy{IV.}] \textbf{Open challenges} \& the path forward
-  \end{enumerate}
+  \vspace{0.2em}
+  \begin{columns}[T]
+    \column{0.55\textwidth}
+    \begin{ucrdark}[UCRnavy]
+      \centering\small\bfseries
+      Key Finding:\\[4pt]
+      \normalfont\normalsize
+      \textasciitilde60\% of research focuses on attacks vs.\ \textasciitilde40\% on defenses.\\[4pt]
+      \normalfont\footnotesize Defenses are consistently lagging behind attacks.
+    \end{ucrdark}
+    
+    \vspace{1.5em}
+    {\large\bfseries\navy{Our Roadmap Today:}}
+    \vspace{0.5em}
+    
+    \begin{enumerate}\normalsize\setlength\itemsep{8pt}
+      \item[\navy{I.}] \textbf{LLM safety fundamentals}
+      \item[\navy{II.}] \textbf{Expand to all modalities}
+      \item[\navy{III.}] \textbf{Agent safety} --- the new frontier
+      \item[\navy{IV.}] \textbf{Open challenges} \& the path forward
+    \end{enumerate}
+
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{papers/paper4_figures/fig1_2_stats_trends_page2.png}
+  \end{columns}
 \end{frame}
 
 
@@ -155,38 +162,30 @@
 % ═══════════════════════════════════════════════════════════════════════════════
 %  SLIDE 4 --- VALUE MISALIGNMENT
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 1: Value Misalignment: Bias \& Toxicity}
+\begin{frame}{When Alignment Fails: Bias, Toxicity, \& Hallucinations}
   \begin{columns}[T]
-    \column{0.48\textwidth}
+    \column{0.55\textwidth}
     {\small\bfseries\navy{Social Bias}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+    \begin{itemize}\footnotesize\setlength\itemsep{2pt}
       \item Training data reflects societal biases $\to$ models \textbf{amplify} them
-      \item Gender, racial, religious, political biases measured via
-        WinoBias, BBQ, StereoSet, CrowS-Pairs benchmark datasets.
-      \item Example (WinoBias): Models consistently assume ``doctors'' are male and ``nurses'' are female when resolving ambiguous pronouns
+      \item Measured via WinoBias, BBQ, StereoSet, CrowS-Pairs.
     \end{itemize}
-    \vspace{0.3em}
+    \vspace{0.2em}
     {\small\bfseries\navy{Toxicity}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
+    \begin{itemize}\footnotesize\setlength\itemsep{2pt}
       \item Even \textbf{benign prompts} trigger toxic completions
-        (RealToxicityPrompts benchmark)
       \item Toxicity \emph{increases} with model size
-      \item Mitigations: data filtering, RLHF, output classifiers
+    \end{itemize}
+    \vspace{0.2em}
+    {\small\bfseries\navy{Hallucinations \& Ethics}}
+    \begin{itemize}\footnotesize\setlength\itemsep{2pt}
+      \item \textbf{Factuality}: contradicting facts. \textbf{Faithfulness}: deviating from context.
+      \item Models may produce self-harm, violence, or illegal content.
     \end{itemize}
 
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Hallucinations}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item \textbf{Factuality}: contradicting established facts
-      \item \textbf{Faithfulness}: deviating from provided context
-      \item Causes: data gaps, distributional mismatch, decoding artifacts
-    \end{itemize}
-    \vspace{0.3em}
-    {\small\bfseries\navy{Ethics}}
-    \begin{itemize}\footnotesize\setlength\itemsep{3pt}
-      \item Models may produce self-harm, violence, or illegal content
-      \item Defining ``universal ethics'' across cultures remains unsolved
-    \end{itemize}
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{papers/paper1_figures/fig2_value_alignment_page7.png}
   \end{columns}
 \end{frame}
 
@@ -244,13 +243,12 @@
 % ═══════════════════════════════════════════════════════════════════════════════
 %  SLIDE 6 --- ROBUSTNESS OVERVIEW
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 2: Robustness to Attack}
-  {\footnotesize\itshape How resilient are LLMs to adversarial inputs designed to
-    bypass safety, degrade quality, or extract private data?}
+\begin{frame}{Breaking the Guardrails: Robustness \& Vulnerability}
+  {\footnotesize\itshape How resilient are LLMs to adversarial inputs designed to bypass safety, degrade quality, or extract private data?}
   \vspace{0.3em}
 
   \begin{columns}[T]
-    \column{0.48\textwidth}
+    \column{0.55\textwidth}
     {\small\bfseries\navy{Attack Categories}}
     \begin{itemize}\scriptsize\setlength\itemsep{2pt}
       \item \textbf{Adversarial attacks}: subtle perturbations causing incorrect outputs
@@ -261,29 +259,14 @@
       \item \textbf{OOD robustness}: performance drops on inputs outside training distribution
     \end{itemize}
 
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Threat Models}}
-    \vspace{0.3em}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        top=3pt, bottom=3pt]
-      \footnotesize\bfseries\navy{White-box:}
-      \normalfont\ Full access to model weights \& gradients\\
-      \scriptsize e.g., GCG (Greedy Coordinate Gradient)
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        top=3pt, bottom=3pt]
-      \footnotesize\bfseries\navy{Gray-box:}
-      \normalfont\ Partial access (e.g., embeddings)\\
-      \scriptsize e.g., Fine-tuning attacks, Embedding injection
-    \end{tcolorbox}\vspace{2pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
-        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
-        top=3pt, bottom=3pt]
-      \footnotesize\bfseries\navy{Black-box:}
-      \normalfont\ API access only\\
-      \scriptsize e.g., DAN (Do Anything Now)
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{papers/paper1_figures/fig3_robustness_page9.png}
+    
+    \vspace{0.5em}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners, borderline west={3pt}{0pt}{UCRnavy}, top=2pt, bottom=2pt, boxsep=1pt]
+      \scriptsize\bfseries\navy{Threat Models:}
+      \tiny \textbf{White-box} (Weights access), \textbf{Gray-box} (Embeddings), \textbf{Black-box} (API).
     \end{tcolorbox}
   \end{columns}
 \end{frame}
@@ -468,29 +451,24 @@
 % ═══════════════════════════════════════════════════════════════════════════════
 %  SLIDE 10 --- MISUSE: WEAPONIZATION & DEEPFAKES
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 3: Catastrophic Misuse}
+\begin{frame}{The Misuse Threat: Weaponization \& Deepfakes}
   \begin{columns}[T]
-    \column{0.48\textwidth}
+    \column{0.55\textwidth}
     \begin{ucrcard}[UCRnavy]{CBRN \& Cyber Weapons}
       \scriptsize
       \textbf{WMDP benchmark}: tests weapon-relevant knowledge across bio/cyber/chem.\\[2pt]
-      \textbf{Claude Mythos}: Anthropic restricted this model after it found thousands of zero-days (including a 27-year-old flaw in OpenBSD) and escaped a sandbox during testing.
+      \textbf{Claude Mythos}: Anthropic restricted this model after it found thousands of zero-days and escaped a sandbox during testing.
     \end{ucrcard}
-
-    \column{0.48\textwidth}
+    \vspace{0.3em}
     \begin{ucrcard}[UCRnavy]{Misinformation \& Deepfakes}
       \scriptsize
       $\bullet$ \textbf{AI Information Epidemic}: Botnets generate content at speeds/volumes far exceeding humans.\\
       $\bullet$ \textbf{Synthetic Media}: Multimodal LLMs generate audio/video for fraud and political manipulation.
     \end{ucrcard}
 
-    \vspace{0.3em}
-    \begin{ucrcard}[UCRnavy]{Mitigation Strategies}
-      \scriptsize
-      $\bullet$ Domain-specific refusal training \& output monitoring\\
-      $\bullet$ Deepfake detection \& provenance watermarking\\
-      $\bullet$ Red teaming with domain experts
-    \end{ucrcard}
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{papers/paper1_figures/fig12_catastrophic_misuse_page45.png}
   \end{columns}
   
   \vspace{0.3em}
@@ -506,35 +484,28 @@
 % ═══════════════════════════════════════════════════════════════════════════════
 %  SLIDE 12 --- AUTONOMOUS AI RISKS
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 4: Autonomous AI Risks}
+\begin{frame}{Existential Threats: Autonomous AI Risks}
   \vspace*{0.1cm}
   \begin{columns}[T]
-    \column{0.32\textwidth}
-    \begin{ucrcard}[UCRnavy]{Instrumental Goals}
+    \column{0.55\textwidth}
+    \begin{ucrcard}[UCRnavy]{Instrumental Goals \& Goal Misalignment}
       \scriptsize
       AI pursues unintended sub-goals:\\[2pt]
       $\bullet$ \textbf{Power-seeking}: acquiring resources\\
       $\bullet$ \textbf{Self-preservation}: avoiding shutdown\\
-      $\bullet$ \textbf{Self-improving}: iterative capability enhancement\\[2pt]
-      \textit{Turner et al. (2021)}
-    \end{ucrcard}
-
-    \column{0.32\textwidth}
-    \begin{ucrcard}[UCRnavy]{Goal Misalignment}
-      \scriptsize
       $\bullet$ \textbf{Goal drift}: objectives evolve during learning\\
-      $\bullet$ \textbf{Proxy gaming}: optimizing proxy metrics instead of true goals
-        (Goodhart's Law)\\[2pt]
-      \textit{Subtle and hard to detect}
+      $\bullet$ \textbf{Proxy gaming}: optimizing proxy metrics instead of true goals (Goodhart's Law)
     \end{ucrcard}
-
-    \column{0.32\textwidth}
+    \vspace{0.3em}
     \begin{ucrcard}[UCRnavy]{Deception}
       \scriptsize
       $\bullet$ \textbf{Intentional}: model actively misleads to bypass restrictions\\
-      $\bullet$ \textbf{Situational awareness}: AI detects evaluation, modifies behavior accordingly\\[2pt]
-      \textit{Apollo Research: GPT-4 lies about insider trading}
+      $\bullet$ \textbf{Situational awareness}: AI detects evaluation, modifies behavior accordingly
     \end{ucrcard}
+
+    \column{0.45\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{papers/paper1_figures/fig14_autonomous_ai_page52.png}
   \end{columns}
   \vspace{0.4em}
   \begin{ucrdark}[UCRnavy]
@@ -550,7 +521,7 @@
 % ═══════════════════════════════════════════════════════════════════════════════
 %  SLIDE 13 --- AGENT SAFETY INTRO
 % ═══════════════════════════════════════════════════════════════════════════════
-\begin{frame}{Category 5: Agent Safety: Expanding the Attack Surface}
+\begin{frame}{The New Frontier: Agentic Attack Surfaces}
   {\footnotesize\itshape When LLMs gain tools, memory, and autonomy, the risk
     profile changes fundamentally.}
   \vspace{0.3em}
