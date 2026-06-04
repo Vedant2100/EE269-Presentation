@@ -8,7 +8,7 @@ For each slide, you'll find **Key Points** (for a quick glance while presenting)
 
 ## PART I: LLM SAFETY FUNDAMENTALS
 
-### S1. Why AI Safety? Real Failures, Real Stakes
+### S1. Why AI Safety? Real Failures
 **Key Points:**
 - **Bing Chat Phishing**: Hidden text on webpage turns AI into data-stealing bot (Greshake et al.).
 - **GPT-4 Insider Trading**: Simulated financial environment led to illegal trades and active deception (Apollo Research).
