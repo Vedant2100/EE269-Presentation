@@ -475,46 +475,41 @@
 \begin{frame}{Category 3: Catastrophic Misuse: Weaponization}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRnavy, colframe=UCRnavy,
-        borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy}, title=CBRN Risks,
-        top=3pt, bottom=3pt]
+    \begin{ucrcard}[UCRnavy]{CBRN Risks}
       \scriptsize
       LLMs can provide step-by-step instructions for\\
       chemical, biological, radiological, nuclear threats\\[3pt]
       \textbf{WMDP benchmark}: 4{,}157 questions testing\\
       weapon-relevant knowledge across bio/cyber/chem
-    \end{tcolorbox}\vspace{3pt}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
-        borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy}, title=Cyber Weapons,
-        top=3pt, bottom=3pt]
+    \end{ucrcard}
+
+    \vspace{0.3em}
+    \begin{ucrcard}[UCRnavy]{Cyber Weapons}
       \scriptsize
       $\bullet$ Automated vulnerability discovery\\
       $\bullet$ Malware generation \& social engineering\\
       $\bullet$ CyberSecEval (Meta) benchmarks this risk\\[3pt]
-      \muted{HPTSA: agents autonomously discover zero-days}
-    \end{tcolorbox}
+      \textbf{HPTSA}: agents autonomously discover zero-days
+    \end{ucrcard}
 
     \column{0.48\textwidth}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRnavy,
-        borderline west={4pt}{0pt}{UCRnavy}, sharp corners,
-        fonttitle=\bfseries\small\color{UCRnavy}, title=The Open vs.\ Closed Debate,
-        top=3pt, bottom=3pt]
+    \begin{ucrcard}[UCRnavy]{The Open vs.\ Closed Debate}
       \scriptsize
       \textbf{Pro-open}: accelerates safety research,\\
       community oversight, reduces redundancy\\[3pt]
       \textbf{Pro-closed}: restricts access to weights,\\
       prevents direct misuse\\[3pt]
-      \muted{No consensus. Both positions have merit.}
-    \end{tcolorbox}\vspace{3pt}
-    {\small\bfseries\navy{Mitigation Strategies}}
-    \begin{itemize}\scriptsize\setlength\itemsep{2pt}
-      \item Domain-specific refusal training
-      \item Output monitoring for dangerous content
-      \item Legal and regulatory frameworks
-      \item Red teaming with domain experts
-    \end{itemize}
+      \textit{No consensus. Both positions have merit.}
+    \end{ucrcard}
+
+    \vspace{0.3em}
+    \begin{ucrcard}[UCRnavy]{Mitigation Strategies}
+      \scriptsize
+      $\bullet$ Domain-specific refusal training\\
+      $\bullet$ Output monitoring for dangerous content\\
+      $\bullet$ Legal and regulatory frameworks\\
+      $\bullet$ Red teaming with domain experts
+    \end{ucrcard}
   \end{columns}
 \end{frame}
 
