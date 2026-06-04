@@ -294,8 +294,8 @@
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{Jailbreaking: Bypassing the Guardrails}
   \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Black-box Attacks (API Access)}}
+    \column{0.32\textwidth}
+    {\small\bfseries\navy{Black-box (API Access)}}
     \begin{ucrcard}[UCRnavy]{Example 1: Persona Adoption}
       \scriptsize
       The user writes a prompt convincing the AI it is a ``developer testing an unaligned system,'' bypassing default refusal mechanisms.\\[2pt]
@@ -308,26 +308,27 @@
       Using an uncensored LLM to automatically generate thousands of conversational attack variations against the target AI.
     \end{ucrcard}
 
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{White-box Attacks (Weights Access)}}
-    \begin{ucrcard}[UCRnavy]{Example 3: Adversarial Suffixes}
-      \scriptsize
-      The \textbf{GCG} (Greedy Coordinate Gradient) attack mathematically calculates an invisible, gibberish-looking string of characters.\\[2pt]
-      When appended to a malicious request, this suffix forces the neural network to output ``Sure, here is...'' instead of refusing.
-    \end{ucrcard}
-
-    \vspace{0.3em}
+    \column{0.32\textwidth}
+    {\small\bfseries\navy{Gray-box (Partial Access)}}
     \begin{ucrinfo}
       \scriptsize\bfseries Fine-Tuning Vulnerability:\\[2pt]
       \normalfont\scriptsize
       Safety alignment can be completely erased by fine-tuning a model on as few as \textbf{100 harmful examples}.
     \end{ucrinfo}
-    \vspace{0.3em}
-    \begin{ucrdark}[UCRnavy]
-      \centering\scriptsize\bfseries
-      No model was fully jailbreak-proof in their analysis (tested on GPT-4, LLaMA, Gemini, Claude and other families).\\
-    \end{ucrdark}
+
+    \column{0.32\textwidth}
+    {\small\bfseries\navy{White-box (Weights Access)}}
+    \begin{ucrcard}[UCRnavy]{Example 3: Adversarial Suffixes}
+      \scriptsize
+      The \textbf{GCG} (Greedy Coordinate Gradient) attack mathematically calculates an invisible, gibberish-looking string of characters.\\[2pt]
+      When appended to a malicious request, this suffix forces the neural network to output ``Sure, here is...'' instead of refusing.
+    \end{ucrcard}
   \end{columns}
+  \vspace{0.3em}
+  \begin{ucrdark}[UCRnavy]
+    \centering\scriptsize\bfseries
+    No model was fully jailbreak-proof in their analysis (tested on GPT-4, LLaMA, Gemini, Claude and other families).\\
+  \end{ucrdark}
 \end{frame}
 
 
