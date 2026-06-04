@@ -10,9 +10,7 @@
 % ─────────────────────────────────────────────────────────────────────────────
 %  SECTION DIVIDER --- PART I
 % ─────────────────────────────────────────────────────────────────────────────
-\sectionframe{}{LLM \& Large Model Safety}%
-  % {Papers \textcircled{1} \& \textcircled{4} --- From Alignment to Agents}%
-  % {Shi et al.\,(2024) $\cdot$ Ma et al.\,(2025)}
+\sectionframe{}{LLM \& Large Model Safety}{}{}
 
 
 % ═══════════════════════════════════════════════════════════════════════════════
@@ -59,9 +57,6 @@
 %  SLIDE 2 --- THE 60/40 GAP + PAPER INTRODUCTIONS
 % ═══════════════════════════════════════════════════════════════════════════════
 \begin{frame}{The AI Safety Landscape}
-  \vspace{0.2em}
-  \begin{columns}[T]
-    \column{0.55\textwidth}
     \begin{ucrdark}[UCRnavy]
       \centering\small\bfseries
       Key Finding:\\[4pt]
@@ -83,7 +78,7 @@
 
     \column{0.45\textwidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{fig1_2_stats_trends_page2.png}
+
   \end{columns}
 \end{frame}
 
@@ -254,7 +249,7 @@
   \vspace{0.3em}
 
   \begin{columns}[T]
-    \column{0.55\textwidth}
+    \column{0.48\textwidth}
     {\small\bfseries\navy{Attack Categories}}
     \begin{itemize}\scriptsize\setlength\itemsep{2pt}
       \item \textbf{Adversarial attacks}: subtle perturbations causing incorrect outputs
@@ -265,14 +260,29 @@
       \item \textbf{OOD robustness}: performance drops on inputs outside training distribution
     \end{itemize}
 
-    \column{0.45\textwidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{fig3_robustness_page9.png}
-    
-    \vspace{0.5em}
-    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray, sharp corners, borderline west={3pt}{0pt}{UCRnavy}, top=2pt, bottom=2pt, boxsep=1pt]
-      \scriptsize\bfseries\navy{Threat Models:}
-      \tiny \textbf{White-box} (Weights access), \textbf{Gray-box} (Embeddings), \textbf{Black-box} (API).
+    \column{0.48\textwidth}
+    {\small\bfseries\navy{Threat Models}}
+    \vspace{0.3em}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
+        top=3pt, bottom=3pt]
+      \footnotesize\bfseries\navy{White-box:}
+      \normalfont\ Full access to model weights \& gradients\\
+      \scriptsize e.g., GCG (Greedy Coordinate Gradient)
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
+        top=3pt, bottom=3pt]
+      \footnotesize\bfseries\navy{Gray-box:}
+      \normalfont\ Partial access (e.g., embeddings)\\
+      \scriptsize e.g., Fine-tuning attacks, Embedding injection
+    \end{tcolorbox}\vspace{2pt}
+    \begin{tcolorbox}[enhanced, colback=UCRlgray, colframe=UCRmgray,
+        sharp corners, borderline west={3pt}{0pt}{UCRnavy},
+        top=3pt, bottom=3pt]
+      \footnotesize\bfseries\navy{Black-box:}
+      \normalfont\ API access only\\
+      \scriptsize e.g., DAN (Do Anything Now)
     \end{tcolorbox}
   \end{columns}
 \end{frame}
@@ -449,7 +459,7 @@
   \begin{ucrcard}[UCRnavy]{The Need for Defense-in-Depth (Ensemble Defenses)}
     \scriptsize
     No single layer is foolproof. State-of-the-art security requires \textbf{Multi-Defense Ensembles} that integrate multiple stages to offset individual weaknesses.\\[2pt]
-    \textbf{Example (AutoDefense):} An ensemble framework that explicitly combines \textbf{input filtering} and \textbf{output verification} to provide comprehensive protection against adaptive attacks.
+    \textbf{Example (AutoDefense):} An ensemble framework that combines \textbf{input filtering} and \textbf{output verification} to provide comprehensive protection against adaptive attacks.
   \end{ucrcard}
 \end{frame}
 
@@ -498,25 +508,32 @@
 \begin{frame}{Existential Threats: Autonomous AI Risks}
   \vspace*{0.1cm}
   \begin{columns}[T]
-    \column{0.55\textwidth}
-    \begin{ucrcard}[UCRnavy]{Instrumental Goals \& Goal Misalignment}
+    \column{0.32\textwidth}
+    \begin{ucrcard}[UCRnavy]{Instrumental Goals}
       \scriptsize
       AI pursues unintended sub-goals:\\[2pt]
       $\bullet$ \textbf{Power-seeking}: acquiring resources\\
       $\bullet$ \textbf{Self-preservation}: avoiding shutdown\\
-      $\bullet$ \textbf{Goal drift}: objectives evolve during learning\\
-      $\bullet$ \textbf{Proxy gaming}: optimizing proxy metrics instead of true goals (Goodhart's Law)
+      $\bullet$ \textbf{Self-improving}: iterative capability enhancement\\[2pt]
+      \textit{Turner et al. (2021)}
     \end{ucrcard}
-    \vspace{0.3em}
+
+    \column{0.32\textwidth}
+    \begin{ucrcard}[UCRnavy]{Goal Misalignment}
+      \scriptsize
+      $\bullet$ \textbf{Goal drift}: objectives evolve during learning\\
+      $\bullet$ \textbf{Proxy gaming}: optimizing proxy metrics instead of true goals
+        (Goodhart's Law)\\[2pt]
+      \textit{Subtle and hard to detect}
+    \end{ucrcard}
+
+    \column{0.32\textwidth}
     \begin{ucrcard}[UCRnavy]{Deception}
       \scriptsize
       $\bullet$ \textbf{Intentional}: model actively misleads to bypass restrictions\\
-      $\bullet$ \textbf{Situational awareness}: AI detects evaluation, modifies behavior accordingly
+      $\bullet$ \textbf{Situational awareness}: AI detects evaluation, modifies behavior accordingly\\[2pt]
+      \textit{Apollo Research: GPT-4 lies about insider trading}
     \end{ucrcard}
-
-    \column{0.45\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{fig14_autonomous_ai_page52.png}
   \end{columns}
   \vspace{0.4em}
   \begin{ucrdark}[UCRnavy]
