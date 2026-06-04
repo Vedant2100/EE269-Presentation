@@ -39,7 +39,7 @@
     \begin{ucrinfo}
       \scriptsize\bfseries My Role in Today's Presentation:\\[3pt]
       \normalfont\scriptsize
-      My teammates covered \textbf{what} interpretability is, and \textbf{what} safety risks exist. I connect the two: how interpretability \emph{actually} helps us build safer LLMs.
+      My teammates covered \textbf{what} interpretability is, and \textbf{what} safety risks and guardrails exist. I connect the two: how interpretability methods \emph{actually} helps us build safer LLMs.
     \end{ucrinfo}
   \end{columns}
 \end{frame}
@@ -65,7 +65,7 @@
     \begin{ucrwarn}
       \scriptsize\bfseries The Gap in Prior Surveys:\\[3pt]
       \normalfont\scriptsize
-      Surveys focus on \emph{either} interpretability \emph{or} safety --- not how the former informs the latter. This is the first survey to bridge both systematically.
+      Surveys focus on \emph{either} interpretability \emph{or} safety, not how the former informs the latter. This is the first survey to bridge both systematically.
     \end{ucrwarn}
 
     \column{0.48\textwidth}
@@ -146,42 +146,111 @@
 % ─────────────────────────────────────────────────────────────────────────────
 \sectionframe{3}{Interpretation Methods for Safety}{How Do We Look Inside an LLM?}{Training Attribution · Input Tokens · Model Internals · Self-Reasoning}
 
+% ═══════════════════════════════════════════════════════════════════
+%  OVERVIEW FIGURE
+% ═══════════════════════════════════════════════════════════════════
+\begin{frame}{Interpretability for Safety: Overview}
+    \centering
+    \includegraphics[width=0.95\textwidth,height=0.82\textheight,keepaspectratio]
+    {Interpretability_for_Safety_Flow_Chart.png}
+\end{frame}
 
-% ═══════════════════════════════════════════════════════════════════
-%  SLIDE 3 --- §3.1 TRAINING DATA ATTRIBUTION
-% ═══════════════════════════════════════════════════════════════════
 \begin{frame}{\S3.1\ Training Data Attribution (TDA)}
-  {\footnotesize\itshape Core hypothesis: unsafe outputs stem from problematic training data.\\
-  Can we trace which examples caused them?}
-  \vspace{0.3em}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Three Attribution Approaches}}
-    \begin{ucrcard}[UCRnavy]{Representation-Based}
-      \scriptsize Compare similarity of training example latent vectors to the output. Fast, but does \textbf{not establish causality}.
-    \end{ucrcard}\vspace{2pt}
-    \begin{ucrcard}[UCRnavy]{Gradient-Based (TracIn / Influence Functions)}
-      \scriptsize Estimates how removing a training point would change model parameters. Theoretically grounded --- but \textbf{expensive to scale} to LLMs and sensitive to convexity assumptions.
-    \end{ucrcard}\vspace{2pt}
-    \begin{ucrcard}[UCRnavy]{Data Shapley}
-      \scriptsize Marginal-contribution based attribution. Principled, but \textbf{limited to smaller models} due to computational cost.
-    \end{ucrcard}
 
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Safety Applications}}
-    \begin{itemize}\scriptsize\setlength\itemsep{4pt}
-      \item \textbf{Hallucination sources}: \textit{LLM Attributor} (Lee et al., 2025) traces confabulated facts directly back to training examples --- shown as an interactive visualization
-      \item \textbf{Bias origins}: identifies which web-scraped documents inject gender or racial stereotypes
-      \item \textbf{Toxic completions}: links toxic outputs to specific training passages
-      \item \textbf{Training dynamics}: tracks how safety capabilities like ``toxic content refusal'' emerge across training checkpoints
-    \end{itemize}
-    \vspace{0.3em}
-    \begin{ucrwarn}
-      \scriptsize\bfseries Open Challenge (\S6.3):\\[2pt]
-      \normalfont\scriptsize
-      Proprietary training data is inaccessible. Using TDA to actively \emph{enhance} safety (remove bad data + retrain) has only been shown for small, non-generative models. Scaling is unsolved.
-    \end{ucrwarn}
-  \end{columns}
+{\scriptsize\itshape
+Core hypothesis: unsafe outputs stem from problematic training data.
+Can we trace which examples caused them?
+}
+
+\vspace{0.2em}
+
+\begin{columns}[T]
+
+\column{0.45\textwidth}
+
+{\footnotesize\bfseries\navy{Three Attribution Approaches}}
+
+\begin{ucrcard}[UCRnavy]{Representation-Based}
+\scriptsize
+Compare similarity of training-example latent vectors to the output.
+Fast, but does not establish causality.
+\end{ucrcard}
+
+\vspace{1pt}
+
+\begin{ucrcard}[UCRnavy]{Gradient-Based}
+\scriptsize
+Influence Functions and TracIn estimate how removing a training example
+would affect model behavior.
+\end{ucrcard}
+
+\vspace{1pt}
+
+\begin{ucrcard}[UCRnavy]{Data Shapley}
+\scriptsize
+Measures each training example's contribution to model performance.
+Principled but computationally expensive.
+\end{ucrcard}
+
+\column{0.53\textwidth}
+
+{\footnotesize\bfseries\navy{Example Attribution Workflow}}
+
+\vspace{0.15em}
+
+\centering
+\includegraphics[
+width=\linewidth,
+height=0.65\textheight,
+keepaspectratio
+]{TDA_diag.png}
+
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+
+{\scriptsize\itshape
+Once influential training examples are identified, they can be analyzed,
+filtered, or removed to improve model behavior.
+}
+
+\vspace{0.2em}
+
+{\footnotesize\bfseries\navy{Safety Applications}}
+
+\begin{itemize}
+\scriptsize
+\setlength\itemsep{4pt}
+
+\item \textbf{Hallucination Sources}
+      LLM Attributor traces generated false facts back to specific
+      training examples.
+
+\item \textbf{Bias Origins}
+      Identifies documents introducing gender, racial, or cultural
+      stereotypes.
+
+\item \textbf{Toxic Outputs}
+      Links harmful generations to problematic training passages.
+
+\item \textbf{Training Dynamics}
+      Tracks how capabilities such as refusal behavior emerge during
+      training.
+\end{itemize}
+
+\vspace{0.3em}
+
+\begin{ucrwarn}
+\scriptsize\bfseries Open Challenge (\S6.3):\\[2pt]
+
+\scriptsize
+Most frontier models use proprietary datasets.
+Using TDA to improve safety through data removal and retraining has only
+been demonstrated on relatively small models. Scaling remains unsolved due to the sheer magnitude of training data and the immense compute for each of these methods.
+\end{ucrwarn}
+
 \end{frame}
 
 
@@ -279,7 +348,8 @@
     {\small\bfseries\navy{Perturbation Methods}}
     \begin{itemize}\scriptsize\setlength\itemsep{4pt}
       \item \textbf{Component Knockout}: ablate layers, attention heads, or parameters to identify which are responsible for hallucinations, jailbreaks, and bias.
-      \item \textbf{Activation Patching}: replace intermediate activations from one input with another input's activations --- directly measures causal effect of a specific region.
+      \textbf{But what about polysemanticity?}
+      \item \textbf{Activation Patching}: replace intermediate activations from one input with another input's activations, eg. safe vs unsafe flagged inputs, directly measures the causal effect of a specific region in terms of knowledge storage or biases induced.
       \item \textbf{Circuit Extraction}: build graphs of important components (nodes) and information flow (edges). Automates mechanistic analysis.
       \item \textbf{Parameter Perturbation}: modify weights; evaluate how safety properties change --- tests alignment robustness.
     \end{itemize}
@@ -310,88 +380,140 @@
 \end{frame}
 
 
-% ═══════════════════════════════════════════════════════════════════
-%  SLIDE 7 --- §3.3.3 SAEs + LOGIT LENS
-% ═══════════════════════════════════════════════════════════════════
 \begin{frame}{\S3.3.3\ Sparse Autoencoders: Deciphering What Neurons Encode}
-  {\footnotesize\itshape Most neurons are \textbf{polysemantic} --- they encode multiple unrelated concepts simultaneously. SAEs disentangle them into interpretable features.}
-  \vspace{0.3em}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{How SAEs Work}}
-    \begin{enumerate}\scriptsize\setlength\itemsep{3pt}
-      \item Encoder maps a polysemantic activation $\to$ high-dimensional \textbf{sparse} concept vector
-      \item Each dimension (SAE ``neuron'') = one distinct, interpretable concept
-      \item Decoder reconstructs the original activation
-      \item Researchers find inputs that maximally activate each SAE neuron $\to$ human-readable labels
-    \end{enumerate}
-    \vspace{0.3em}
-    \begin{ucrdark}[UCRnavy]
-      \scriptsize\bfseries Anthropic's Scaling Monosemanticity (2024):\\[3pt]
-      \normalfont\scriptsize
-      SAEs applied to Claude 3 Sonnet. Millions of interpretable features found, including: deception, sycophancy, bias, dangerous content, and the famous \emph{``Golden Gate Bridge'' neuron} covered by your teammates.
-    \end{ucrdark}
 
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Safety-Relevant SAE Findings}}
-    \begin{ucrcard}[UCRnavy]{Jailbreak Features}
-      \scriptsize
-      \textbf{Härle et al.\ (2024)}: SCAR finds SAE neurons activating during jailbreak prompts. Suppressing them blocks the attack \textbf{without any retraining}.
-    \end{ucrcard}
-    \vspace{0.2em}
-    \begin{ucrcard}[UCRnavy]{Bias Features}
-      \scriptsize
-      \textbf{Hegde (2024)} and \textbf{Zhou et al.\ (2025)}: specific SAE neurons encode gender bias. Clamping them to zero substantially reduces biased outputs.
-    \end{ucrcard}
-    \vspace{0.2em}
-    \begin{ucrcard}[UCRnavy]{Privacy Leakage Features}
-      \scriptsize
-      \textbf{Frikha et al.\ (2025)}: PrivacyScalpel locates neurons encoding memorized personal information --- surgical privacy protection.
-    \end{ucrcard}
-    \vspace{0.2em}
-    \begin{ucrinfo}
-      \scriptsize\bfseries Also: Logit Lens\\[2pt]
-      \normalfont\scriptsize
-      Projects intermediate hidden states onto the vocabulary --- reveals what the model is ``thinking'' at each layer. Used to catch hallucinations forming mid-generation before the final token is produced.
-    \end{ucrinfo}
-  \end{columns}
+{\footnotesize\itshape
+Most neurons are \textbf{polysemantic} --- they encode multiple unrelated concepts simultaneously.
+SAEs disentangle them into interpretable features.
+}
+
+\vspace{0.2em}
+
+\begin{columns}[T]
+
+\column{0.45\textwidth}
+
+{\small\bfseries\navy{How SAEs Work}}
+
+\begin{enumerate}\footnotesize
+\setlength\itemsep{2pt}
+\item Encoder maps a polysemantic activation
+      $\rightarrow$ sparse concept vector
+
+\item Each dimension (SAE neuron)
+      represents a distinct concept
+
+\item Decoder reconstructs the original activation
+
+\item Highly activating inputs reveal
+      human-interpretable meanings
+\end{enumerate}
+
+\vspace{0.2em}
+
+\begin{ucrdark}[UCRnavy]
+\scriptsize\bfseries Anthropic's Scaling Monosemanticity (2024)\\[2pt]
+
+\scriptsize
+Applied to Claude 3 Sonnet, SAEs uncovered millions of
+interpretable features including deception, bias,
+sycophancy, dangerous content, and the famous
+\emph{Golden Gate Bridge} feature.
+\end{ucrdark}
+
+\column{0.53\textwidth}
+
+{\small\bfseries\navy{Polysemantic $\rightarrow$ Monosemantic}}
+
+\vspace{0.2em}
+
+\centering
+
+\includegraphics[
+width=\linewidth,
+height=0.65\textheight,
+keepaspectratio
+]{SAE_img.png}
+
+\end{columns}
+
 \end{frame}
 
+\begin{frame}{\S3.3.3\ SAEs for Safety Intervention}
+
+{\footnotesize\itshape
+Once interpretable features are identified, they can be manipulated directly
+to improve safety.
+}
+
+\vspace{0.3em}
+
+\begin{ucrcard}[UCRnavy]{Jailbreak Features}
+\scriptsize
+\textbf{Härle et al. (2024):}
+SCAR identifies SAE features activated during jailbreak attempts.
+Suppressing them blocks attacks without retraining.
+\end{ucrcard}
+
+\vspace{0.15em}
+
+\begin{ucrcard}[UCRnavy]{Bias Features}
+\scriptsize
+\textbf{Hegde (2024)} and \textbf{Zhou et al. (2025)}
+identify SAE features encoding gender bias.
+Clamping them reduces biased outputs.
+\end{ucrcard}
+
+\vspace{0.15em}
+
+\begin{ucrcard}[UCRnavy]{Privacy Leakage Features}
+\scriptsize
+\textbf{Frikha et al. (2025):}
+PrivacyScalpel locates neurons encoding memorized personal information,
+enabling targeted privacy protection.
+\end{ucrcard}
+
+\vspace{0.15em}
+
+\begin{ucrinfo}
+\scriptsize\bfseries Also: Logit Lens\\[2pt]
+
+\scriptsize
+Projects intermediate hidden states onto the vocabulary,
+revealing what the model is ``thinking'' at each layer and
+helping detect hallucinations before generation completes.
+\end{ucrinfo}
+
+\end{frame}
 
 % ═══════════════════════════════════════════════════════════════════
 %  SLIDE 8 --- §3.4 SELF-REASONING
 % ═══════════════════════════════════════════════════════════════════
 \begin{frame}{\S3.4\ Self-Reasoning: LLMs Interpreting Their Own Outputs}
-  {\footnotesize\itshape LLMs can be prompted or trained to explain their own behavior --- but reliability is not guaranteed.}
-  \vspace{0.3em}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{In-Generation Reasoning}}
-    \begin{ucrcard}[UCRnavy]{Chain-of-Thought (CoT)}
-      \scriptsize
-      Prompting LLMs to generate intermediate reasoning steps before answering.\\[4pt]
-      \textbf{Safety Use}: CoT surfaces potential harms before the model commits to a response --- a form of runtime self-audit. Many variants: Tree-of-Thought, Graph-of-Thought, Faithful CoT.
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrcard}[UCRnavy]{Uncertainty Estimation}
-      \scriptsize
-      Models trained or prompted to express confidence levels. Flags when hallucination is likely --- enables early warning systems for downstream users.
-    \end{ucrcard}
 
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Post-Hoc Self-Explanation}}
-    \begin{ucrcard}[UCRnavy]{Chain-of-Verification (Dhuliawala et al., 2024)}
-      \scriptsize
-      Split a response into factual claims, then ask the model to verify each against its own knowledge. Iterative self-questioning substantially reduces hallucination rates on tasks like WikiData QA.
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrwarn}
-      \scriptsize\bfseries Critical Caveat: Unfaithful Explanations\\[3pt]
-      \normalfont\scriptsize
-      CoT explanations often \textbf{do not reflect} the model's actual computation (Turpin et al., 2023). Models confidently produce plausible-but-wrong self-explanations.\\[3pt]
-      $\therefore$ Self-reasoning is a \textbf{useful signal}, not a guarantee --- always needs external verification.
-    \end{ucrwarn}
-  \end{columns}
+{\footnotesize\itshape
+LLMs can be prompted or trained to reason about their own outputs before or after generation.
+}
+
+\vspace{0.2em}
+
+\centering
+
+\includegraphics[
+width=0.95\textwidth,
+height=0.72\textheight,
+keepaspectratio
+]{Self_reason.png}
+
+\vspace{0.2em}
+
+\begin{ucrwarn}
+\scriptsize\bfseries Critical Caveat: Unfaithful Explanations \\
+\normalfont\scriptsize
+CoT explanations often do not reflect the model's true internal computation.
+Self-reasoning is therefore a useful signal, not a guarantee of safety.
+\end{ucrwarn}
+
 \end{frame}
 
 
@@ -401,44 +523,73 @@
 \sectionframe{4}{Enhancing Safety via Interpretation}{From Understanding to Action}{Steer · Modulate · Edit · Verify · Self-Reason}
 
 
-% ═══════════════════════════════════════════════════════════════════
-%  SLIDE 9 --- §4.1 + §4.2.1 STEERING LATENT VECTORS
-% ═══════════════════════════════════════════════════════════════════
 \begin{frame}{\S4.1 \& \S4.2.1\ Token-Level Fixes and Representation Steering}
+
   \begin{columns}[T]
-    \column{0.48\textwidth}
+
+    % LEFT COLUMN
+    \column{0.45\textwidth}
+
     {\small\bfseries\navy{\S4.1 --- Attend to Relevant Tokens}}
-    \begin{itemize}\scriptsize\setlength\itemsep{3pt}
-      \item Remove jailbreak-triggering tokens identified by attribution (\textit{Pan et al., 2025})
-      \item Amplify attention to reliable user-specified tokens (\textit{Zhang et al., 2024})
-      \item Redirect model focus to relevant context to reduce RAG hallucinations (\textit{Liu et al., 2025})
+
+    \begin{itemize}\scriptsize
+      \setlength\itemsep{3pt}
+
+      \item Remove jailbreak-triggering tokens identified by attribution
+      (\textit{Pan et al., 2025})
+
+      \item Amplify attention to reliable user-specified tokens
+      (\textit{Zhang et al., 2024})
+
+      \item Redirect model focus to relevant context to reduce RAG hallucinations
+      (\textit{Liu et al., 2025})
+
     \end{itemize}
-    \vspace{0.5em}
+
+    \vspace{0.4em}
+
     {\small\bfseries\navy{\S4.2.1 --- Representation Engineering}}
+
     \begin{ucrcard}[UCRnavy]{Steering Vectors}
       \scriptsize
-      Add the ``safe direction'' (found by probing) to the model's hidden states at inference time:\\[4pt]
-      $\qquad h_{\text{new}} = h + \alpha \cdot \hat{v}_{\text{safe}}$\\[4pt]
-      \textbf{No retraining.} Works at inference time. Reversible. Can be tuned per task.
+
+      Add the ``safe direction'' discovered through probing
+      directly to the hidden state:
+
+      \vspace{0.2em}
+
+      \[
+      h_{\text{new}}
+      =
+      h
+      +
+      \alpha \hat{v}_{\text{safe}}
+      \]
+
+      \scriptsize
+
+      \textbf{No retraining required.}
+      Works entirely at inference time and can be tuned for different tasks.
+
     \end{ucrcard}
 
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Key Results}}
-    \begin{ucrcard}[UCRnavy]{Inference-Time Intervention (ITI) --- Li et al., 2023}
-      \scriptsize
-      Probes identify truthfulness directions in Llama activations. Amplifying them at inference time achieves $+16\%$ on TruthfulQA with \textbf{no fine-tuning} --- one of the first demonstrations of mechanistic safety improvement.
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrcard}[UCRnavy]{Contrastive Activation Addition --- Rimsky et al., 2024}
-      \scriptsize
-      Subtract the ``sycophancy'' or ``bias'' direction from hidden states of Llama 2. Effective and simple --- requires \textbf{zero fine-tuning}, works across many behaviors.
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrdark}[UCRnavy]
-      \centering\scriptsize
-      Latent steering: parameter-efficient, fast, directly grounded in mechanistic understanding of \emph{where} the unsafe behavior lives.
-    \end{ucrdark}
+    % RIGHT COLUMN
+    \column{0.53\textwidth}
+
+    {\small\bfseries\navy{Safety Vector Steering}}
+
+    \vspace{0.2em}
+
+    \centering
+
+    \includegraphics[
+      width=\linewidth,
+      height=0.72\textheight,
+      keepaspectratio
+    ]{Safe_steering.png}
+
   \end{columns}
+
 \end{frame}
 
 
@@ -487,52 +638,12 @@
 
 
 % ═══════════════════════════════════════════════════════════════════
-%  SLIDE 11 --- §4.2.3 EDITING HARMFUL COMPONENTS
+%  SLIDE 12 --- §4.2 + §4.3 VERIFY & SELF-REASONING OUTPUT
 % ═══════════════════════════════════════════════════════════════════
-\begin{frame}{\S4.2.3\ Editing Harmful Model Components}
-  {\footnotesize\itshape Directly modify the weights of safety-critical components --- pruning, direction editing, and knowledge surgery.}
-  \vspace{0.3em}
+\begin{frame}{\S4.2 \& \S4.3\ Verify Before Output + Self-Reasoning Safety}
   \begin{columns}[T]
     \column{0.48\textwidth}
-    {\small\bfseries\navy{Approach Family}}
-    \begin{ucrcard}[UCRnavy]{Pruning / Downscaling}
-      \scriptsize Remove or downweight attention heads / sublayers identified as responsible for harmful outputs. Layer-specific jailbreak defense (Zhao et al., 2024), hallucination heads (Li et al., 2024), bias heads (Ma et al., 2023).
-    \end{ucrcard}\vspace{2pt}
-    \begin{ucrcard}[UCRnavy]{Safety Direction Editing}
-      \scriptsize Compare aligned vs.\ unaligned model weights $\to$ find the ``safety direction'' in parameter space $\to$ steer critical parameters accordingly. \textit{Safety Arithmetic} (Hazra et al., 2024).
-    \end{ucrcard}\vspace{2pt}
-    \begin{ucrcard}[UCRnavy]{Knowledge Editing (ROME / MEMIT)}
-      \scriptsize Edit specific factual associations in model weights without retraining. Can remove dangerous knowledge or correct biased associations at the fact level.
-    \end{ucrcard}
-
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{Key Results}}
-    \begin{ucrcard}[UCRnavy]{Safety Layers (Li et al., ICLR 2025)}
-      \scriptsize
-      A small set of ``safety layers'' exists in aligned LLMs. \textbf{Protecting these layers from fine-tuning} preserves safety even when the model is further trained on task-specific data --- directly addresses the fine-tuning attack problem.
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrcard}[UCRnavy]{Layer-Specific Jailbreak Defense (Zhao et al., EMNLP 2024)}
-      \scriptsize
-      Identifies and modifies the exact layers where jailbreaks take effect. Substantially improves robustness on StrongREJECT without degrading helpfulness on benign queries.
-    \end{ucrcard}
-    \vspace{0.3em}
-    \begin{ucrdark}[UCRnavy]
-      \centering\scriptsize\bfseries Tradeoff: Precision vs.\ Side-Effects\\[2pt]
-      \normalfont\scriptsize
-      Editing too aggressively degrades model utility. Finding the minimum effective edit with maximum safety gain is an active research frontier.
-    \end{ucrdark}
-  \end{columns}
-\end{frame}
-
-
-% ═══════════════════════════════════════════════════════════════════
-%  SLIDE 12 --- §4.3 + §4.4 VERIFY & SELF-REASONING OUTPUT
-% ═══════════════════════════════════════════════════════════════════
-\begin{frame}{\S4.3 \& \S4.4\ Verify Before Output + Self-Reasoning Safety}
-  \begin{columns}[T]
-    \column{0.48\textwidth}
-    {\small\bfseries\navy{\S4.3 --- Verify Before Output}}
+    {\small\bfseries\navy{\S4.2 --- Verify Before Output}}
     \begin{ucrcard}[UCRnavy]{Best-of-N with Safety Filtering}
       \scriptsize
       Generate multiple candidate responses. Use probing classifiers or self-evaluation to select only safe ones.\\[3pt]
@@ -546,7 +657,7 @@
     \end{ucrcard}
 
     \column{0.48\textwidth}
-    {\small\bfseries\navy{\S4.4 --- Output with Self-Reasoning}}
+    {\small\bfseries\navy{\S4.3 --- Output with Self-Reasoning}}
     \begin{ucrcard}[UCRnavy]{GuardReasoner (Liu et al., 2025)}
       \scriptsize
       Fine-tune LLMs to generate intermediate reasoning explaining \emph{why} a response may be harmful before deciding whether to comply. Makes safety decisions \textbf{transparent and auditable}.
@@ -742,16 +853,16 @@
       \centering\small\bfseries
       The Core Message\\[6pt]
       \normalfont\scriptsize
-      Unsafe LLM behavior is not random --- it has \textbf{identifiable, localizable causes} inside the model.\\[6pt]
-      Interpretability gives us the tools to \textbf{find} those causes and \textbf{fix them precisely} --- transforming AI safety from an empirical art into a principled engineering discipline.
+      Unsafe LLM behavior is not random, it has \textbf{identifiable, localizable causes} inside the model.\\[6pt]
+      Interpretability gives us the tools to \textbf{find} those causes and \textbf{fix them precisely}.
     \end{ucrdark}
     \vspace{0.4em}
     {\small\bfseries\navy{Key Takeaways}}
     \begin{itemize}\scriptsize\setlength\itemsep{3pt}
       \item Interpretability $\not=$ only explaining models; it \emph{enables} targeted safety fixes
-      \item SAEs are becoming the workhorse of safety intervention --- but carry dual-use risk
+      \item SAEs are becoming the workhorse of safety intervention, but carry dual-use risk
       \item Much unexplored: TDA at scale, circuit analysis for safety, holistic safety ontologies
-      \item The field needs the dual expertise of \textbf{both} your teammates' topics, working together
+      \item Interpretability and Safety research needs to go hand-in-hand
     \end{itemize}
   \end{columns}
 \end{frame}
